@@ -1,0 +1,32 @@
+{
+    "title": "TikTok Profile Scraper",
+    "description": "Collect public TikTok profile metadata and statistics with bounded HTTP sessions and proxy rotation.",
+    "type": "object",
+    "schemaVersion": 1,
+    "required": ["usernames"],
+    "properties": {
+        "usernames": {
+            "title": "TikTok Usernames or Profile URLs",
+            "description": "List of TikTok usernames (e.g. scout2015) or full profile URLs. Only public profiles can be scraped.",
+            "type": "array",
+            "editor": "stringList",
+            "default": ["scout2015"],
+            "prefill": ["scout2015"],
+            "sectionCaption": "Profiles to Scrape"
+        },
+        "proxyConfiguration": {
+            "title": "Proxy Configuration",
+            "description": "Residential proxy rotation is recommended for detailed metrics. Public oEmbed metadata is used as a safe fallback when TikTok challenges the profile page.",
+            "type": "object",
+            "editor": "proxy",
+            "default": {
+                "useApifyProxy": true,
+                "apifyProxyGroups": ["RESIDENTIAL"]
+            },
+            "prefill": {
+                "useApifyProxy": true,
+                "apifyProxyGroups": ["RESIDENTIAL"]
+            }
+        }
+    }
+}

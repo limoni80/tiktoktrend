@@ -1,0 +1,732 @@
+import { useEffect, useMemo, useRef, useState } from 'react';
+import {
+  BarChart3, Bookmark, Clapperboard, Clock3, Download, Eye, Flame, Grid2X2, Hash, Heart, Import,
+  LayoutDashboard, Megaphone, Menu, MessageCircle, Moon, Music2, Play, RefreshCw, Search, Share2, Sun,
+  TrendingUp, Users, X,
+} from 'lucide-react';
+import { enrichVideo, formatAge, formatDate, formatMetric } from './analytics';
+import { WorkspaceJsonProvider } from './provider';
+import { sampleVideos } from './sample-data';
+import type { CustomFilter, DatasetPayload, DiscoverFilters, EnrichedVideo, MetricKey, SortKey, TikTokVideo } from './types';
+
+const METRICS: Array<[MetricKey, string, string]> = [
+  ['views', 'Views', ''], ['likes', 'Likes', ''], ['comments', 'Comments', ''], ['shares', 'Shares', ''],
+  ['saves', 'Saves', ''], ['followers', 'Creator followers', ''], ['following', 'Creator following', ''],
+  ['totalLikes', 'Creator total likes', ''], ['durationSeconds', 'Duration', 'sec'],
+  ['engagementRate', 'Engagement rate', '%'], ['winningScore', 'Winning score', '/100'],
+  ['ageHours', 'Age', 'hours'], ['ctr', 'Ad CTR', '%'],
+];
+const metricValue = (video: EnrichedVideo, metric: MetricKey): number | null => {
+  if (metric === 'followers') return video.creator.followers;
+  if (metric === 'following') return video.creator.following;
+  if (metric === 'totalLikes') return video.creator.totalLikes;
+  const value = video[metric as keyof EnrichedVideo];
+  return typeof value === 'number' ? value : null;
+};
+
+const navItems = [
+  ['Discover', Search], ['Overview', LayoutDashboard], ['Creators', Users],
+  ['Sounds', Music2], ['Watchlist', Bookmark], ['Exports', Download],
+] as const;
+type NavLabel = (typeof navItems)[number][0];
+
+const fetchRegions = [['US','United States'],['GB','United Kingdom'],['FR','France'],['DE','Germany'],['ES','Spain'],['IT','Italy'],['EG','Egypt'],['SA','Saudi Arabia'],['AE','United Arab Emirates'],['CA','Canada'],['BR','Brazil'],['MX','Mexico'],['JP','Japan'],['KR','South Korea'],['ID','Indonesia'],['PH','Philippines'],['TR','Turkey'],['ZA','South Africa']] as const;
+
+const emptyFilters: DiscoverFilters = { minViews: '', maxViews: '', minLikes: '', minComments: '', minShares: '', minFollowers: '', maxFollowers: '', dateFrom: '', dateTo: '', minDuration: '', maxDuration: '', minEngagement: '' };
+const parseNum = (value: string): number | null => value.trim() === '' ? null : Number(value.replaceAll(',', ''));
+const sortValue = (video: EnrichedVideo, key: SortKey): number => {
+  if (key === 'publishedAt') return new Date(video.publishedAt ?? 0).getTime();
+  if (key === 'followers') return video.creator.followers ?? -1;
+  const value = video[key as keyof EnrichedVideo];
+  return typeof value === 'number' ? value : -1;
+};
+
+interface Progress { active: boolean; phase: string; collected: number; matched: number; target: number; startedAt: number | null }
+
+// Cached results older than this are refreshed automatically on open.
+const STALE_MS = 10 * 60 * 1000;
+const relativeTime = (iso: string) => {
+  const seconds = (Date.now() - new Date(iso).getTime()) / 1000;
+  if (seconds < 90) return 'just now';
+  if (seconds < 3600) return `${Math.round(seconds / 60)} min ago`;
+  if (seconds < 86400) return `${Math.round(seconds / 3600)}h ago`;
+  return `${Math.round(seconds / 86400)}d ago`;
+};
+
+function App() {
+  const [videos, setVideos] = useState<TikTokVideo[]>(sampleVideos);
+  const [ads, setAds] = useState<TikTokVideo[]>([]);
+  const [adsMeta, setAdsMeta] = useState<DatasetPayload | null>(null);
+  const [videosMeta, setVideosMeta] = useState<DatasetPayload | null>(null);
+  const [dataMode, setDataMode] = useState<'demo' | 'imported' | 'live'>('demo');
+  const [activeNav, setActiveNav] = useState<NavLabel>('Discover');
+  const [feedType, setFeedType] = useState<'videos' | 'ads'>('videos');
+  const [query, setQuery] = useState('');
+  const [sort, setSort] = useState<SortKey>('winningScore');
+  const [view, setView] = useState<'cards' | 'table'>('cards');
+  const [filters, setFilters] = useState<DiscoverFilters>(emptyFilters);
+  const [watchlist, setWatchlist] = useState<Set<string>>(new Set());
+  const [dark, setDark] = useState(true);
+  const [sidebar, setSidebar] = useState(false);
+  const [railOpen, setRailOpen] = useState(false);
+  const [customFilters, setCustomFilters] = useState<CustomFilter[]>([]);
+  const [draft, setDraft] = useState<{ metric: MetricKey; op: CustomFilter['op']; value: string; value2: string }>({ metric: 'views', op: 'gte', value: '', value2: '' });
+  const [target, setTarget] = useState('40');
+  const [hasMore, setHasMore] = useState(false);
+  const [loadingMore, setLoadingMore] = useState(false);
+  const [scanned, setScanned] = useState(0);
+  const [autoLoad, setAutoLoad] = useState(true);
+  const sentinelRef = useRef<HTMLDivElement | null>(null);
+  const [busy, setBusy] = useState(false);
+  const [refreshing, setRefreshing] = useState(false);
+  const [error, setError] = useState('');
+  const [flash, setFlash] = useState('');
+  const [progress, setProgress] = useState<Progress | null>(null);
+  const [region, setRegion] = useState('US');
+  const [ccBusy, setCcBusy] = useState(false);
+  const fileRef = useRef<HTMLInputElement>(null);
+
+  // On open: show the cached results instantly, then silently pull FRESH ones
+  // from TikTok so nobody is ever looking at yesterday's feed.
+  useEffect(() => {
+    (async () => {
+      let cachedKeyword = '';
+      let stale = true;
+      try {
+        const payload = await (await fetch('/api/datasets')).json() as { videos: DatasetPayload | null; ads: DatasetPayload | null };
+        if (payload.videos?.videos?.length) {
+          setVideos(payload.videos.videos); setVideosMeta(payload.videos); setDataMode('live');
+          setHasMore(true); setScanned(payload.videos.videos.length);
+          cachedKeyword = payload.videos.keyword ?? '';
+          if (cachedKeyword) setQuery(cachedKeyword);
+          stale = Date.now() - new Date(payload.videos.fetchedAt).getTime() > STALE_MS;
+        }
+        if (payload.ads?.videos?.length) { setAds(payload.ads.videos); setAdsMeta(payload.ads); }
+      } catch { /* server not up yet — demo stays, clearly labelled */ }
+      if (stale) void refreshFeed(cachedKeyword);
+    })();
+  }, []);
+
+  // Keep the "updated X ago" label honest without re-rendering constantly.
+  const [, setClockTick] = useState(0);
+  useEffect(() => {
+    const timer = setInterval(() => setClockTick((value) => value + 1), 30_000);
+    return () => clearInterval(timer);
+  }, []);
+
+  // Live progress while a fetch runs.
+  useEffect(() => {
+    if (!busy) { setProgress(null); return; }
+    let alive = true;
+    const tick = async () => {
+      try {
+        const data = await (await fetch('/api/progress')).json() as Progress;
+        if (alive) setProgress(data);
+      } catch { /* ignore */ }
+    };
+    void tick();
+    const timer = setInterval(tick, 1500);
+    return () => { alive = false; clearInterval(timer); };
+  }, [busy]);
+
+  const enriched = useMemo(() => videos.map((video) => enrichVideo(video)), [videos]);
+  const enrichedAds = useMemo(() => ads.map((video) => enrichVideo(video)), [ads]);
+  const feed = feedType === 'ads' ? enrichedAds : enriched;
+
+  const visible = useMemo(() => feed.filter((video) => {
+    const needle = query.toLowerCase().trim().replace(/^#|^@/, '');
+    if (needle) {
+      const haystack = `${video.caption} ${video.creator.username ?? ''} ${video.creator.displayName} ${video.hashtags.join(' ')} ${video.soundName ?? ''} ${video.industry ?? ''} ${video.topic ?? ''}`.toLowerCase();
+      if (!haystack.includes(needle)) return false;
+    }
+    if (activeNav === 'Watchlist' && !watchlist.has(video.id)) return false;
+    const inRange = (value: number | null | undefined, min: string, max: string) => {
+      const lo = parseNum(min), hi = parseNum(max);
+      if (lo == null && hi == null) return true;
+      if (value == null) return false;
+      return (lo == null || value >= lo) && (hi == null || value <= hi);
+    };
+    if (!inRange(video.views, filters.minViews, filters.maxViews)) return false;
+    if (!inRange(video.likes, filters.minLikes, '')) return false;
+    if (!inRange(video.comments, filters.minComments, '')) return false;
+    if (!inRange(video.shares, filters.minShares, '')) return false;
+    if (!inRange(video.creator.followers, filters.minFollowers, filters.maxFollowers)) return false;
+    if (!inRange(video.durationSeconds, filters.minDuration, filters.maxDuration)) return false;
+    if (!inRange(video.engagementRate, filters.minEngagement, '')) return false;
+    for (const custom of customFilters) {
+      const value = metricValue(video, custom.metric);
+      const low = parseNum(custom.value), high = parseNum(custom.value2);
+      if (value == null) return false;
+      if (custom.op === 'gte' && low != null && value < low) return false;
+      if (custom.op === 'lte' && low != null && value > low) return false;
+      if (custom.op === 'between' && ((low != null && value < low) || (high != null && value > high))) return false;
+    }
+    if (filters.dateFrom || filters.dateTo) {
+      if (!video.publishedAt) return false;
+      const time = new Date(video.publishedAt).getTime();
+      if (filters.dateFrom && time < new Date(`${filters.dateFrom}T00:00:00`).getTime()) return false;
+      if (filters.dateTo && time > new Date(`${filters.dateTo}T23:59:59`).getTime()) return false;
+    }
+    return true;
+  }).sort((a, b) => sortValue(b, sort) - sortValue(a, sort)), [feed, query, activeNav, watchlist, filters, customFilters, sort]);
+
+  const creators = useMemo(() => [...new Map(enriched.map((video) => [video.creator.username ?? video.creator.displayName, video.creator])).values()]
+    .sort((a, b) => (b.followers ?? -1) - (a.followers ?? -1)), [enriched]);
+  const sounds = useMemo(() => {
+    const groups = new Map<string, { name: string; author: string | null; videos: number; views: number }>();
+    enriched.forEach((video) => {
+      if (!video.soundName) return;
+      const key = `${video.soundName}:${video.soundId ?? ''}`;
+      const current = groups.get(key) ?? { name: video.soundName, author: video.soundAuthor, videos: 0, views: 0 };
+      current.videos += 1; current.views += video.views ?? 0; groups.set(key, current);
+    });
+    return [...groups.values()].sort((a, b) => b.views - a.views);
+  }, [enriched]);
+  const topHashtags = useMemo(() => {
+    const counts = new Map<string, { videos: number; views: number }>();
+    enriched.forEach((video) => video.hashtags.forEach((tag) => {
+      const current = counts.get(tag) ?? { videos: 0, views: 0 };
+      current.videos += 1; current.views += video.views ?? 0; counts.set(tag, current);
+    }));
+    return [...counts.entries()].sort((a, b) => b[1].views - a[1].views).slice(0, 12);
+  }, [enriched]);
+
+  const totals = useMemo(() => {
+    const knownEngagement = enriched.filter((v) => v.engagementRate != null);
+    return {
+      views: enriched.reduce((sum, v) => sum + (v.views ?? 0), 0),
+      likes: enriched.reduce((sum, v) => sum + (v.likes ?? 0), 0),
+      engagement: knownEngagement.length ? knownEngagement.reduce((sum, v) => sum + (v.engagementRate ?? 0), 0) / knownEngagement.length : null,
+      creators: new Set(enriched.map((v) => v.creator.username ?? v.creator.displayName)).size,
+    };
+  }, [enriched]);
+
+  const localDate = (daysAgo: number) => {
+    const date = new Date(); date.setDate(date.getDate() - daysAgo);
+    return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
+  };
+  const datePresets = [
+    { id: 'any', label: 'Any time', from: '', to: '' },
+    { id: 'today', label: 'Today', from: localDate(0), to: localDate(0) },
+    { id: 'yesterday', label: 'Yesterday', from: localDate(1), to: localDate(1) },
+    { id: 'week', label: 'Last 7 days', from: localDate(7), to: '' },
+    { id: 'month', label: 'Last 30 days', from: localDate(30), to: '' },
+  ];
+  const activeDateId = datePresets.find((preset) => preset.from === filters.dateFrom && preset.to === filters.dateTo)?.id ?? 'custom';
+
+  const activeFilterCount = Object.values(filters).filter((value) => value.trim() !== '').length;
+
+  // Silent background refresh — replaces the cached feed with a live one
+  // without taking over the screen.
+  const refreshFeed = async (keyword: string) => {
+    if (busy || refreshing) return;
+    setRefreshing(true);
+    try {
+      const params = new URLSearchParams({ q: keyword.trim(), count: target, from: filters.dateFrom, to: filters.dateTo });
+      const response = await fetch(`/api/fetch-tiktok?${params}`);
+      const payload = await response.json() as DatasetPayload & { error?: string; hasMore?: boolean; scanned?: number };
+      if (!response.ok || !payload.videos?.length) return;
+      setVideos(payload.videos); setVideosMeta(payload); setDataMode('live');
+      setHasMore(Boolean(payload.hasMore)); setScanned(payload.scanned ?? payload.videos.length);
+    } catch { /* keep showing the cached feed */ }
+    finally { setRefreshing(false); }
+  };
+
+  const runFetch = async (overrides?: { from?: string; to?: string }) => {
+    if (busy) return;
+    setBusy(true); setError(''); setFlash(''); setHasMore(false);
+    try {
+      if (feedType === 'ads') {
+        const params = new URLSearchParams({ region, period: '30', keyword: query.trim() });
+        const response = await fetch(`/api/fetch-ads?${params}`);
+        const payload = await response.json() as DatasetPayload & { error?: string };
+        if (!response.ok || !payload.videos?.length) throw new Error(payload.error ?? 'No public ads returned');
+        setAds(payload.videos); setAdsMeta(payload);
+        setFlash(`${payload.videos.length} real ads loaded from TikTok Top Ads`);
+      } else {
+        const params = new URLSearchParams({
+          q: query.trim(), count: target,
+          from: overrides?.from ?? filters.dateFrom, to: overrides?.to ?? filters.dateTo,
+        });
+        const response = await fetch(`/api/fetch-tiktok?${params}`);
+        const payload = await response.json() as DatasetPayload & { error?: string; hasMore?: boolean; scanned?: number };
+        if (!response.ok || !payload.videos?.length) throw new Error(payload.error ?? 'No videos returned');
+        setVideos(payload.videos); setVideosMeta(payload); setDataMode('live');
+        setHasMore(Boolean(payload.hasMore)); setScanned(payload.scanned ?? payload.videos.length);
+        setFlash(`${payload.videos.length} real TikTok videos loaded${payload.keyword ? ` for “${payload.keyword}”` : ' from Explore'} — scroll for more`);
+      }
+    } catch (caught) {
+      setError(caught instanceof Error ? caught.message : 'Fetch failed');
+    } finally { setBusy(false); }
+  };
+
+  // Infinite scroll — the server keeps its TikTok session open, so each call
+  // just scrolls the live feed further and returns the next unseen batch.
+  const loadMore = async () => {
+    if (busy || loadingMore || !hasMore || feedType !== 'videos') return;
+    setLoadingMore(true);
+    try {
+      const params = new URLSearchParams({ q: query.trim(), count: target, from: filters.dateFrom, to: filters.dateTo, more: '1' });
+      const response = await fetch(`/api/fetch-tiktok?${params}`);
+      const payload = await response.json() as DatasetPayload & { error?: string; hasMore?: boolean; scanned?: number };
+      if (!response.ok) throw new Error(payload.error ?? 'Could not load more');
+      const known = new Set(videos.map((video) => video.id));
+      const additions = (payload.videos ?? []).filter((video) => !known.has(video.id));
+      if (additions.length) setVideos((current) => [...current, ...additions]);
+      setScanned(payload.scanned ?? scanned);
+      setHasMore(Boolean(payload.hasMore) && (additions.length > 0 || Boolean(payload.hasMore)));
+      if (!additions.length && !payload.hasMore) setFlash('TikTok has no more results for this search.');
+    } catch (caught) {
+      setError(caught instanceof Error ? caught.message : 'Could not load more');
+      setHasMore(false);
+    } finally { setLoadingMore(false); }
+  };
+
+  useEffect(() => {
+    const node = sentinelRef.current;
+    if (!node || !autoLoad || !hasMore || busy || loadingMore) return;
+    const observer = new IntersectionObserver((entries) => { if (entries[0]?.isIntersecting) void loadMore(); }, { rootMargin: '600px' });
+    observer.observe(node);
+    return () => observer.disconnect();
+  });
+
+  const applyDatePreset = (preset: typeof datePresets[number]) => {
+    setFilters((current) => ({ ...current, dateFrom: preset.from, dateTo: preset.to }));
+    if (preset.id !== 'any' && feedType === 'videos' && !busy) void runFetch({ from: preset.from, to: preset.to });
+  };
+
+  const fetchCreativeCenter = async () => {
+    setCcBusy(true); setError('');
+    try {
+      const response = await fetch(`/api/fetch?region=${region}&period=7`);
+      const payload = await response.json() as DatasetPayload & { error?: string };
+      if (!response.ok || !payload.videos?.length) throw new Error(payload.error ?? 'No trend videos returned');
+      setVideos(payload.videos); setVideosMeta(payload); setDataMode('live'); setActiveNav('Discover'); setFeedType('videos');
+      setFlash(`${payload.videos.length} trend videos loaded from TikTok Creative Center (${region})`);
+    } catch (caught) { setError(caught instanceof Error ? caught.message : 'Creative Center fetch failed'); }
+    finally { setCcBusy(false); }
+  };
+
+  const importJson = async (file?: File) => {
+    if (!file) return;
+    try {
+      const imported = await new WorkspaceJsonProvider().importVideos(JSON.parse(await file.text()));
+      if (!imported.length) throw new Error('No video records found');
+      setVideos(imported); setDataMode('imported'); setActiveNav('Discover'); setFeedType('videos');
+      setFlash(`${imported.length} records imported`);
+    } catch (caught) { setError(`Import failed: ${caught instanceof Error ? caught.message : 'invalid JSON'}`); }
+  };
+
+  const exportData = () => {
+    const rows = visible.map(({ creator, ...video }) => ({ ...video, creatorUsername: creator.username, creatorFollowers: creator.followers }));
+    const blob = new Blob([JSON.stringify(rows, null, 2)], { type: 'application/json' });
+    const link = document.createElement('a');
+    link.href = URL.createObjectURL(blob); link.download = 'pulse-videos.json'; link.click();
+    URL.revokeObjectURL(link.href);
+  };
+
+  const toggleWatch = (id: string) => setWatchlist((current) => {
+    const next = new Set(current); next.has(id) ? next.delete(id) : next.add(id); return next;
+  });
+
+  const rangeRow = (label: string, minKey: keyof DiscoverFilters, maxKey?: keyof DiscoverFilters, unit?: string) => (
+    <div className="rail-row" key={label}>
+      <span className="rail-label">{label}{unit ? ` (${unit})` : ''}</span>
+      <div className="rail-inputs">
+        <input type="number" min={0} placeholder="Min" value={filters[minKey]} onChange={(event) => setFilters((c) => ({ ...c, [minKey]: event.target.value }))} />
+        {maxKey && <input type="number" min={0} placeholder="Max" value={filters[maxKey]} onChange={(event) => setFilters((c) => ({ ...c, [maxKey]: event.target.value }))} />}
+      </div>
+    </div>
+  );
+
+  const viewsChips = [['', 'Any'], ['10000', '10K+'], ['100000', '100K+'], ['1000000', '1M+'], ['10000000', '10M+']] as const;
+  const followerChips = [['', '', 'Any'], ['', '10000', 'Under 10K'], ['10000', '100000', '10K – 100K'], ['100000', '1000000', '100K – 1M'], ['1000000', '', '1M+']] as const;
+
+  const isDiscoverLike = activeNav === 'Discover' || activeNav === 'Watchlist' || activeNav === 'Exports';
+
+  return <div className={dark ? 'app dark' : 'app'}>
+    <aside className={sidebar ? 'sidebar open' : 'sidebar'}>
+      <div className="brand"><span className="brand-mark"><TrendingUp size={18} /></span>pulse<span className="brand-dot">.</span></div>
+      <button className="close-sidebar" onClick={() => setSidebar(false)} aria-label="Close menu"><X size={20} /></button>
+      <nav>{navItems.map(([label, Icon]) => (
+        <button key={label} className={activeNav === label ? 'active' : ''} onClick={() => { setActiveNav(label); setSidebar(false); if (label === 'Exports') setView('table'); }}>
+          <Icon size={17} /><span>{label}</span>
+          {label === 'Watchlist' && watchlist.size > 0 && <b>{watchlist.size}</b>}
+        </button>
+      ))}</nav>
+      <div className="sidebar-foot">
+        <div className={`data-badge ${dataMode}`}>
+          <span className="dot" />
+          <div>
+            <strong>{dataMode === 'demo' ? 'Demo data' : dataMode === 'live' ? 'Live TikTok data' : 'Imported data'}</strong>
+            <small>{videosMeta ? `Updated ${relativeTime(videosMeta.fetchedAt)}` : 'Search to load real data'}</small>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <main>
+      <header>
+        <button className="icon-button mobile-menu" onClick={() => setSidebar(true)} aria-label="Open menu"><Menu size={20} /></button>
+        <h1>{activeNav}</h1>
+        <div className="header-actions">
+          {videosMeta && <span className={`freshness ${Date.now() - new Date(videosMeta.fetchedAt).getTime() > STALE_MS ? 'stale' : ''}`}>
+            {refreshing ? 'Refreshing…' : `Updated ${relativeTime(videosMeta.fetchedAt)}`}
+          </span>}
+          <button className="icon-button" onClick={() => void refreshFeed(query)} disabled={refreshing || busy} aria-label="Refresh data">
+            <RefreshCw size={16} className={refreshing ? 'spin' : ''} />
+          </button>
+          <button className="icon-button" onClick={() => setDark(!dark)} aria-label="Toggle theme">{dark ? <Sun size={17} /> : <Moon size={17} />}</button>
+          <button className="ghost" onClick={() => fileRef.current?.click()}><Import size={16} /><span>Import</span></button>
+          <input ref={fileRef} hidden type="file" accept="application/json" onChange={(event) => importJson(event.target.files?.[0])} />
+          <button className="ghost" onClick={exportData}><Download size={16} /><span>Export</span></button>
+        </div>
+      </header>
+
+      {isDiscoverLike && <>
+        <div className="feed-tabs" role="tablist">
+          <button role="tab" className={feedType === 'videos' ? 'active' : ''} onClick={() => setFeedType('videos')}><Clapperboard size={15} /> Videos <b>{enriched.length}</b></button>
+          <button role="tab" className={feedType === 'ads' ? 'active' : ''} onClick={() => setFeedType('ads')}><Megaphone size={15} /> Ads <b>{enrichedAds.length}</b></button>
+        </div>
+
+        <div className="searchbar">
+          <div className="search-field">
+            <Search size={18} />
+            <input
+              value={query}
+              onChange={(event) => setQuery(event.target.value)}
+              onKeyDown={(event) => { if (event.key === 'Enter') void runFetch(); }}
+              placeholder={feedType === 'ads' ? 'Search real TikTok ads — brand or product keyword' : 'Search TikTok — keyword, #hashtag or @creator'}
+            />
+            {query && <button className="clear" onClick={() => setQuery('')} aria-label="Clear"><X size={16} /></button>}
+          </div>
+          {feedType === 'videos'
+            ? <select className="target-select" value={target} onChange={(event) => setTarget(event.target.value)} aria-label="Results per page">
+                {['20', '40', '60', '100'].map((value) => <option key={value} value={value}>{value} per page</option>)}
+              </select>
+            : <select className="target-select" value={region} onChange={(event) => setRegion(event.target.value)} aria-label="Ads region">
+                {fetchRegions.map(([code, name]) => <option key={code} value={code}>{name}</option>)}
+              </select>}
+          <button className="search-go" onClick={() => runFetch()} disabled={busy}>{busy ? 'Searching…' : 'Search'}</button>
+        </div>
+        <p className="search-hint">
+          Typing filters the {feed.length} loaded {feedType === 'ads' ? 'ads' : 'videos'} instantly · press <kbd>Enter</kbd> or hit Search to pull fresh results straight from TikTok{feedType === 'videos' ? ' · results keep loading as you scroll, with no cap' : ''}
+        </p>
+
+        {busy && <div className="progress-card">
+          <div className="progress-head">
+            <strong>{progress?.phase ?? 'Starting…'}</strong>
+            <span>{progress?.startedAt ? `${Math.round((Date.now() - progress.startedAt) / 1000)}s` : ''}</span>
+          </div>
+          <div className="progress-track"><i style={{ width: `${Math.min(100, ((progress?.matched ?? 0) / Math.max(1, progress?.target ?? Number(target))) * 100)}%` }} /></div>
+          <small>{progress ? `${progress.matched} matching · ${progress.collected} scanned · target ${progress.target}` : 'Contacting TikTok…'}</small>
+        </div>}
+        {error && <div className="alert error"><span>{error}</span><button onClick={() => setError('')}><X size={15} /></button></div>}
+        {flash && !busy && <div className="alert ok"><span>{flash}</span><button onClick={() => setFlash('')}><X size={15} /></button></div>}
+        {dataMode === 'demo' && <div className="alert warn"><span><strong>Demo data</strong> — these numbers are illustrative. Search above to load real TikTok videos.</span></div>}
+
+        <div className="discover-body">
+          <aside className={railOpen ? 'rail open' : 'rail'}>
+            <div className="rail-head"><strong>Filters</strong>{activeFilterCount + customFilters.length > 0 && <button onClick={() => { setFilters(emptyFilters); setCustomFilters([]); }}>Clear all ({activeFilterCount + customFilters.length})</button>}</div>
+
+            <section>
+              <h3>Date posted</h3>
+              <ul className="rail-options">{datePresets.map((preset) => (
+                <li key={preset.id}>
+                  <label>
+                    <input type="radio" name="date-posted" checked={activeDateId === preset.id} onChange={() => applyDatePreset(preset)} />
+                    <span>{preset.label}</span>
+                  </label>
+                </li>
+              ))}</ul>
+              <div className="rail-inputs dates">
+                <input type="date" value={filters.dateFrom} onChange={(event) => setFilters((c) => ({ ...c, dateFrom: event.target.value }))} />
+                <input type="date" value={filters.dateTo} onChange={(event) => setFilters((c) => ({ ...c, dateTo: event.target.value }))} />
+              </div>
+              {feedType === 'videos' && <p className="rail-note">Picking a date range re-searches TikTok for videos posted then.</p>}
+            </section>
+
+            <section>
+              <h3>Views</h3>
+              <div className="chips">{viewsChips.map(([value, label]) => (
+                <button key={label} className={filters.minViews === value ? 'active' : ''} onClick={() => setFilters((c) => ({ ...c, minViews: value }))}>{label}</button>
+              ))}</div>
+              {rangeRow('Custom range', 'minViews', 'maxViews')}
+            </section>
+
+            <section>
+              <h3>Creator size</h3>
+              <div className="chips">{followerChips.map(([min, max, label]) => (
+                <button key={label} className={filters.minFollowers === min && filters.maxFollowers === max ? 'active' : ''}
+                  onClick={() => setFilters((c) => ({ ...c, minFollowers: min, maxFollowers: max }))}>{label}</button>
+              ))}</div>
+            </section>
+
+            <section>
+              <h3>Engagement</h3>
+              {rangeRow('Minimum likes', 'minLikes')}
+              {rangeRow('Minimum comments', 'minComments')}
+              {rangeRow('Minimum shares', 'minShares')}
+              {rangeRow('Engagement rate', 'minEngagement', undefined, '%')}
+            </section>
+
+            <section>
+              <h3>Video length</h3>
+              {rangeRow('Duration', 'minDuration', 'maxDuration', 'sec')}
+            </section>
+
+            <section>
+              <h3>Custom filters</h3>
+              {customFilters.length > 0 && <ul className="custom-list">{customFilters.map((custom) => {
+                const meta = METRICS.find(([key]) => key === custom.metric);
+                return <li key={custom.id}>
+                  <span>{meta?.[1] ?? custom.metric} {custom.op === 'gte' ? '≥' : custom.op === 'lte' ? '≤' : 'between'} {custom.value}{custom.op === 'between' ? ` – ${custom.value2}` : ''} {meta?.[2]}</span>
+                  <button onClick={() => setCustomFilters((current) => current.filter((entry) => entry.id !== custom.id))} aria-label="Remove filter"><X size={13} /></button>
+                </li>;
+              })}</ul>}
+              <div className="custom-builder">
+                <select value={draft.metric} onChange={(event) => setDraft((c) => ({ ...c, metric: event.target.value as MetricKey }))}>
+                  {METRICS.map(([key, label]) => <option key={key} value={key}>{label}</option>)}
+                </select>
+                <div className="custom-row">
+                  <select value={draft.op} onChange={(event) => setDraft((c) => ({ ...c, op: event.target.value as CustomFilter['op'] }))}>
+                    <option value="gte">at least</option>
+                    <option value="lte">at most</option>
+                    <option value="between">between</option>
+                  </select>
+                  <input type="number" min={0} placeholder="Value" value={draft.value} onChange={(event) => setDraft((c) => ({ ...c, value: event.target.value }))} />
+                  {draft.op === 'between' && <input type="number" min={0} placeholder="and" value={draft.value2} onChange={(event) => setDraft((c) => ({ ...c, value2: event.target.value }))} />}
+                </div>
+                <button className="add-filter" disabled={draft.value.trim() === ''}
+                  onClick={() => {
+                    setCustomFilters((current) => [...current, { id: `${draft.metric}-${current.length}-${draft.value}`, ...draft }]);
+                    setDraft((c) => ({ ...c, value: '', value2: '' }));
+                  }}>+ Add filter</button>
+              </div>
+            </section>
+
+            <p className="rail-note">A video is hidden by a filter when TikTok did not publish that metric for it.</p>
+          </aside>
+
+          <div className="results">
+            <div className="results-head">
+              <div>
+                <strong>{visible.length}</strong> {visible.length === 1 ? 'result' : 'results'}
+                {query && <span className="for-query"> for “{query}”</span>}
+                {activeFilterCount + customFilters.length > 0 && <span className="for-query"> · {activeFilterCount + customFilters.length} filter{activeFilterCount + customFilters.length > 1 ? 's' : ''}</span>}
+                {scanned > 0 && <span className="for-query"> · {scanned} scanned on TikTok</span>}
+              </div>
+              <div className="results-tools">
+                <label>Sort
+                  <select value={sort} onChange={(event) => setSort(event.target.value as SortKey)}>
+                    <option value="winningScore">Best performing</option>
+                    <option value="views">Most views</option>
+                    <option value="likes">Most likes</option>
+                    <option value="comments">Most comments</option>
+                    <option value="shares">Most shares</option>
+                    <option value="engagementRate">Highest engagement</option>
+                    <option value="followers">Biggest creator</option>
+                    <option value="publishedAt">Newest first</option>
+                    <option value="durationSeconds">Longest</option>
+                    {feedType === 'ads' && <option value="ctr">Highest CTR</option>}
+                  </select>
+                </label>
+                <div className="view-switch">
+                  <button className={view === 'cards' ? 'active' : ''} onClick={() => setView('cards')} aria-label="Card view"><Grid2X2 size={15} /></button>
+                  <button className={view === 'table' ? 'active' : ''} onClick={() => setView('table')} aria-label="Table view"><BarChart3 size={15} /></button>
+                </div>
+                {feedType === 'videos' && <label className="auto-load"><input type="checkbox" checked={autoLoad} onChange={(event) => setAutoLoad(event.target.checked)} />Auto-load on scroll</label>}
+                <button className="rail-toggle" onClick={() => setRailOpen(!railOpen)}>Filters{activeFilterCount + customFilters.length > 0 ? ` (${activeFilterCount + customFilters.length})` : ''}</button>
+              </div>
+            </div>
+
+            {visible.length === 0
+              ? <div className="empty">
+                  <Search size={30} />
+                  <h3>Nothing to show yet</h3>
+                  <p>{feed.length === 0
+                    ? `Hit Search to pull real ${feedType === 'ads' ? 'ads' : 'videos'} from TikTok.`
+                    : (filters.dateFrom || filters.dateTo)
+                      ? 'No loaded video was posted in that date range — try a wider range or search again.'
+                      : 'No loaded result matches these filters — try clearing a few.'}</p>
+                </div>
+              : <>
+                  {view === 'cards'
+                    ? <div className="grid">{visible.map((video) => <VideoCard key={video.id} video={video} saved={watchlist.has(video.id)} onSave={() => toggleWatch(video.id)} />)}</div>
+                    : <ResultTable videos={visible} saved={watchlist} onSave={toggleWatch} />}
+
+                  {feedType === 'videos' && <div className="load-zone" ref={sentinelRef}>
+                    {loadingMore
+                      ? <span className="loading-more"><span className="spinner" /> Loading more from TikTok…</span>
+                      : hasMore
+                        ? <button className="load-more" onClick={() => void loadMore()}>Load more results</button>
+                        : videos.length > 0 && <span className="end-note">That's everything TikTok returned for this search · {scanned} videos scanned</span>}
+                  </div>}
+                </>}
+          </div>
+        </div>
+      </>}
+
+      {activeNav === 'Overview' && <div className="overview">
+        <div className="stat-grid">
+          {[
+            ['Videos loaded', formatMetric(enriched.length), Play],
+            ['Total views', formatMetric(totals.views), Eye],
+            ['Total likes', formatMetric(totals.likes), Heart],
+            ['Avg. engagement', totals.engagement == null ? '—' : `${totals.engagement.toFixed(1)}%`, Flame],
+          ].map(([label, value, Icon]) => {
+            const IconComponent = Icon as typeof Eye;
+            return <article className="stat" key={label as string}>
+              <IconComponent size={17} /><span>{label as string}</span><strong>{value as string}</strong>
+            </article>;
+          })}
+        </div>
+
+        <div className="overview-cols">
+          <section className="panel">
+            <h2>Data sources</h2>
+            <p className="panel-note">Everything is public data pulled live on this machine — no API key, no login.</p>
+            <div className="source-row">
+              <div><strong>TikTok search &amp; Explore</strong><small>Full stats + playable videos. Used by the Discover search bar.</small></div>
+              <button className="ghost" onClick={() => { setActiveNav('Discover'); setFeedType('videos'); }}>Go to search</button>
+            </div>
+            <div className="source-row">
+              <div><strong>Creative Center trends</strong><small>Country trend rankings — no likes/comments on that surface.</small></div>
+              <span className="inline-controls">
+                <select value={region} onChange={(event) => setRegion(event.target.value)}>{fetchRegions.map(([code, name]) => <option key={code} value={code}>{name}</option>)}</select>
+                <button className="ghost" onClick={fetchCreativeCenter} disabled={ccBusy}>{ccBusy ? 'Fetching…' : 'Fetch'}</button>
+              </span>
+            </div>
+            <div className="source-row">
+              <div><strong>Top Ads</strong><small>Real ads with CTR, cost tier, industry and objective.</small></div>
+              <button className="ghost" onClick={() => { setActiveNav('Discover'); setFeedType('ads'); }}>Go to ads</button>
+            </div>
+          </section>
+
+          <section className="panel">
+            <h2>Top hashtags in this dataset</h2>
+            {topHashtags.length === 0 ? <p className="panel-note">No hashtags in the loaded videos yet.</p> : <div className="tag-cloud">
+              {topHashtags.map(([tag, stats]) => (
+                <button key={tag} onClick={() => { setQuery(`#${tag}`); setActiveNav('Discover'); }}>
+                  <Hash size={12} />{tag}<em>{formatMetric(stats.views)}</em>
+                </button>
+              ))}
+            </div>}
+          </section>
+        </div>
+      </div>}
+
+      {activeNav === 'Creators' && <div className="directory">
+        {creators.length === 0 ? <div className="empty"><Users size={30} /><h3>No creators yet</h3><p>Search TikTok first.</p></div> : creators.map((creator) => (
+          <article key={creator.username ?? creator.displayName}>
+            <span className="avatar">{creator.avatarUrl ? <img src={creator.avatarUrl} alt="" /> : creator.displayName.slice(0, 1)}</span>
+            <div className="who"><strong>{creator.displayName}</strong><small>{creator.username ? `@${creator.username}` : 'Username unavailable'}</small></div>
+            <dl>
+              <div><dt>Followers</dt><dd>{formatMetric(creator.followers)}</dd></div>
+              <div><dt>Following</dt><dd>{formatMetric(creator.following)}</dd></div>
+              <div><dt>Total likes</dt><dd>{formatMetric(creator.totalLikes)}</dd></div>
+            </dl>
+            <a href={creator.profileUrl} target="_blank" rel="noreferrer">Open profile</a>
+          </article>
+        ))}
+      </div>}
+
+      {activeNav === 'Sounds' && <div className="directory">
+        {sounds.length === 0 ? <div className="empty"><Music2 size={30} /><h3>No sounds yet</h3><p>Search TikTok first — sound data comes with real videos.</p></div> : sounds.map((sound) => (
+          <article key={`${sound.name}:${sound.author}`}>
+            <span className="avatar"><Music2 size={16} /></span>
+            <div className="who"><strong>{sound.name}</strong><small>{sound.author ?? 'Author unavailable'}</small></div>
+            <dl>
+              <div><dt>Videos</dt><dd>{sound.videos}</dd></div>
+              <div><dt>Total views</dt><dd>{formatMetric(sound.views)}</dd></div>
+            </dl>
+          </article>
+        ))}
+      </div>}
+    </main>
+  </div>;
+}
+
+function VideoCard({ video, saved, onSave }: { video: EnrichedVideo; saved: boolean; onSave: () => void }) {
+  const isAd = video.kind === 'ad';
+  const [playing, setPlaying] = useState(false);
+  const [failed, setFailed] = useState(false);
+  const playable = Boolean(video.videoFileUrl) && !failed;
+
+  return <article className={isAd ? 'card is-ad' : 'card'}>
+    <div className={playable ? 'card-media playable' : 'card-media'} onClick={() => playable && !playing && setPlaying(true)}>
+      {playing && playable
+        ? <video src={`/api/video?src=${encodeURIComponent(video.videoFileUrl!)}`} poster={video.thumbnailUrl ?? undefined} controls autoPlay playsInline onError={() => { setFailed(true); setPlaying(false); }} />
+        : <>
+            {video.thumbnailUrl ? <img src={video.thumbnailUrl} alt="" loading="lazy" /> : <div className="no-media"><Play size={22} /></div>}
+            {playable && <span className="play"><Play size={20} fill="currentColor" /></span>}
+          </>}
+      {isAd ? <span className="badge ad">Ad</span> : <span className={`badge score s${Math.min(4, Math.floor(video.winningScore / 25))}`}>{video.winningScore}</span>}
+      {video.durationSeconds != null && <span className="badge dur">{video.durationSeconds}s</span>}
+      <button className={saved ? 'save on' : 'save'} onClick={(event) => { event.stopPropagation(); onSave(); }} aria-label="Save"><Bookmark size={15} fill={saved ? 'currentColor' : 'none'} /></button>
+    </div>
+
+    <div className="card-body">
+      <a className="card-title" href={video.url} target="_blank" rel="noreferrer">{video.caption || 'No caption'}</a>
+      <div className="card-creator">
+        <span className="avatar sm">{video.creator.avatarUrl ? <img src={video.creator.avatarUrl} alt="" /> : video.creator.displayName.slice(0, 1)}</span>
+        <span className="name">{video.creator.username ? `@${video.creator.username}` : video.creator.displayName}</span>
+        <span className="sep">·</span>
+        <span>{isAd ? (video.industry ?? 'Advertiser') : `${formatMetric(video.creator.followers)} followers`}</span>
+      </div>
+
+      <div className="card-metrics">
+        {isAd
+          ? <>
+              <div><Heart size={14} /><b>{formatMetric(video.likes)}</b></div>
+              <div><TrendingUp size={14} /><b>{video.ctr == null ? '—' : `${video.ctr.toFixed(2)}%`}</b><i>CTR</i></div>
+              <div><MessageCircle size={14} /><b>{formatMetric(video.comments)}</b></div>
+              <div><Share2 size={14} /><b>{formatMetric(video.shares)}</b></div>
+            </>
+          : <>
+              <div className="lead"><Eye size={14} /><b>{formatMetric(video.views)}</b></div>
+              <div><Heart size={14} /><b>{formatMetric(video.likes)}</b></div>
+              <div><MessageCircle size={14} /><b>{formatMetric(video.comments)}</b></div>
+              <div><Share2 size={14} /><b>{formatMetric(video.shares)}</b></div>
+            </>}
+      </div>
+
+      <div className="card-foot">
+        <span className="eng">{video.engagementRate == null ? 'Engagement —' : `${video.engagementRate.toFixed(1)}% engagement`}</span>
+        <span className="when"><Clock3 size={12} />{video.publishedAt ? `${formatDate(video.publishedAt)} · ${formatAge(video.ageHours)}` : 'Date unavailable'}</span>
+      </div>
+    </div>
+  </article>;
+}
+
+function ResultTable({ videos, saved, onSave }: { videos: EnrichedVideo[]; saved: Set<string>; onSave: (id: string) => void }) {
+  return <div className="table-wrap">
+    <table>
+      <thead><tr>
+        <th>Video</th><th>Creator</th><th>Posted</th><th>Views</th><th>Likes</th><th>Comments</th><th>Shares</th><th>Engagement</th><th>Length</th><th>Score</th><th />
+      </tr></thead>
+      <tbody>{videos.map((video) => (
+        <tr key={video.id}>
+          <td>
+            <div className="cell-video">
+              {video.thumbnailUrl && <img src={video.thumbnailUrl} alt="" loading="lazy" />}
+              <a href={video.url} target="_blank" rel="noreferrer">{video.caption || 'No caption'}</a>
+            </div>
+          </td>
+          <td><strong>{video.creator.username ? `@${video.creator.username}` : video.creator.displayName}</strong><small>{video.kind === 'ad' ? (video.industry ?? 'Ad') : `${formatMetric(video.creator.followers)} followers`}</small></td>
+          <td><strong>{formatDate(video.publishedAt)}</strong><small>{video.ageHours == null ? '—' : `${formatAge(video.ageHours)} old`}</small></td>
+          <td>{formatMetric(video.views)}</td>
+          <td>{formatMetric(video.likes)}</td>
+          <td>{formatMetric(video.comments)}</td>
+          <td>{formatMetric(video.shares)}</td>
+          <td>{video.engagementRate == null ? '—' : `${video.engagementRate.toFixed(1)}%`}</td>
+          <td>{video.durationSeconds == null ? '—' : `${video.durationSeconds}s`}</td>
+          <td>{video.kind === 'ad' ? <span className="pill ad">Ad</span> : <span className="pill">{video.winningScore}</span>}</td>
+          <td><button className="icon-button" onClick={() => onSave(video.id)} aria-label="Save"><Bookmark size={15} fill={saved.has(video.id) ? 'currentColor' : 'none'} /></button></td>
+        </tr>
+      ))}</tbody>
+    </table>
+  </div>;
+}
+
+export default App;

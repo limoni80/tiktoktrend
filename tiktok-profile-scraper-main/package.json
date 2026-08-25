@@ -1,0 +1,23 @@
+{
+    "name": "tiktok-profile-scraper",
+    "version": "1.0.0",
+    "type": "module",
+    "description": "Low-cost Apify Actor for public TikTok profile analytics.",
+    "main": "dist/main.js",
+    "scripts": {
+        "build": "tsc",
+        "start": "node dist/main.js",
+        "dev": "tsx src/main.ts",
+        "test": "tsx --test tests/*.test.ts",
+        "typecheck": "tsc --noEmit"
+    },
+  "dependencies": {
+    "apify": "^3.7.2",
+    "got-scraping": "^4.2.1"
+    },
+    "devDependencies": {
+        "@types/node": "^20.14.0",
+        "tsx": "^4.16.0",
+        "typescript": "^5.5.0"
+    }
+}

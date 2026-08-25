@@ -1,0 +1,61 @@
+{
+  "actorSpecification": 1,
+  "fields": {
+    "type": "object",
+    "properties": {
+      "username": { "type": "string", "title": "Username", "example": "charlidamelio" },
+      "displayName": { "type": "string", "title": "Display Name", "example": "charli d'amelio" },
+      "bioText": { "type": "string", "title": "Bio", "example": "don't worry about it" },
+      "followersCount": { "type": ["integer", "null"], "title": "Followers", "example": 155000000 },
+      "followingCount": { "type": ["integer", "null"], "title": "Following", "example": 1300 },
+      "totalLikesReceived": { "type": ["integer", "null"], "title": "Total Likes", "example": 11700000000 },
+      "totalVideosCount": { "type": ["integer", "null"], "title": "Videos", "example": 2600 },
+      "verifiedBadge": { "type": "boolean", "title": "Verified", "example": true },
+      "region": { "type": ["string", "null"], "title": "Region", "example": "US" },
+      "websiteInBio": { "type": ["string", "null"], "title": "Website", "example": "https://..." },
+      "profileImageUrl": { "type": ["string", "null"], "title": "Avatar", "example": "https://..." },
+      "profileUrl": { "type": "string", "title": "Profile URL", "example": "https://www.tiktok.com/@charlidamelio" },
+      "isPrivate": { "type": "boolean", "title": "Private", "example": false },
+      "scrapedAt": { "type": "string", "title": "Scraped At", "example": "2026-06-10T12:00:00.000Z" }
+    }
+  },
+  "views": {
+    "overview": {
+      "title": "TikTok Profiles",
+      "description": "Public TikTok profile data.",
+      "transformation": {
+        "fields": [
+          "username",
+          "displayName",
+          "followersCount",
+          "followingCount",
+          "totalLikesReceived",
+          "totalVideosCount",
+          "verifiedBadge",
+          "region",
+          "websiteInBio",
+          "bioText",
+          "profileUrl",
+          "scrapedAt"
+        ]
+      },
+      "display": {
+        "component": "table",
+        "properties": {
+          "username": { "label": "Username", "format": "text" },
+          "displayName": { "label": "Display Name", "format": "text" },
+          "followersCount": { "label": "Followers", "format": "number" },
+          "followingCount": { "label": "Following", "format": "number" },
+          "totalLikesReceived": { "label": "Likes", "format": "number" },
+          "totalVideosCount": { "label": "Videos", "format": "number" },
+          "verifiedBadge": { "label": "Verified", "format": "boolean" },
+          "region": { "label": "Region", "format": "text" },
+          "websiteInBio": { "label": "Website", "format": "link" },
+          "bioText": { "label": "Bio", "format": "text" },
+          "profileUrl": { "label": "Profile", "format": "link" },
+          "scrapedAt": { "label": "Scraped At", "format": "date" }
+        }
+      }
+    }
+  }
+}

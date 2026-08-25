@@ -1,0 +1,35 @@
+{
+    "actorSpecification": 1,
+    "name": "tiktok-profile-scraper",
+    "title": "TikTok Profile Scraper - Public Profile Analytics",
+    "description": "Extract public TikTok profile statistics for creator research and brand monitoring. Uses bounded HTTP sessions with proxy rotation and charges only successfully saved profiles.",
+    "version": "1.0",
+    "input": "../INPUT_SCHEMA.json",
+    "dockerfile": "Dockerfile",
+    "readme": "../README.md",
+    "pricingInfo": {
+        "pricingModel": "PAY_PER_EVENT",
+        "pricingPerEvent": {
+            "actorChargeEvents": {
+                "profile-scraped": {
+                    "eventTitle": "Profile scraped",
+                    "eventDescription": "Charged once for each public TikTok profile successfully scraped.",
+                    "eventPriceUsd": 0.002,
+                    "isPrimaryEvent": true,
+                    "isOneTimeEvent": false
+                }
+            }
+        }
+    },
+    "categories": ["SOCIAL_MEDIA", "MARKETING"],
+  "minMemoryMbytes": 256,
+  "maxMemoryMbytes": 2048,
+    "defaultRunOptions": {
+    "memoryMbytes": 256,
+        "timeoutSecs": 900
+    },
+    "output": "./output_schema.json",
+    "storages": {
+        "dataset": "./dataset_schema.json"
+    }
+}

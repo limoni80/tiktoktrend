@@ -1,0 +1,8 @@
+{
+    "usernames": ["scout2015"],
+    "maxVideosPerProfile": 3,
+    "proxyConfiguration": {
+        "useApifyProxy": true,
+        "apifyProxyGroups": ["RESIDENTIAL"]
+    }
+}

@@ -1,0 +1,14 @@
+{
+  "actorOutputSchemaVersion": 1,
+  "title": "TikTok Profile Scraper Output",
+  "description": "Structured public TikTok profile statistics for creator research and brand monitoring.",
+  "type": "object",
+  "properties": {
+    "results": {
+      "type": "string",
+      "title": "TikTok profile records",
+      "description": "Clean dataset items containing public TikTok profile identifiers, biography, follower and engagement statistics, verification state, avatar, source URL, and scrape metadata.",
+      "template": "{{links.apiDefaultDatasetUrl}}/items"
+    }
+  }
+}
