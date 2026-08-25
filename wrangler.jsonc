@@ -1,0 +1,15 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "tiktoktrend",
+  "compatibility_date": "2026-08-25",
+  "observability": {
+    "enabled": true
+  },
+  "build": {
+    "command": "npm --prefix dashboard ci && npm --prefix dashboard run build"
+  },
+  "assets": {
+    "directory": "./dashboard/dist",
+    "not_found_handling": "single-page-application"
+  }
+}
