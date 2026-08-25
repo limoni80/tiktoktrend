@@ -7,6 +7,7 @@ import {
 import { enrichVideo, formatAge, formatDate, formatMetric } from './analytics';
 import { WorkspaceJsonProvider } from './provider';
 import { sampleVideos } from './sample-data';
+import { api, ApiError, BACKEND_CONFIGURED, USE_DEMO_DATA } from './api';
 import type { CustomFilter, DatasetPayload, DiscoverFilters, EnrichedVideo, MetricKey, SortKey, TikTokVideo } from './types';
 
 const METRICS: Array<[MetricKey, string, string]> = [
@@ -54,11 +55,13 @@ const relativeTime = (iso: string) => {
 };
 
 function App() {
-  const [videos, setVideos] = useState<TikTokVideo[]>(sampleVideos);
+  // Demo data is opt-in via VITE_USE_DEMO_DATA=true. Production starts empty
+  // and shows a clear error if the backend cannot be reached.
+  const [videos, setVideos] = useState<TikTokVideo[]>(USE_DEMO_DATA ? sampleVideos : []);
   const [ads, setAds] = useState<TikTokVideo[]>([]);
   const [adsMeta, setAdsMeta] = useState<DatasetPayload | null>(null);
   const [videosMeta, setVideosMeta] = useState<DatasetPayload | null>(null);
-  const [dataMode, setDataMode] = useState<'demo' | 'imported' | 'live'>('demo');
+  const [dataMode, setDataMode] = useState<'demo' | 'imported' | 'live'>(USE_DEMO_DATA ? 'demo' : 'live');
   const [activeNav, setActiveNav] = useState<NavLabel>('Discover');
   const [feedType, setFeedType] = useState<'videos' | 'ads'>('videos');
   const [query, setQuery] = useState('');
@@ -92,8 +95,12 @@ function App() {
     (async () => {
       let cachedKeyword = '';
       let stale = true;
+      if (!BACKEND_CONFIGURED) {
+        setError('No backend configured for this build. Set VITE_API_BASE_URL to your deployed backend and redeploy.');
+        return;
+      }
       try {
-        const payload = await (await fetch('/api/datasets')).json() as { videos: DatasetPayload | null; ads: DatasetPayload | null };
+        const payload = await api.datasets();
         if (payload.videos?.videos?.length) {
           setVideos(payload.videos.videos); setVideosMeta(payload.videos); setDataMode('live');
           setHasMore(true); setScanned(payload.videos.videos.length);
@@ -102,7 +109,9 @@ function App() {
           stale = Date.now() - new Date(payload.videos.fetchedAt).getTime() > STALE_MS;
         }
         if (payload.ads?.videos?.length) { setAds(payload.ads.videos); setAdsMeta(payload.ads); }
-      } catch { /* server not up yet — demo stays, clearly labelled */ }
+      } catch (caught) {
+        setError(caught instanceof ApiError ? caught.message : 'Backend unavailable.');
+      }
       if (stale) void refreshFeed(cachedKeyword);
     })();
   }, []);
@@ -120,8 +129,8 @@ function App() {
     let alive = true;
     const tick = async () => {
       try {
-        const data = await (await fetch('/api/progress')).json() as Progress;
-        if (alive) setProgress(data);
+        const data = await api.progress();
+        if (alive) setProgress(data as Progress);
       } catch { /* ignore */ }
     };
     void tick();
@@ -222,13 +231,13 @@ function App() {
     if (busy || refreshing) return;
     setRefreshing(true);
     try {
-      const params = new URLSearchParams({ q: keyword.trim(), count: target, from: filters.dateFrom, to: filters.dateTo });
-      const response = await fetch(`/api/fetch-tiktok?${params}`);
-      const payload = await response.json() as DatasetPayload & { error?: string; hasMore?: boolean; scanned?: number };
-      if (!response.ok || !payload.videos?.length) return;
+      const payload = await api.searchTikTok({ q: keyword.trim(), count: target, from: filters.dateFrom, to: filters.dateTo });
+      if (!payload.videos?.length) return;
       setVideos(payload.videos); setVideosMeta(payload); setDataMode('live');
       setHasMore(Boolean(payload.hasMore)); setScanned(payload.scanned ?? payload.videos.length);
-    } catch { /* keep showing the cached feed */ }
+    } catch (caught) {
+      if (caught instanceof ApiError && caught.code !== 'tiktok_empty') setError(caught.message);
+    }
     finally { setRefreshing(false); }
   };
 
@@ -237,20 +246,16 @@ function App() {
     setBusy(true); setError(''); setFlash(''); setHasMore(false);
     try {
       if (feedType === 'ads') {
-        const params = new URLSearchParams({ region, period: '30', keyword: query.trim() });
-        const response = await fetch(`/api/fetch-ads?${params}`);
-        const payload = await response.json() as DatasetPayload & { error?: string };
-        if (!response.ok || !payload.videos?.length) throw new Error(payload.error ?? 'No public ads returned');
+        const payload = await api.ads({ region, period: '30', keyword: query.trim() });
+        if (!payload.videos?.length) throw new ApiError('No public ads returned', 'ads_empty');
         setAds(payload.videos); setAdsMeta(payload);
         setFlash(`${payload.videos.length} real ads loaded from TikTok Top Ads`);
       } else {
-        const params = new URLSearchParams({
+        const payload = await api.searchTikTok({
           q: query.trim(), count: target,
           from: overrides?.from ?? filters.dateFrom, to: overrides?.to ?? filters.dateTo,
         });
-        const response = await fetch(`/api/fetch-tiktok?${params}`);
-        const payload = await response.json() as DatasetPayload & { error?: string; hasMore?: boolean; scanned?: number };
-        if (!response.ok || !payload.videos?.length) throw new Error(payload.error ?? 'No videos returned');
+        if (!payload.videos?.length) throw new ApiError('No videos returned', 'tiktok_empty');
         setVideos(payload.videos); setVideosMeta(payload); setDataMode('live');
         setHasMore(Boolean(payload.hasMore)); setScanned(payload.scanned ?? payload.videos.length);
         setFlash(`${payload.videos.length} real TikTok videos loaded${payload.keyword ? ` for “${payload.keyword}”` : ' from Explore'} — scroll for more`);
@@ -266,10 +271,10 @@ function App() {
     if (busy || loadingMore || !hasMore || feedType !== 'videos') return;
     setLoadingMore(true);
     try {
-      const params = new URLSearchParams({ q: query.trim(), count: target, from: filters.dateFrom, to: filters.dateTo, more: '1' });
-      const response = await fetch(`/api/fetch-tiktok?${params}`);
-      const payload = await response.json() as DatasetPayload & { error?: string; hasMore?: boolean; scanned?: number };
-      if (!response.ok) throw new Error(payload.error ?? 'Could not load more');
+      const payload = await api.searchTikTok({
+        q: query.trim(), count: target, from: filters.dateFrom, to: filters.dateTo,
+        more: true, known: videos.map((video) => video.id),
+      });
       const known = new Set(videos.map((video) => video.id));
       const additions = (payload.videos ?? []).filter((video) => !known.has(video.id));
       if (additions.length) setVideos((current) => [...current, ...additions]);
@@ -298,9 +303,8 @@ function App() {
   const fetchCreativeCenter = async () => {
     setCcBusy(true); setError('');
     try {
-      const response = await fetch(`/api/fetch?region=${region}&period=7`);
-      const payload = await response.json() as DatasetPayload & { error?: string };
-      if (!response.ok || !payload.videos?.length) throw new Error(payload.error ?? 'No trend videos returned');
+      const payload = await api.trends({ region, period: '7' });
+      if (!payload.videos?.length) throw new ApiError('No trend videos returned', 'trends_empty');
       setVideos(payload.videos); setVideosMeta(payload); setDataMode('live'); setActiveNav('Discover'); setFeedType('videos');
       setFlash(`${payload.videos.length} trend videos loaded from TikTok Creative Center (${region})`);
     } catch (caught) { setError(caught instanceof Error ? caught.message : 'Creative Center fetch failed'); }
@@ -423,7 +427,8 @@ function App() {
         </div>}
         {error && <div className="alert error"><span>{error}</span><button onClick={() => setError('')}><X size={15} /></button></div>}
         {flash && !busy && <div className="alert ok"><span>{flash}</span><button onClick={() => setFlash('')}><X size={15} /></button></div>}
-        {dataMode === 'demo' && <div className="alert warn"><span><strong>Demo data</strong> — these numbers are illustrative. Search above to load real TikTok videos.</span></div>}
+        {USE_DEMO_DATA && dataMode === 'demo' && <div className="alert warn"><span><strong>DEMO MODE (VITE_USE_DEMO_DATA=true)</strong> — these videos are illustrative sample data, not real TikTok results. Search above to replace them with live data.</span></div>}
+        {!BACKEND_CONFIGURED && <div className="alert error"><span><strong>Backend not configured</strong> — this build has no VITE_API_BASE_URL, so it cannot load real TikTok data.</span></div>}
 
         <div className="discover-body">
           <aside className={railOpen ? 'rail open' : 'rail'}>
@@ -545,7 +550,7 @@ function App() {
                   <Search size={30} />
                   <h3>Nothing to show yet</h3>
                   <p>{feed.length === 0
-                    ? `Hit Search to pull real ${feedType === 'ads' ? 'ads' : 'videos'} from TikTok.`
+                    ? `Hit Search to pull real ${feedType === 'ads' ? 'ads' : 'videos'} from TikTok via the backend.`
                     : (filters.dateFrom || filters.dateTo)
                       ? 'No loaded video was posted in that date range — try a wider range or search again.'
                       : 'No loaded result matches these filters — try clearing a few.'}</p>
@@ -656,7 +661,7 @@ function VideoCard({ video, saved, onSave }: { video: EnrichedVideo; saved: bool
   return <article className={isAd ? 'card is-ad' : 'card'}>
     <div className={playable ? 'card-media playable' : 'card-media'} onClick={() => playable && !playing && setPlaying(true)}>
       {playing && playable
-        ? <video src={`/api/video?src=${encodeURIComponent(video.videoFileUrl!)}`} poster={video.thumbnailUrl ?? undefined} controls autoPlay playsInline onError={() => { setFailed(true); setPlaying(false); }} />
+        ? <video src={api.videoStreamUrl(video.videoFileUrl!)} poster={video.thumbnailUrl ?? undefined} controls autoPlay playsInline onError={() => { setFailed(true); setPlaying(false); }} />
         : <>
             {video.thumbnailUrl ? <img src={video.thumbnailUrl} alt="" loading="lazy" /> : <div className="no-media"><Play size={22} /></div>}
             {playable && <span className="play"><Play size={20} fill="currentColor" /></span>}

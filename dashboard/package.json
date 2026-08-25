@@ -5,6 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "node --watch server.mjs",
+    "dev:spa": "vite",
     "build": "tsc -b && vite build",
     "typecheck": "tsc -b",
     "preview": "vite preview"
@@ -12,7 +13,6 @@
   "dependencies": {
     "@vitejs/plugin-react": "latest",
     "lucide-react": "latest",
-    "playwright-core": "^1.62.1",
     "react": "latest",
     "react-dom": "latest",
     "typescript": "latest",
