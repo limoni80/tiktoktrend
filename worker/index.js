@@ -152,8 +152,35 @@ async function searchWithBrowser(env, { keyword, want, knownIds, dateRange }) {
   };
 
   let browser;
+  let reused = false;
   try {
-    browser = await puppeteer.launch(env.MYBROWSER);
+    // Browser Rendering caps how many browsers you may LAUNCH (429 "Rate limit
+    // exceeded"). Reusing an idle session avoids that entirely and is far
+    // faster, so always try to connect before launching.
+    try {
+      const sessions = await puppeteer.sessions(env.MYBROWSER);
+      const free = sessions.filter((session) => !session.connectionId).map((session) => session.sessionId);
+      for (const sessionId of free) {
+        try { browser = await puppeteer.connect(env.MYBROWSER, sessionId); reused = true; break; }
+        catch { /* someone else grabbed it — try the next */ }
+      }
+    } catch { /* session listing unavailable — fall through to launch */ }
+
+    if (!browser) {
+      try {
+        browser = await puppeteer.launch(env.MYBROWSER, { keep_alive: 600_000 });
+      } catch (launchError) {
+        const detail = String(launchError?.message ?? launchError);
+        if (/429|rate limit/i.test(detail)) {
+          throw Object.assign(
+            new Error('Cloudflare Browser Rendering is at its rate limit right now (free tier allows only a few browser launches per minute). Wait about a minute and search again — country trends still work in the meantime.'),
+            { code: 'browser_rate_limited', status: 429 },
+          );
+        }
+        throw Object.assign(new Error(`Could not start a browser: ${detail}`), { code: 'browser_unavailable', status: 502 });
+      }
+    }
+
     const page = await browser.newPage();
 
     page.on('response', async (response) => {
@@ -197,9 +224,11 @@ async function searchWithBrowser(env, { keyword, want, knownIds, dateRange }) {
       }
       throw Object.assign(new Error(keyword ? `TikTok returned no public videos for “${keyword}”.` : 'TikTok returned no public videos.'), { code: 'tiktok_empty', status: 502 });
     }
-    return { videos: batch, hasMore: stagnant < 5, scanned: collected.size };
+    return { videos: batch, hasMore: stagnant < 5, scanned: collected.size, reusedSession: reused };
   } finally {
-    if (browser) await browser.close().catch(() => {});
+    // disconnect() leaves the browser running so the next request can reuse it;
+    // close() would force the next one to launch and burn the launch quota.
+    if (browser) await browser.disconnect().catch(() => {});
   }
 }
 
