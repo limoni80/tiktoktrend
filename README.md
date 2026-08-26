@@ -10,7 +10,8 @@ contract and the rules that must not be reverted.
 
 | Path | Role |
 | --- | --- |
-| `dashboard/` | React + Vite SPA. Static frontend, deployed to Cloudflare Workers. |
+| `worker/` | Cloudflare Worker: owns `/api/*` and serves the SPA assets. |
+| `dashboard/` | React + Vite SPA, deployed to Cloudflare as static assets. |
 | `backend/` | Node + Playwright scraping API. Runs on a normal Node host. |
 | `tiktok-profile-scraper-main/` | Apify profile collector; source of the field mapping reused by the backend. |
 | `tiktok-scraper-master/` | Legacy 2020 scraper, reference only. |
@@ -19,14 +20,23 @@ contract and the rules that must not be reverted.
 ## Architecture in one picture
 
 ```
-Browser ──HTML/JS──► Cloudflare Workers   (static SPA, no /api routes)
-        └──/api/*──► Node backend         (Playwright + Chromium → public TikTok)
+Browser ──► Cloudflare Worker
+              ├─ /            → SPA assets (dashboard/dist)
+              ├─ /api/fetch   → REAL TikTok trends, fetched by the Worker
+              │                 itself: no backend, no cookies, no login
+              ├─ /api/video   → TikTok CDN proxy (Range supported)
+              └─ /api/fetch-tiktok, /api/fetch-ads
+                              → proxied to BACKEND_URL (Node + Playwright)
 ```
 
-Cloudflare serves static assets only, and its SPA fallback answers unknown paths
-with `index.html`. The frontend therefore points at the backend through
-`VITE_API_BASE_URL` and checks every response's content type before parsing —
-that is what removed the `Unexpected token '<', "<!doctype "...` failure.
+The Worker intercepts `/api/*` before the asset handler, so those paths always
+return JSON instead of `index.html` — that is what removed the
+`Unexpected token '<', "<!doctype "...` failure.
+
+**What works with no backend at all:** country trend videos (views, creator
+followers, TikTok's own engagement rate), video playback, health.
+**What needs `backend/`:** keyword search and Top Ads, because they require a
+real Chromium that Cloudflare Workers cannot run.
 
 ## Quick start (local)
 

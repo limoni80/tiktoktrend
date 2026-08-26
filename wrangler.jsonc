@@ -2,6 +2,10 @@
   "$schema": "node_modules/wrangler/config-schema.json",
   "name": "tiktoktrend",
   "compatibility_date": "2026-08-25",
+  "compatibility_flags": ["nodejs_compat"],
+  // The Worker owns /api/* so those requests never fall through to the SPA
+  // handler (which would return index.html and break JSON parsing).
+  "main": "worker/index.js",
   "observability": {
     "enabled": true
   },
@@ -10,6 +14,12 @@
   },
   "assets": {
     "directory": "./dashboard/dist",
+    "binding": "ASSETS",
     "not_found_handling": "single-page-application"
+  },
+  "vars": {
+    // Set this to the public URL of the Node/Playwright backend to enable
+    // keyword search and Top Ads. Country trends work without it.
+    "BACKEND_URL": ""
   }
 }

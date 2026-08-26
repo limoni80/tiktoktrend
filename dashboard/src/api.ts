@@ -16,8 +16,13 @@ export const API_BASE = RAW_BASE.replace(/\/+$/, '');
 export const USE_DEMO_DATA = String(import.meta.env.VITE_USE_DEMO_DATA ?? '').toLowerCase() === 'true';
 export const IS_PRODUCTION = import.meta.env.PROD;
 
-/** True when the build has no backend configured and cannot fetch real data. */
-export const BACKEND_CONFIGURED = API_BASE.length > 0 || !IS_PRODUCTION;
+/**
+ * Same-origin is a valid production target: the Cloudflare Worker itself now
+ * serves /api/* (country trends natively, search proxied to BACKEND_URL), so a
+ * build without VITE_API_BASE_URL still talks to a real API rather than the
+ * SPA fallback. Setting the variable points the app at a backend directly.
+ */
+export const BACKEND_CONFIGURED = true;
 
 export class ApiError extends Error {
   readonly code: string;
@@ -42,13 +47,6 @@ const BACKEND_UNAVAILABLE =
   'Backend unavailable — the analytics API did not respond. Start the local backend, or set VITE_API_BASE_URL to your deployed backend.';
 
 async function request<T>(path: string, params?: Record<string, string | number | undefined>): Promise<T> {
-  if (IS_PRODUCTION && !API_BASE) {
-    throw new ApiError(
-      'No backend configured. This build was published without VITE_API_BASE_URL, so it cannot load real TikTok data.',
-      'backend_not_configured',
-    );
-  }
-
   let response: Response;
   try {
     response = await fetch(apiUrl(path, params), { headers: { accept: 'application/json' } });

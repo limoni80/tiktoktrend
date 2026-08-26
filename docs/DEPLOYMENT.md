@@ -1,20 +1,40 @@
 # Deployment
 
-Pulse is two deployments:
+Pulse deploys in two pieces, and **the first one alone already serves real
+TikTok data**:
 
-1. **Frontend** — static SPA on Cloudflare Workers.
-2. **Backend** — Node + Playwright scraping API on a normal Node host.
+1. **Cloudflare Worker** — serves the SPA *and* owns `/api/*`. It fetches
+   TikTok Creative Center country trends itself: real data, no browser, no
+   cookies, no login, no backend.
+2. **Node backend** (optional but recommended) — Playwright + Chromium. Adds
+   keyword search and Top Ads, which need a real browser and therefore cannot
+   run on Cloudflare. The Worker proxies to it through the `BACKEND_URL`
+   variable.
 
-Cloudflare cannot run the scraper: it needs a real Chromium process. Keeping the
-two apart is what fixes the `Unexpected token '<'` error — the SPA used to call
-relative `/api/...` paths, and Cloudflare's SPA fallback answered them with
-`index.html`.
+The Worker intercepts `/api/*` before the static-asset handler, which is what
+fixes `Unexpected token '<'`: those paths can no longer return `index.html`.
+
+| Route | Works with Worker alone | Needs the Node backend |
+| --- | --- | --- |
+| `/api/health`, `/api/video`, `/api/fetch` (trends) | yes | — |
+| `/api/fetch-tiktok` (keyword search) | no | yes |
+| `/api/fetch-ads` (Top Ads) | no | yes |
+
+## 0. Deploy just the Worker (fastest path to real data)
+
+```bash
+npx wrangler deploy
+```
+
+Then open the site and use **Load real trends** / the Overview → Creative Center
+fetch. Keyword search will return a clear `501 backend_not_configured` until you
+finish step 1 and set `BACKEND_URL`.
 
 ---
 
-## 1. Backend (deploy this first)
+## 1. Backend (adds keyword search + Top Ads)
 
-The frontend needs the backend URL at build time, so deploy the backend first.
+Skip this if country trends are enough for now — the Worker already serves those. Deploy this to unlock keyword search and Top Ads.
 
 ### Requirements
 
@@ -95,38 +115,49 @@ or if the videos do not carry real `tiktok.com` URLs and real metrics.
 
 ---
 
-## 2. Frontend (Cloudflare Workers)
+## 2. Cloudflare Worker (frontend + API layer)
 
-`wrangler.jsonc` at the repo root already builds the dashboard and serves
-`dashboard/dist` with SPA fallback. **Do not change it to serve the raw
-`dashboard/` directory.**
+`wrangler.jsonc` builds the dashboard, serves `dashboard/dist` through the
+`ASSETS` binding, and runs `worker/index.js` as the entry point. **Do not remove
+`main`, and do not point the assets directory at the raw `dashboard/` folder.**
 
-Set the backend URL as a build-time variable, then deploy:
+Point the Worker at your backend so keyword search works, then deploy:
 
 ```bash
 # Cloudflare dashboard → Workers → tiktoktrend → Settings → Variables →
-#   Build variables:  VITE_API_BASE_URL = https://<your-backend>
+#   Environment variable:  BACKEND_URL = https://<your-backend>
 npx wrangler deploy
 ```
 
-Or locally:
+Or from the CLI:
 
 ```bash
-VITE_API_BASE_URL=https://<your-backend> npm --prefix dashboard run build
-npx wrangler deploy
+npx wrangler deploy --var BACKEND_URL:https://<your-backend>
 ```
 
-`VITE_API_BASE_URL` is inlined at build time, so **rebuild and redeploy whenever
-the backend URL changes**. A production build without it renders a
-“Backend not configured” banner instead of silently showing demo videos.
+`BACKEND_URL` is a **runtime** variable — changing it does not require
+rebuilding the frontend. `VITE_API_BASE_URL` stays optional: leave it empty and
+the SPA uses the Worker's own `/api` on the same origin (no CORS at all). Set it
+only if you want the browser to call a backend directly, in which case that
+backend's `ALLOWED_ORIGINS` must include your Cloudflare URL.
 
-### Verify the frontend
+### Verify the deployed site
 
-1. Open `https://tiktoktrend.limoniastrum.workers.dev`.
-2. DevTools → Network: the `/api/...` requests must go to your backend host,
-   return `200` and `content-type: application/json`.
-3. Search for a keyword; cards must show real creators and real counts.
-4. Confirm no “DEMO MODE” banner appears.
+```bash
+curl -s https://tiktoktrend.limoniastrum.workers.dev/api/health | jq .
+curl -s -o /dev/null -w '%{http_code} %{content_type}\n' \
+  https://tiktoktrend.limoniastrum.workers.dev/api/nope        # JSON 404, never HTML
+curl -s "https://tiktoktrend.limoniastrum.workers.dev/api/fetch?region=US&period=7" \
+  | jq '.videos | length, .[0].url'                            # real trend videos
+```
+
+Then in the browser:
+
+1. Open the site; `/api/*` requests must return `content-type: application/json`.
+2. **Load real trends** must fill the grid with real creators and view counts.
+3. With `BACKEND_URL` set, a keyword search must return real videos whose URLs
+   are `https://www.tiktok.com/@user/video/<id>`.
+4. No “DEMO MODE” banner may appear.
 
 ---
 
@@ -162,7 +193,8 @@ node backend/scripts/verify.mjs <backend> dog
 
 | Symptom | Cause | Fix |
 | --- | --- | --- |
-| `Unexpected token '<'` | Frontend calling relative `/api/...` on Cloudflare | Set `VITE_API_BASE_URL` and rebuild |
+| `Unexpected token '<'` | Worker not deployed, or `main` missing from `wrangler.jsonc`, so `/api/*` hit the SPA fallback | Redeploy with `main: worker/index.js` |
+| `501 backend_not_configured` | Keyword search without a backend | Deploy `backend/` and set `BACKEND_URL` on the Worker |
 | `502 tiktok_unreachable` | Host cannot reach tiktok.com | Deploy where outbound internet is open |
 | `429 tiktok_captcha` | TikTok challenged the server IP | Retry later, or set `TIKTOK_COOKIE` |
 | CORS error in the console | Origin not allow-listed | Add the exact origin to `ALLOWED_ORIGINS` |

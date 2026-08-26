@@ -7,7 +7,7 @@ import {
 import { enrichVideo, formatAge, formatDate, formatMetric } from './analytics';
 import { WorkspaceJsonProvider } from './provider';
 import { sampleVideos } from './sample-data';
-import { api, ApiError, BACKEND_CONFIGURED, USE_DEMO_DATA } from './api';
+import { api, ApiError, USE_DEMO_DATA } from './api';
 import type { CustomFilter, DatasetPayload, DiscoverFilters, EnrichedVideo, MetricKey, SortKey, TikTokVideo } from './types';
 
 const METRICS: Array<[MetricKey, string, string]> = [
@@ -82,6 +82,7 @@ function App() {
   const sentinelRef = useRef<HTMLDivElement | null>(null);
   const [busy, setBusy] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
+  const [needsBackend, setNeedsBackend] = useState(false);
   const [error, setError] = useState('');
   const [flash, setFlash] = useState('');
   const [progress, setProgress] = useState<Progress | null>(null);
@@ -95,10 +96,6 @@ function App() {
     (async () => {
       let cachedKeyword = '';
       let stale = true;
-      if (!BACKEND_CONFIGURED) {
-        setError('No backend configured for this build. Set VITE_API_BASE_URL to your deployed backend and redeploy.');
-        return;
-      }
       try {
         const payload = await api.datasets();
         if (payload.videos?.videos?.length) {
@@ -261,6 +258,7 @@ function App() {
         setFlash(`${payload.videos.length} real TikTok videos loaded${payload.keyword ? ` for “${payload.keyword}”` : ' from Explore'} — scroll for more`);
       }
     } catch (caught) {
+      if (caught instanceof ApiError && (caught.code === 'backend_not_configured' || caught.code === 'backend_unreachable')) setNeedsBackend(true);
       setError(caught instanceof Error ? caught.message : 'Fetch failed');
     } finally { setBusy(false); }
   };
@@ -306,7 +304,8 @@ function App() {
       const payload = await api.trends({ region, period: '7' });
       if (!payload.videos?.length) throw new ApiError('No trend videos returned', 'trends_empty');
       setVideos(payload.videos); setVideosMeta(payload); setDataMode('live'); setActiveNav('Discover'); setFeedType('videos');
-      setFlash(`${payload.videos.length} trend videos loaded from TikTok Creative Center (${region})`);
+      setHasMore(false); setScanned(payload.videos.length); setNeedsBackend(false);
+      setFlash(`${payload.videos.length} real trend videos loaded from TikTok Creative Center (${region})`);
     } catch (caught) { setError(caught instanceof Error ? caught.message : 'Creative Center fetch failed'); }
     finally { setCcBusy(false); }
   };
@@ -428,7 +427,10 @@ function App() {
         {error && <div className="alert error"><span>{error}</span><button onClick={() => setError('')}><X size={15} /></button></div>}
         {flash && !busy && <div className="alert ok"><span>{flash}</span><button onClick={() => setFlash('')}><X size={15} /></button></div>}
         {USE_DEMO_DATA && dataMode === 'demo' && <div className="alert warn"><span><strong>DEMO MODE (VITE_USE_DEMO_DATA=true)</strong> — these videos are illustrative sample data, not real TikTok results. Search above to replace them with live data.</span></div>}
-        {!BACKEND_CONFIGURED && <div className="alert error"><span><strong>Backend not configured</strong> — this build has no VITE_API_BASE_URL, so it cannot load real TikTok data.</span></div>}
+        {needsBackend && <div className="alert warn">
+          <span><strong>Keyword search needs the scraping backend.</strong> Country trends work right here — they come straight from TikTok with no backend, no cookies and no login.</span>
+          <button className="ghost" onClick={fetchCreativeCenter} disabled={ccBusy}>{ccBusy ? 'Loading trends…' : 'Load real trends'}</button>
+        </div>}
 
         <div className="discover-body">
           <aside className={railOpen ? 'rail open' : 'rail'}>

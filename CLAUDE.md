@@ -14,7 +14,8 @@ sorting and unbounded pagination.
 
 | Directory | Role |
 | --- | --- |
-| `dashboard/` | React + Vite SPA. **Static frontend only.** Deployed to Cloudflare Workers. |
+| `worker/` | Cloudflare Worker script. Owns `/api/*` on the deployed site and serves the SPA from the ASSETS binding. |
+| `dashboard/` | React + Vite SPA. Deployed to Cloudflare Workers as static assets. |
 | `backend/` | Node + Playwright scraping API. **Must run on a real Node host.** |
 | `tiktok-profile-scraper-main/` | Apify profile collector; source of the field mapping reused by `backend/src/normalize.mjs`. |
 | `tiktok-scraper-master/` | Legacy 2020 scraper kept for reference. Its internal endpoints are dead — do not wire it up as a live provider. |
@@ -25,18 +26,28 @@ sorting and unbounded pagination.
 ```
 Browser
   │
-  ├─ HTML/CSS/JS ────────────► Cloudflare Workers (static assets, SPA fallback)
-  │                             repo root wrangler.jsonc → dashboard/dist
-  │
-  └─ /api/* (VITE_API_BASE_URL) ─► Node backend (Playwright + Chromium)
-                                     └─► public TikTok pages & endpoints
+  └─► Cloudflare Worker (worker/index.js)
+        ├─ non-/api  ──► ASSETS binding → dashboard/dist (SPA fallback)
+        ├─ /api/health, /api/video      ──► answered by the Worker
+        ├─ /api/fetch  (country trends) ──► Worker fetches TikTok Creative
+        │                                   Center directly. Real data, no
+        │                                   browser, no cookies, no login.
+        └─ /api/fetch-tiktok, /api/fetch-ads
+                        ──► proxied to BACKEND_URL (Node + Playwright)
+                            or a structured 501 when it is not set
 ```
 
-- **Cloudflare hosts static assets only.** It has no `/api` routes, and
-  `not_found_handling: single-page-application` means any unknown path returns
-  `index.html`. That is exactly why the frontend must never call relative
-  `/api/...` URLs in production, and must always check the response
-  `Content-Type` before `JSON.parse`.
+**The Worker never lets `/api/*` reach the asset handler.** That is the
+structural fix for `Unexpected token '<', "<!doctype "...`: those paths now
+always return JSON, even on error.
+
+- Cloudflare's `not_found_handling: single-page-application` still returns
+  `index.html` for unknown *asset* paths — which is why `worker/index.js` must
+  keep intercepting `/api/*` before the ASSETS binding, and why
+  `dashboard/src/api.ts` must keep checking `Content-Type` before `JSON.parse`.
+- **Keyword search cannot run on Cloudflare.** It needs a real Chromium, so it
+  lives in `backend/` and the Worker proxies to it via the `BACKEND_URL`
+  variable. Country trends need no backend at all.
 - **The scraper needs a Node.js runtime with a real Chromium**, so it cannot run
   on Cloudflare Workers. It is a separate deployment (Railway / Render / Fly.io /
   VPS / Docker).
@@ -57,8 +68,10 @@ let a filter treat a missing value as if it satisfied the condition.
 ## 3. Deployment contract — do not revert
 
 - Repo root `wrangler.jsonc` builds the Vite dashboard and deploys
-  `dashboard/dist`. **Do not point Cloudflare back at the raw `dashboard/`
-  directory.** The current deployment fix is commit `ac7a76b`.
+  `dashboard/dist` through the `ASSETS` binding, with `main: worker/index.js`.
+  **Do not point Cloudflare back at the raw `dashboard/` directory, and do not
+  remove `main` — without it `/api/*` returns HTML again.** The original
+  deployment fix is commit `ac7a76b`; the Worker API layer builds on it.
 - Frontend URL: `https://tiktoktrend.limoniastrum.workers.dev`
 - `main` on GitHub and the Cloudflare deployment must both keep working.
 - `dashboard/server.mjs` is a **development-only** launcher (Vite middleware +
@@ -123,12 +136,18 @@ Backend (`backend/.env.example`): `PORT`, `HOST`, `NODE_ENV`,
 `ALLOWED_ORIGINS`, `CHROME_PATH`, `REQUEST_TIMEOUT_MS`, `SESSION_IDLE_MS`,
 `MAX_BATCH`, `TIKTOK_COOKIE` (optional escape hatch, never committed).
 
-Frontend (`dashboard/.env.example`): `VITE_API_BASE_URL` (**required in
-production**), `VITE_USE_DEMO_DATA`.
+Worker (`wrangler.jsonc` vars / Cloudflare dashboard): `BACKEND_URL` — public
+URL of the Node backend. Empty means trends-only.
+
+Frontend (`dashboard/.env.example`): `VITE_API_BASE_URL` (optional now — leave
+empty to use the Worker's own `/api` on the same origin; set it to call a
+backend directly), `VITE_USE_DEMO_DATA`.
 
 ## 8. Files that must not be reverted
 
-- `wrangler.jsonc` (build hook + `dashboard/dist` assets + SPA fallback)
+- `wrangler.jsonc` (`main: worker/index.js` + build hook + `dashboard/dist`
+  assets + `ASSETS` binding + SPA fallback)
+- `worker/index.js` (API routes must stay ahead of the ASSETS binding)
 - `dashboard/src/api.ts` (single source of API URLs, content-type guards)
 - `backend/src/**` (production API; no persistent profile)
 - `.gitignore` entries for data, profiles, env files
