@@ -63,6 +63,33 @@ always return JSON, even on error.
 - Frontend → backend URL construction lives in **one module**:
   `dashboard/src/api.ts`. Do not scatter `fetch('/api/...')` calls again.
 
+### Unlimited search without a browser: the GitHub Actions dataset layer
+
+Cloudflare's browser quota is too small for on-demand search, so keyword
+results are also collected **outside** Cloudflare and served as static JSON:
+
+```
+.github/workflows/refresh-data.yml   cron every 30 min + workflow_dispatch
+        └─► backend/scripts/collect.mjs   real Chromium on a GitHub runner
+                └─► force-push to the `data` branch
+                        out/index.json, out/feed.json, out/search/<slug>.json
+                                └─► Worker reads DATA_BASE_URL (raw.githubusercontent.com)
+```
+
+- `data/keywords.json` (on `main`) is the list of keywords to collect. Editing
+  it is how the user adds a keyword.
+- The Worker serves a dataset **before** touching a browser when it is younger
+  than `DATASET_FRESH_S` (30 min), falls back to a dataset of any age when a
+  live run fails, and exposes the catalogue on `/api/catalogue`. `?live=1`
+  forces a real browser run.
+- Every dataset-served response carries `cached: true`, `dataset: true`,
+  `cacheAgeSeconds` and a `notice`; the UI must keep showing that age. **Never
+  present a dataset answer as a live one.**
+- A run that collects nothing must not overwrite good data: `collect.mjs` keeps
+  the previous payload and marks it `stale`.
+- The `data` branch is force-pushed and must never be merged into `main`;
+  pushing datasets to `main` would trigger a Cloudflare rebuild every 30 min.
+
 ### Data sources (all public, no paid API)
 
 | Source | Endpoint | Gives | Does not give |
@@ -160,4 +187,6 @@ backend directly), `VITE_USE_DEMO_DATA`.
 - `dashboard/src/api.ts` (single source of API URLs, content-type guards)
 - `backend/src/**` (production API; no persistent profile)
 - `.gitignore` entries for data, profiles, env files
+- `.github/workflows/refresh-data.yml` + `backend/scripts/collect.mjs` (the
+  dataset layer that makes search work without browser quota)
 - This `CLAUDE.md`

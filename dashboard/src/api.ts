@@ -103,14 +103,20 @@ export interface FeedResponse extends DatasetPayload {
   notice?: string;
 }
 
+export interface CatalogueEntry { keyword: string; slug: string; status: 'ok' | 'empty' | 'stale'; count: number; updatedAt: string | null }
+export interface CatalogueResponse { configured: boolean; generatedAt: string | null; runUrl?: string | null; keywords: CatalogueEntry[] }
+
 export const api = {
   health: () => request<HealthResponse>('/api/health'),
   progress: () => request<ProgressResponse>('/api/progress'),
   datasets: () => request<{ videos: FeedResponse | null; ads: FeedResponse | null }>('/api/datasets'),
-  searchTikTok: (params: { q: string; count: string | number; from?: string; to?: string; more?: boolean; known?: string[] }) =>
+  /** Catalogue of datasets collected by GitHub Actions (instant, no browser). */
+  catalogue: () => request<CatalogueResponse>('/api/catalogue'),
+  searchTikTok: (params: { q: string; count: string | number; from?: string; to?: string; more?: boolean; known?: string[]; live?: boolean }) =>
     request<FeedResponse>('/api/fetch-tiktok', {
       q: params.q, count: params.count, from: params.from, to: params.to,
       more: params.more ? '1' : undefined,
+      live: params.live ? '1' : undefined,
       known: params.known?.length ? params.known.slice(0, 400).join(',') : undefined,
     }),
   trends: (params: { region: string; period: string }) => request<FeedResponse>('/api/fetch', params),

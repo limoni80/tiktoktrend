@@ -285,3 +285,10 @@ header h1 { flex: 1; margin: 0; font-size: 22px; font-weight: 700; letter-spacin
 .diag-actions { display: flex; gap: 8px; padding: 10px 14px; border-top: 1px solid var(--line); }
 .diag-actions button { display: inline-flex; align-items: center; gap: 6px; padding: 6px 12px; border: 1px solid var(--line); border-radius: 8px; background: var(--accent); color: var(--accent-ink); font-size: 12.5px; font-weight: 600; cursor: pointer; }
 .diag-actions button.ghost { background: none; color: var(--text); font-weight: 500; }
+
+/* Keywords pre-collected by GitHub Actions — instant, no browser quota */
+.instant-keywords { display: flex; flex-wrap: wrap; align-items: center; gap: 7px; margin: -4px 0 14px; font-size: 12.5px; color: var(--muted); }
+.instant-keywords button { padding: 4px 11px; border: 1px solid var(--line); border-radius: 999px; background: var(--panel); color: var(--text); font-size: 12.5px; cursor: pointer; }
+.instant-keywords button:hover:not(:disabled) { border-color: var(--accent); color: var(--accent); }
+.instant-keywords button:disabled { opacity: .5; cursor: default; }
+.instant-keywords button.live { border-style: dashed; }

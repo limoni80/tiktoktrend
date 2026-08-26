@@ -26,6 +26,11 @@
   "vars": {
     // Set this to the public URL of the Node/Playwright backend to enable
     // keyword search and Top Ads. Country trends work without it.
-    "BACKEND_URL": ""
+    "BACKEND_URL": "",
+    // Datasets collected by GitHub Actions (.github/workflows/refresh-data.yml)
+    // and published on the `data` branch. Serving these needs no browser at
+    // all, which is what makes repeated searches unlimited. Set to "" to
+    // disable and always use the live browser.
+    "DATA_BASE_URL": "https://raw.githubusercontent.com/limoni80/tiktoktrend/data"
   }
 }

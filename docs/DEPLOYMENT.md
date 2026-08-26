@@ -20,6 +20,64 @@ fixes `Unexpected token '<'`: those paths can no longer return `index.html`.
 | `/api/fetch-tiktok` (keyword search) | no | yes |
 | `/api/fetch-ads` (Top Ads) | no | yes |
 
+## 0b. Unlimited keyword search with GitHub Actions (no browser quota)
+
+Cloudflare's free Browser Rendering plan allows only **2 browser launches per
+minute per account**, which is not enough for on-demand search. A GitHub
+Actions runner has a real Chromium and free minutes on public repositories, so
+it collects the keywords you care about on a schedule and publishes them as
+plain JSON. The Worker then answers those searches instantly, with no browser
+at all.
+
+**Setup — three things, all in this repo:**
+
+1. `data/keywords.json` — the keywords to collect. Edit, commit, done.
+   ```json
+   { "perKeyword": 60, "keywords": ["trump", "ai tools", "skincare"] }
+   ```
+2. The workflow is already committed at `.github/workflows/refresh-data.yml`.
+   It runs every 30 minutes and can be started by hand from **Actions →
+   Refresh TikTok datasets → Run workflow** (with an optional one-off keyword).
+   It needs no secrets: the built-in `GITHUB_TOKEN` is enough.
+3. `DATA_BASE_URL` in `wrangler.jsonc` points at the published branch:
+   `https://raw.githubusercontent.com/<owner>/<repo>/data`. Change it if you
+   fork the repo; set it to `""` to disable the dataset layer entirely.
+
+**How the Worker chooses:**
+
+| Situation | Answer | Browser used |
+| --- | --- | --- |
+| Dataset for that keyword is < 30 min old | dataset, labelled with its age | none |
+| Same search repeated within 2 min | Worker cache | none |
+| Dataset older / keyword not collected | live Browser Rendering run | 1 launch |
+| Live run fails or is rate limited | dataset of any age, labelled | none |
+| `?live=1` | forced live run | 1 launch |
+
+Every dataset answer carries `cached: true`, `dataset: true`, `cacheAgeSeconds`
+and a `notice`, and the UI shows the age — a collected result is never
+presented as a live one.
+
+**Checks after the first run:**
+
+```bash
+curl -s https://raw.githubusercontent.com/<owner>/<repo>/data/index.json | jq '.keywords'
+curl -s https://tiktoktrend.limoniastrum.workers.dev/api/catalogue | jq .
+```
+
+The workflow's job summary lists every keyword with `ok` / `empty` / `stale`
+and the video count, so a run that collected nothing is visible instead of
+silent. **A run that collects nothing never overwrites good data** — the
+previous payload is kept and marked `stale`.
+
+**Honest limitation:** GitHub runners use datacenter IPs, the same class of IP
+Cloudflare uses. If TikTok refuses to serve search results to those addresses,
+the collector records `fromSearchEndpoints: 0` and an empty result rather than
+inventing videos. The only IPs that reliably get TikTok search results are
+residential ones — i.e. running `backend/` on your own machine and pointing
+`BACKEND_URL` at it.
+
+---
+
 ## 0. Deploy just the Worker (fastest path to real data)
 
 ```bash

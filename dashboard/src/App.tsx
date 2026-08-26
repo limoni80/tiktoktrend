@@ -8,6 +8,7 @@ import { enrichVideo, formatAge, formatDate, formatMetric } from './analytics';
 import { WorkspaceJsonProvider } from './provider';
 import { sampleVideos } from './sample-data';
 import { api, ApiError, USE_DEMO_DATA } from './api';
+import type { CatalogueEntry } from './api';
 import type { CustomFilter, DatasetPayload, DiscoverFilters, EnrichedVideo, MetricKey, SortKey, TikTokVideo } from './types';
 
 const METRICS: Array<[MetricKey, string, string]> = [
@@ -90,6 +91,9 @@ function App() {
   const [diagnostics, setDiagnostics] = useState<{ when: string; label: string; payload: unknown } | null>(null);
   const [diagOpen, setDiagOpen] = useState(false);
   const [diagCopied, setDiagCopied] = useState(false);
+  // Keywords GitHub Actions keeps collected — these answer instantly and cost
+  // no Cloudflare browser quota.
+  const [catalogue, setCatalogue] = useState<CatalogueEntry[]>([]);
   const [progress, setProgress] = useState<Progress | null>(null);
   const [region, setRegion] = useState('US');
   const [ccBusy, setCcBusy] = useState(false);
@@ -116,6 +120,13 @@ function App() {
       }
       if (stale) void refreshFeed(cachedKeyword);
     })();
+  }, []);
+
+  // Which keywords are pre-collected (and how fresh each one is).
+  useEffect(() => {
+    void api.catalogue()
+      .then((payload) => setCatalogue((payload.keywords ?? []).filter((entry) => entry.count > 0)))
+      .catch(() => { /* catalogue is optional */ });
   }, []);
 
   // Keep the "updated X ago" label honest without re-rendering constantly.
@@ -297,21 +308,23 @@ function App() {
     setDiagOpen(true);
   };
 
-  const runFetch = async (overrides?: { from?: string; to?: string }) => {
+  const runFetch = async (overrides?: { from?: string; to?: string; q?: string; live?: boolean }) => {
     if (busy) return;
+    const q = (overrides?.q ?? query).trim();
     setBusy(true); setError(''); setFlash(''); setHasMore(false);
     try {
       if (feedType === 'ads') {
-        const payload = await api.ads({ region, period: '30', keyword: query.trim() });
+        const payload = await api.ads({ region, period: '30', keyword: q });
         if (!payload.videos?.length) throw new ApiError('No public ads returned', 'ads_empty');
         setAds(payload.videos); setAdsMeta(payload);
         setFlash(`${payload.videos.length} real ads loaded from TikTok Top Ads`);
       } else {
         const payload = await api.searchTikTok({
-          q: query.trim(), count: target,
+          q, count: target,
           from: overrides?.from ?? filters.dateFrom, to: overrides?.to ?? filters.dateTo,
+          live: overrides?.live,
         });
-        recordDebug(`search “${query.trim() || 'Explore'}”`, payload.debug);
+        recordDebug(`search “${q || 'Explore'}”`, payload.debug);
         if (!payload.videos?.length) throw new ApiError('No videos returned', 'tiktok_empty', 0, payload.debug);
         setVideos(payload.videos); setVideosMeta(payload); setDataMode('live');
         setHasMore(Boolean(payload.hasMore)); setScanned(payload.scanned ?? payload.videos.length);
@@ -322,15 +335,21 @@ function App() {
             : `${payload.videos.length} real TikTok videos loaded${payload.keyword ? ` for “${payload.keyword}”` : ' from Explore'} — scroll for more`);
       }
     } catch (caught) {
-      recordError(`search “${query.trim() || 'Explore'}” failed`, caught);
+      recordError(`search “${q || 'Explore'}” failed`, caught);
+      // A keyword nobody collects yet is the usual reason a live run was needed
+      // at all — say how to make it instant next time.
+      const uncollected = Boolean(q) && !catalogue.some((entry) => entry.keyword.toLowerCase() === q.toLowerCase());
+      const hint = uncollected
+        ? ` Add “${q}” to data/keywords.json (or run the “Refresh TikTok datasets” workflow with it) and it will be collected every 30 min with no quota.`
+        : '';
       if (caught instanceof ApiError && BACKENDLESS.includes(caught.code)) {
         setNeedsBackend(caught.code.startsWith('backend'));
         setError(caught.code === 'browser_rate_limited'
-          ? caught.message
-          : `“${query.trim()}” needs the scraping backend. Country trends come straight from TikTok and work without it.`);
+          ? `${caught.message}${hint}`
+          : `“${q}” needs the scraping backend. Country trends come straight from TikTok and work without it.`);
         await loadTrends().catch(() => {});
       } else {
-        setError(caught instanceof Error ? caught.message : 'Fetch failed');
+        setError(`${caught instanceof Error ? caught.message : 'Fetch failed'}${hint}`);
       }
     } finally { setBusy(false); }
   };
@@ -488,6 +507,20 @@ function App() {
         <p className="search-hint">
           Typing filters the {feed.length} loaded {feedType === 'ads' ? 'ads' : 'videos'} instantly · press <kbd>Enter</kbd> or hit Search to pull fresh results straight from TikTok{feedType === 'videos' ? ' · results keep loading as you scroll, with no cap' : ''}
         </p>
+
+        {feedType === 'videos' && catalogue.length > 0 && <div className="instant-keywords">
+          <span>Instant (collected every 30 min, no quota):</span>
+          {catalogue.map((entry) => (
+            <button key={entry.slug} onClick={() => { setQuery(entry.keyword); void runFetch({ q: entry.keyword }); }} disabled={busy}
+              title={`${entry.count} videos · updated ${entry.updatedAt ? relativeTime(entry.updatedAt) : 'unknown'}`}>
+              {entry.keyword}
+            </button>
+          ))}
+          <button className="live" onClick={() => void runFetch({ live: true })} disabled={busy}
+            title="Skip the dataset and run a live TikTok browser now (uses Cloudflare browser quota)">
+            Live fetch
+          </button>
+        </div>}
 
         {busy && <div className="progress-card">
           <div className="progress-head">

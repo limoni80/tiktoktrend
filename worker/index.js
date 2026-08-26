@@ -44,6 +44,7 @@ const BROWSER_KEEP_ALIVE_MS = 600_000;   // keep the browser hot for reuse
 const BROWSER_ACQUIRE_BUDGET_MS = 40_000; // how long we wait out a 429
 const SEARCH_CACHE_FRESH_S = 120;         // serve a cached search without a browser
 const SEARCH_CACHE_MAX_S = 3_600;         // keep it this long as a 429 fallback
+const DATASET_FRESH_S = 1_800;            // a GitHub Actions dataset this recent is served as-is
 
 const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
@@ -428,6 +429,51 @@ async function proxyBackend(request, url, env) {
   }
 }
 
+/**
+ * Datasets collected by GitHub Actions (see .github/workflows/refresh-data.yml)
+ * and published as JSON on the `data` branch. Serving these costs no browser
+ * quota at all, which is what makes repeat searches unlimited.
+ */
+const datasetBase = (env) => String(env.DATA_BASE_URL ?? '').replace(/\/+$/, '');
+const slugify = (value) => value.toLowerCase().trim().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+
+async function fetchDataset(env, path) {
+  const base = datasetBase(env);
+  if (!base) return null;
+  try {
+    const response = await fetch(`${base}/${path}`, {
+      headers: { accept: 'application/json', 'user-agent': 'tiktoktrend-worker' },
+      cf: { cacheTtl: 60, cacheEverything: true },
+    });
+    if (!response.ok) return null;
+    const contentType = response.headers.get('content-type') ?? '';
+    const text = await response.text();
+    if (!contentType.includes('json') && !text.trimStart().startsWith('{')) return null;
+    const payload = JSON.parse(text);
+    const fetchedAt = Date.parse(payload?.fetchedAt ?? '');
+    return {
+      payload,
+      ageSeconds: Number.isFinite(fetchedAt) ? Math.max(0, Math.round((Date.now() - fetchedAt) / 1000)) : null,
+    };
+  } catch { return null; }
+}
+
+/** Shape a dataset file like a live search response, labelled with its age. */
+const datasetResponse = (entry, { reason } = {}) => {
+  const minutes = entry.ageSeconds == null ? null : Math.round(entry.ageSeconds / 60);
+  const age = minutes == null ? 'unknown age' : minutes < 1 ? 'just now' : `${minutes} min ago`;
+  return {
+    ...entry.payload,
+    cached: true,
+    dataset: true,
+    stale: Boolean(entry.payload?.stale),
+    cacheAgeSeconds: entry.ageSeconds,
+    notice: reason
+      ? `${reason} Showing the dataset collected by GitHub Actions ${age}.`
+      : `Collected by GitHub Actions ${age} — refreshed automatically every 30 minutes.`,
+  };
+};
+
 /** Cache key for a first-page search. Pagination is never cached. */
 const searchCacheKey = (keyword, dateRange, want) => new Request(
   `https://pulse-search-cache.internal/?q=${encodeURIComponent(keyword)}&from=${dateRange.from ?? ''}&to=${dateRange.to ?? ''}&n=${want}`,
@@ -457,6 +503,7 @@ async function handleApi(request, env, url, ctx) {
       persistentProfile: false,
       backendConfigured: Boolean(env.BACKEND_URL),
       browserRendering: Boolean(env.MYBROWSER),
+      datasetBase: datasetBase(env) || null,
       nativeRoutes: ['/api/health', '/api/fetch', '/api/video', ...(env.MYBROWSER ? ['/api/fetch-tiktok'] : [])],
       proxiedRoutes: [...(env.MYBROWSER ? [] : ['/api/fetch-tiktok']), '/api/fetch-ads', '/api/progress', '/api/datasets'],
       time: new Date().toISOString(),
@@ -487,7 +534,22 @@ async function handleApi(request, env, url, ctx) {
     // Never 404 the poller — it runs on a timer in the UI.
     return json({ active: false, phase: 'idle', collected: 0, matched: 0, target: 0, startedAt: null, keyword: null });
   }
-  if (path === '/api/datasets' && !env.BACKEND_URL) return json({ videos: null, ads: null });
+  // Catalogue of what GitHub Actions has collected, so the UI can show which
+  // keywords answer instantly and how old each one is.
+  if (path === '/api/catalogue') {
+    const index = await fetchDataset(env, 'index.json');
+    if (!index) return json({ configured: Boolean(datasetBase(env)), generatedAt: null, keywords: [], entries: [] });
+    return json({ configured: true, ...index.payload, ageSeconds: index.ageSeconds });
+  }
+
+  if (path === '/api/datasets' && !env.BACKEND_URL) {
+    const [feed, index] = await Promise.all([fetchDataset(env, 'feed.json'), fetchDataset(env, 'index.json')]);
+    return json({
+      videos: feed?.payload?.videos?.length ? datasetResponse(feed) : null,
+      ads: null,
+      catalogue: index?.payload ?? null,
+    });
+  }
 
   if (path === '/api/fetch-tiktok' && env.MYBROWSER) {
     const keyword = String(url.searchParams.get('q') ?? '').trim().slice(0, 80);
@@ -500,6 +562,18 @@ async function handleApi(request, env, url, ctx) {
     // Only first pages are cached: a "load more" call depends on ids the client
     // already holds, so it is never the same answer twice.
     const cacheable = knownIds.size === 0;
+    const wantsLive = url.searchParams.get('live') === '1';
+
+    // 1. A dataset collected by GitHub Actions costs no browser quota. If it is
+    //    recent, serve it straight away — that is what makes repeated searches
+    //    unlimited. `live=1` forces a fresh browser run instead.
+    if (cacheable && !wantsLive) {
+      const path = keyword ? `search/${slugify(keyword)}.json` : 'feed.json';
+      const entry = await fetchDataset(env, path);
+      if (entry?.payload?.videos?.length && entry.ageSeconds != null && entry.ageSeconds <= DATASET_FRESH_S) {
+        return json(datasetResponse(entry));
+      }
+    }
     const cacheKey = searchCacheKey(keyword, dateRange, want);
     const cache = caches.default;
     const cached = cacheable ? await readSearchCache(cache, cacheKey) : null;
@@ -528,6 +602,18 @@ async function handleApi(request, env, url, ctx) {
     } catch (error) {
       // Fall through to a configured backend rather than failing outright.
       if (env.BACKEND_URL) return proxyBackend(request, url, env);
+
+      // The live browser failed (quota, captcha, or TikTok serving only its
+      // feed). A dataset of ANY age beats an empty screen — clearly labelled.
+      if (cacheable) {
+        const entry = await fetchDataset(env, keyword ? `search/${slugify(keyword)}.json` : 'feed.json');
+        if (entry?.payload?.videos?.length) {
+          const reason = error.code === 'browser_rate_limited'
+            ? "Cloudflare's browser quota is used up right now."
+            : 'A live TikTok run did not return results just now.';
+          return json({ ...datasetResponse(entry, { reason }), debug: { live: error.debug ?? null, fallback: 'github-dataset' } });
+        }
+      }
 
       // Out of browser quota but we ran this exact search recently: show that
       // result, clearly labelled with its age, instead of an empty screen.
