@@ -199,6 +199,7 @@ node backend/scripts/verify.mjs <backend> dog
 | `429 tiktok_captcha` | TikTok challenged the server IP | Retry later, or set `TIKTOK_COOKIE` |
 | CORS error in the console | Origin not allow-listed | Add the exact origin to `ALLOWED_ORIGINS` |
 | Playback fails after a while | TikTok play URLs expire in hours | Re-run the search |
+| `browser_rate_limited` / “Rate limit exceeded” | Browser Rendering on the free plan allows **2 concurrent browsers and 2 new browsers per minute per account** | The Worker now reuses idle browser sessions, retries a 429 for up to 40 s, and serves a cached copy of the same search (up to 1 h old, labelled in the UI) instead of failing. If it still fails, wait a minute — or add a Workers Paid plan for higher limits |
 | A search returns 0 results | TikTok served the generic feed instead of search results to the Cloudflare IP | Open **Fetch log** under the search bar and read `apiHits` / `fromSearchEndpoints`. `fromSearchEndpoints: 0` means no `/api/search/...` response ever arrived — the Worker then retries the video tab and the hashtag page automatically; if all three fail, that IP is being served the feed only. |
 
 ### Reading the fetch log

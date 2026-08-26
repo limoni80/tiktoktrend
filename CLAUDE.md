@@ -51,6 +51,15 @@ always return JSON, even on error.
 - **The scraper needs a Node.js runtime with a real Chromium**, so it cannot run
   on Cloudflare Workers. It is a separate deployment (Railway / Render / Fly.io /
   VPS / Docker).
+- **Browser Rendering quota is the tightest constraint on Cloudflare.** The
+  free plan allows only *2 concurrent browsers and 2 new browsers per minute
+  per account*. `worker/index.js` therefore: reuses an idle
+  `puppeteer.sessions()` session before launching, launches with
+  `keep_alive: 600_000` so the next request can reuse it, `disconnect()`s
+  instead of `close()`, retries a 429 with backoff for ~40 s, and caches
+  first-page searches in the Cache API (fresh for 2 min, kept 1 h as a
+  rate-limit fallback). Do not add code that launches a browser on page load or
+  on a timer.
 - Frontend → backend URL construction lives in **one module**:
   `dashboard/src/api.ts`. Do not scatter `fetch('/api/...')` calls again.
 

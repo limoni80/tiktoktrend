@@ -92,7 +92,16 @@ async function request<T>(path: string, params?: Record<string, string | number 
 
 export interface HealthResponse { status: string; service: string; uptimeSeconds: number; nodeEnv: string; persistentProfile: boolean }
 export interface ProgressResponse { active: boolean; phase: string; collected: number; matched: number; target: number; startedAt: number | null }
-export interface FeedResponse extends DatasetPayload { hasMore?: boolean; scanned?: number; debug?: unknown }
+export interface FeedResponse extends DatasetPayload {
+  hasMore?: boolean;
+  scanned?: number;
+  debug?: unknown;
+  /** Answered from the Worker's cache instead of a fresh browser run. */
+  cached?: boolean;
+  stale?: boolean;
+  cacheAgeSeconds?: number;
+  notice?: string;
+}
 
 export const api = {
   health: () => request<HealthResponse>('/api/health'),

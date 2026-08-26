@@ -315,7 +315,11 @@ function App() {
         if (!payload.videos?.length) throw new ApiError('No videos returned', 'tiktok_empty', 0, payload.debug);
         setVideos(payload.videos); setVideosMeta(payload); setDataMode('live');
         setHasMore(Boolean(payload.hasMore)); setScanned(payload.scanned ?? payload.videos.length);
-        setFlash(`${payload.videos.length} real TikTok videos loaded${payload.keyword ? ` for “${payload.keyword}”` : ' from Explore'} — scroll for more`);
+        setFlash(payload.notice
+          ? payload.notice
+          : payload.cached
+            ? `${payload.videos.length} real TikTok videos${payload.keyword ? ` for “${payload.keyword}”` : ''} — cached ${Math.max(1, Math.round((payload.cacheAgeSeconds ?? 0) / 60))} min ago, no new browser needed`
+            : `${payload.videos.length} real TikTok videos loaded${payload.keyword ? ` for “${payload.keyword}”` : ' from Explore'} — scroll for more`);
       }
     } catch (caught) {
       recordError(`search “${query.trim() || 'Explore'}” failed`, caught);

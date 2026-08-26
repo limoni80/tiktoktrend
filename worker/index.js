@@ -32,7 +32,22 @@ const TRENDS_HOSTS = ['ads.us.tiktok.com', 'ads.tiktok.com', 'ads-sg.tiktok.com'
 const CONTENT_LABELS = ['11001','11002','11003','11004','11005','11007','11008','11009','11010','11013','11014','11015'];
 const ALLOWED_REGIONS = new Set(['US','FR','DE','IT','ES','GB','AR','AU','BR','CA','CO','EG','ID','IL','JP','KR','MY','MX','PH','SA','SG','ZA','TW','TH','TR','AE','VN']);
 const ALLOWED_PERIODS = new Set(['7', '30']);
-const VIDEO_HOST = /(^|\.)((tiktokcdn(-us|-eu)?\.com)|(tiktok\.com)|(tiktokv\.com)|(ibytedtos\.com)|(ttwstatic\.com)|(byteoversea\.com))$/;
+/**
+ * Cloudflare Browser Rendering (free plan) allows only **2 concurrent browsers
+ * and 2 new browsers per minute per account**. Launching one per search burns
+ * that budget instantly, so:
+ *   1. an idle session is always reused before launching (a reuse is free),
+ *   2. a 429 is retried with backoff instead of being thrown at the user,
+ *   3. results are cached, and a cached copy is served when the quota is gone.
+ */
+const BROWSER_KEEP_ALIVE_MS = 600_000;   // keep the browser hot for reuse
+const BROWSER_ACQUIRE_BUDGET_MS = 40_000; // how long we wait out a 429
+const SEARCH_CACHE_FRESH_S = 120;         // serve a cached search without a browser
+const SEARCH_CACHE_MAX_S = 3_600;         // keep it this long as a 429 fallback
+
+const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+
+const VIDEO_HOST =/(^|\.)((tiktokcdn(-us|-eu)?\.com)|(tiktok\.com)|(tiktokv\.com)|(ibytedtos\.com)|(ttwstatic\.com)|(byteoversea\.com))$/;
 
 const CORS = {
   'Access-Control-Allow-Origin': '*',
@@ -128,6 +143,67 @@ async function fetchTrends(region, period, budgetMs = 20_000) {
  * client send the ids it already holds (`known`); we scroll past them and
  * return what is new.
  */
+/**
+ * Get a browser without tripping the "2 new browsers per minute" limit.
+ *
+ * Reusing an idle session costs nothing against the quota, so that is always
+ * tried first. Only if none is free do we launch — and a rate-limit answer is
+ * waited out (a new slot frees up within ~30 s) rather than thrown straight at
+ * the user, because in practice the wait is shorter than a retry by hand.
+ */
+async function acquireBrowser(env, debug) {
+  const startedAt = Date.now();
+  const deadline = startedAt + BROWSER_ACQUIRE_BUDGET_MS;
+  const trail = [];
+  let attempt = 0;
+  let lastRateLimitDetail = null;
+
+  while (Date.now() < deadline) {
+    attempt += 1;
+
+    // 1. Reuse an idle session — free, and much faster than a cold launch.
+    try {
+      const sessions = await puppeteer.sessions(env.MYBROWSER);
+      const free = sessions.filter((session) => !session.connectionId);
+      trail.push(`attempt ${attempt}: ${sessions.length} session(s), ${free.length} free`);
+      for (const session of free) {
+        try {
+          const browser = await puppeteer.connect(env.MYBROWSER, session.sessionId);
+          debug.browserAcquire = { reused: true, attempts: attempt, waitedMs: Date.now() - startedAt, trail };
+          return { browser, reused: true };
+        } catch { /* someone else grabbed it — try the next */ }
+      }
+    } catch (listError) {
+      trail.push(`attempt ${attempt}: session list failed (${String(listError?.message ?? listError).slice(0, 80)})`);
+    }
+
+    // 2. Launch a new one.
+    try {
+      const browser = await puppeteer.launch(env.MYBROWSER, { keep_alive: BROWSER_KEEP_ALIVE_MS });
+      debug.browserAcquire = { reused: false, attempts: attempt, waitedMs: Date.now() - startedAt, trail };
+      return { browser, reused: false };
+    } catch (launchError) {
+      const detail = String(launchError?.message ?? launchError);
+      if (!/429|rate limit|concurrent|limit exceeded/i.test(detail)) {
+        debug.browserAcquire = { reused: false, attempts: attempt, waitedMs: Date.now() - startedAt, trail, error: detail.slice(0, 200) };
+        throw Object.assign(new Error(`Could not start a browser: ${detail}`), { code: 'browser_unavailable', status: 502, debug });
+      }
+      lastRateLimitDetail = detail.slice(0, 160);
+      trail.push(`attempt ${attempt}: launch rate limited`);
+      const wait = Math.min(9_000, 3_000 * attempt);
+      if (Date.now() + wait >= deadline) break;
+      await sleep(wait);
+    }
+  }
+
+  const waitedMs = Date.now() - startedAt;
+  debug.browserAcquire = { reused: false, attempts: attempt, waitedMs, trail, error: lastRateLimitDetail };
+  throw Object.assign(
+    new Error(`Cloudflare Browser Rendering is out of browser slots (free plan: 2 browsers, 2 launches per minute per account). Waited ${Math.round(waitedMs / 1000)}s and retried ${attempt}×. Wait a minute and search again — country trends need no browser and keep working.`),
+    { code: 'browser_rate_limited', status: 429, debug },
+  );
+}
+
 async function searchWithBrowser(env, { keyword, want, knownIds, dateRange }) {
   const tokens = keyword.toLowerCase().split(/\s+/).filter(Boolean);
   const rangeStart = dateRange.from ? Date.parse(`${dateRange.from}T00:00:00Z`) : null;
@@ -190,32 +266,9 @@ async function searchWithBrowser(env, { keyword, want, knownIds, dateRange }) {
   let browser;
   let reused = false;
   try {
-    // Browser Rendering caps how many browsers you may LAUNCH (429 "Rate limit
-    // exceeded"). Reusing an idle session avoids that entirely and is far
-    // faster, so always try to connect before launching.
-    try {
-      const sessions = await puppeteer.sessions(env.MYBROWSER);
-      const free = sessions.filter((session) => !session.connectionId).map((session) => session.sessionId);
-      for (const sessionId of free) {
-        try { browser = await puppeteer.connect(env.MYBROWSER, sessionId); reused = true; break; }
-        catch { /* someone else grabbed it — try the next */ }
-      }
-    } catch { /* session listing unavailable — fall through to launch */ }
-
-    if (!browser) {
-      try {
-        browser = await puppeteer.launch(env.MYBROWSER, { keep_alive: 600_000 });
-      } catch (launchError) {
-        const detail = String(launchError?.message ?? launchError);
-        if (/429|rate limit/i.test(detail)) {
-          throw Object.assign(
-            new Error('Cloudflare Browser Rendering is at its rate limit right now (free tier allows only a few browser launches per minute). Wait about a minute and search again — country trends still work in the meantime.'),
-            { code: 'browser_rate_limited', status: 429 },
-          );
-        }
-        throw Object.assign(new Error(`Could not start a browser: ${detail}`), { code: 'browser_unavailable', status: 502 });
-      }
-    }
+    const acquired = await acquireBrowser(env, debug);
+    browser = acquired.browser;
+    reused = acquired.reused;
 
     const page = await browser.newPage();
 
@@ -375,7 +428,25 @@ async function proxyBackend(request, url, env) {
   }
 }
 
-async function handleApi(request, env, url) {
+/** Cache key for a first-page search. Pagination is never cached. */
+const searchCacheKey = (keyword, dateRange, want) => new Request(
+  `https://pulse-search-cache.internal/?q=${encodeURIComponent(keyword)}&from=${dateRange.from ?? ''}&to=${dateRange.to ?? ''}&n=${want}`,
+);
+
+async function readSearchCache(cache, key) {
+  try {
+    const hit = await cache.match(key);
+    if (!hit) return null;
+    const payload = await hit.json();
+    const fetchedAt = Date.parse(payload?.fetchedAt ?? '');
+    if (!Number.isFinite(fetchedAt)) return null;
+    const ageSeconds = Math.max(0, Math.round((Date.now() - fetchedAt) / 1000));
+    if (ageSeconds > SEARCH_CACHE_MAX_S) return null;
+    return { payload, ageSeconds };
+  } catch { return null; }
+}
+
+async function handleApi(request, env, url, ctx) {
   const path = url.pathname;
 
   if (path === '/api/health') {
@@ -426,17 +497,50 @@ async function handleApi(request, env, url) {
       from: /^\d{4}-\d{2}-\d{2}$/.test(url.searchParams.get('from') ?? '') ? url.searchParams.get('from') : null,
       to: /^\d{4}-\d{2}-\d{2}$/.test(url.searchParams.get('to') ?? '') ? url.searchParams.get('to') : null,
     };
+    // Only first pages are cached: a "load more" call depends on ids the client
+    // already holds, so it is never the same answer twice.
+    const cacheable = knownIds.size === 0;
+    const cacheKey = searchCacheKey(keyword, dateRange, want);
+    const cache = caches.default;
+    const cached = cacheable ? await readSearchCache(cache, cacheKey) : null;
+
+    // A repeat of the same search within two minutes is answered from cache —
+    // that is one browser launch saved out of the two the free plan allows.
+    if (cached && cached.ageSeconds <= SEARCH_CACHE_FRESH_S) {
+      return json({ ...cached.payload, cached: true, cacheAgeSeconds: cached.ageSeconds });
+    }
+
     try {
       const result = await searchWithBrowser(env, { keyword, want, knownIds, dateRange });
-      return json({
+      const payload = {
         ...result,
         source: keyword ? `TikTok.com search · “${keyword}”` : 'TikTok.com Explore feed',
         keyword: keyword || null,
         fetchedAt: new Date().toISOString(),
-      });
+      };
+      if (cacheable && payload.videos?.length) {
+        const stored = cache.put(cacheKey, new Response(JSON.stringify(payload), {
+          headers: { 'Content-Type': 'application/json; charset=utf-8', 'Cache-Control': `max-age=${SEARCH_CACHE_MAX_S}` },
+        })).catch(() => {});
+        if (ctx?.waitUntil) ctx.waitUntil(stored); else await stored;
+      }
+      return json(payload);
     } catch (error) {
       // Fall through to a configured backend rather than failing outright.
       if (env.BACKEND_URL) return proxyBackend(request, url, env);
+
+      // Out of browser quota but we ran this exact search recently: show that
+      // result, clearly labelled with its age, instead of an empty screen.
+      if (error.code === 'browser_rate_limited' && cached) {
+        return json({
+          ...cached.payload,
+          cached: true,
+          stale: true,
+          cacheAgeSeconds: cached.ageSeconds,
+          notice: `Cloudflare's browser quota is used up right now, so these are the results from ${Math.round(cached.ageSeconds / 60)} min ago. Search again in a minute for fresh ones.`,
+          debug: { ...(error.debug ?? {}), servedFromCache: true },
+        });
+      }
       return fail(error.status ?? 502, error.code ?? 'search_failed', error.message ?? 'Search failed',
         error.debug ? { debug: error.debug } : {});
     }
@@ -450,14 +554,14 @@ async function handleApi(request, env, url) {
 }
 
 export default {
-  async fetch(request, env) {
+  async fetch(request, env, ctx) {
     const url = new URL(request.url);
 
     if (url.pathname.startsWith('/api/')) {
       if (request.method === 'OPTIONS') return new Response(null, { status: 204, headers: CORS });
       if (request.method !== 'GET') return fail(405, 'method_not_allowed', 'Only GET is supported');
       try {
-        return await handleApi(request, env, url);
+        return await handleApi(request, env, url, ctx);
       } catch (error) {
         return fail(500, 'internal_error', error instanceof Error ? error.message : 'Unexpected worker error');
       }
