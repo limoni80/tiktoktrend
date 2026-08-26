@@ -10,12 +10,18 @@
     "enabled": true
   },
   "build": {
-    "command": "npm --prefix dashboard ci && npm --prefix dashboard run build"
+    "command": "npm install --no-audit --no-fund && npm --prefix dashboard ci && npm --prefix dashboard run build"
   },
   "assets": {
     "directory": "./dashboard/dist",
     "binding": "ASSETS",
     "not_found_handling": "single-page-application"
+  },
+  // Cloudflare Browser Rendering: a real headless Chromium inside the Worker,
+  // which is what lets keyword search run without any external backend.
+  // Remove this block if the account has Browser Rendering disabled.
+  "browser": {
+    "binding": "MYBROWSER"
   },
   "vars": {
     // Set this to the public URL of the Node/Playwright backend to enable

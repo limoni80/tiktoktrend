@@ -19,7 +19,13 @@
  * Everything else is served from dashboard/dist via the ASSETS binding.
  */
 
-import { normalizeTrendEntity, safeParse } from '../backend/src/normalize.mjs';
+import puppeteer from '@cloudflare/puppeteer';
+import {
+  collectEmbeddedItems, itemsFromListBody, normalizeTikTokItem, normalizeTrendEntity, safeParse,
+} from '../backend/src/normalize.mjs';
+
+const TIKTOK_LIST_PATTERN =
+  /\/api\/(explore\/item_list|recommend\/item_list|search\/general\/full|search\/item\/full|search\/general\/preview|item\/detail|related\/item_list)\//;
 
 const UA = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36';
 const TRENDS_HOSTS = ['ads.us.tiktok.com', 'ads.tiktok.com', 'ads-sg.tiktok.com'];
@@ -111,6 +117,92 @@ async function fetchTrends(region, period, budgetMs = 20_000) {
   return [...collected.values()].sort((a, b) => (b.views ?? -1) - (a.views ?? -1));
 }
 
+/**
+ * Keyword search / Explore feed, run on Cloudflare Browser Rendering.
+ *
+ * TikTok only serves its feed JSON to a client holding ttwid / msToken
+ * cookies, so the throwaway browser is warmed on the public homepage first —
+ * no stored profile, no login, no cookies of ours.
+ *
+ * Workers are stateless between requests, so pagination works by having the
+ * client send the ids it already holds (`known`); we scroll past them and
+ * return what is new.
+ */
+async function searchWithBrowser(env, { keyword, want, knownIds, dateRange }) {
+  const tokens = keyword.toLowerCase().split(/\s+/).filter(Boolean);
+  const rangeStart = dateRange.from ? Date.parse(`${dateRange.from}T00:00:00Z`) : null;
+  const rangeEnd = dateRange.to ? Date.parse(`${dateRange.to}T23:59:59Z`) : null;
+  const label = keyword ? `TikTok.com · search · “${keyword}”` : 'TikTok.com · Explore';
+
+  const matches = (video) => {
+    if (tokens.length) {
+      const haystack = `${video.caption} ${video.hashtags.join(' ')} ${video.creator.username ?? ''} ${video.creator.displayName} ${video.soundName ?? ''}`.toLowerCase();
+      if (!tokens.every((token) => haystack.includes(token))) return false;
+    }
+    if (rangeStart == null && rangeEnd == null) return true;
+    if (!video.publishedAt) return false;               // never guess a date
+    const time = Date.parse(video.publishedAt);
+    return (rangeStart == null || time >= rangeStart) && (rangeEnd == null || time <= rangeEnd);
+  };
+
+  const collected = new Map();
+  const add = (raw) => {
+    const video = normalizeTikTokItem(raw, label);
+    if (video && !collected.has(video.id)) collected.set(video.id, video);
+  };
+
+  let browser;
+  try {
+    browser = await puppeteer.launch(env.MYBROWSER);
+    const page = await browser.newPage();
+
+    page.on('response', async (response) => {
+      try {
+        if (!TIKTOK_LIST_PATTERN.test(response.url())) return;
+        itemsFromListBody(safeParse(await response.text())).forEach(add);
+      } catch { /* partial or non-JSON body */ }
+    });
+
+    // Warm-up: pick up ttwid / msToken from the public homepage.
+    await page.goto('https://www.tiktok.com/', { waitUntil: 'domcontentloaded', timeout: 25_000 }).catch(() => {});
+    await new Promise((resolve) => setTimeout(resolve, 1_200));
+
+    const target = keyword
+      ? `https://www.tiktok.com/search?q=${encodeURIComponent(keyword)}`
+      : 'https://www.tiktok.com/explore';
+    await page.goto(target, { waitUntil: 'domcontentloaded', timeout: 30_000 });
+    await new Promise((resolve) => setTimeout(resolve, 2_000));
+
+    const embedded = await page.evaluate(() =>
+      document.getElementById('__UNIVERSAL_DATA_FOR_REHYDRATION__')?.textContent
+      ?? document.getElementById('SIGI_STATE')?.textContent ?? null).catch(() => null);
+    if (embedded) collectEmbeddedItems(embedded).forEach(add);
+
+    const fresh = () => [...collected.values()].filter((video) => matches(video) && !knownIds.has(video.id));
+
+    let stagnant = 0;
+    let previous = collected.size;
+    for (let round = 0; round < 14 && fresh().length < want && stagnant < 5; round += 1) {
+      await page.evaluate(() => window.scrollBy(0, document.body.scrollHeight)).catch(() => {});
+      await new Promise((resolve) => setTimeout(resolve, 1_100));
+      stagnant = collected.size === previous ? stagnant + 1 : 0;
+      previous = collected.size;
+    }
+
+    const batch = fresh().slice(0, want);
+    if (!batch.length && !knownIds.size) {
+      const body = await page.evaluate(() => document.body.innerText.slice(0, 300)).catch(() => '');
+      if (/verify|captcha|robot/i.test(body)) {
+        throw Object.assign(new Error('TikTok served a verification page to this Worker. Try again shortly.'), { code: 'tiktok_captcha', status: 429 });
+      }
+      throw Object.assign(new Error(keyword ? `TikTok returned no public videos for “${keyword}”.` : 'TikTok returned no public videos.'), { code: 'tiktok_empty', status: 502 });
+    }
+    return { videos: batch, hasMore: stagnant < 5, scanned: collected.size };
+  } finally {
+    if (browser) await browser.close().catch(() => {});
+  }
+}
+
 async function proxyVideo(request, url) {
   let target;
   try { target = new URL(String(url.searchParams.get('src') ?? '')); }
@@ -166,8 +258,9 @@ async function handleApi(request, env, url) {
       runtime: 'cloudflare-workers',
       persistentProfile: false,
       backendConfigured: Boolean(env.BACKEND_URL),
-      nativeRoutes: ['/api/health', '/api/fetch', '/api/video'],
-      proxiedRoutes: ['/api/fetch-tiktok', '/api/fetch-ads', '/api/progress', '/api/datasets'],
+      browserRendering: Boolean(env.MYBROWSER),
+      nativeRoutes: ['/api/health', '/api/fetch', '/api/video', ...(env.MYBROWSER ? ['/api/fetch-tiktok'] : [])],
+      proxiedRoutes: [...(env.MYBROWSER ? [] : ['/api/fetch-tiktok']), '/api/fetch-ads', '/api/progress', '/api/datasets'],
       time: new Date().toISOString(),
     });
   }
@@ -197,6 +290,29 @@ async function handleApi(request, env, url) {
     return json({ active: false, phase: 'idle', collected: 0, matched: 0, target: 0, startedAt: null, keyword: null });
   }
   if (path === '/api/datasets' && !env.BACKEND_URL) return json({ videos: null, ads: null });
+
+  if (path === '/api/fetch-tiktok' && env.MYBROWSER) {
+    const keyword = String(url.searchParams.get('q') ?? '').trim().slice(0, 80);
+    const want = Math.min(60, Math.max(5, Number(url.searchParams.get('count') ?? 40) || 40));
+    const knownIds = new Set(String(url.searchParams.get('known') ?? '').split(',').map((id) => id.trim()).filter(Boolean));
+    const dateRange = {
+      from: /^\d{4}-\d{2}-\d{2}$/.test(url.searchParams.get('from') ?? '') ? url.searchParams.get('from') : null,
+      to: /^\d{4}-\d{2}-\d{2}$/.test(url.searchParams.get('to') ?? '') ? url.searchParams.get('to') : null,
+    };
+    try {
+      const result = await searchWithBrowser(env, { keyword, want, knownIds, dateRange });
+      return json({
+        ...result,
+        source: keyword ? `TikTok.com search · “${keyword}”` : 'TikTok.com Explore feed',
+        keyword: keyword || null,
+        fetchedAt: new Date().toISOString(),
+      });
+    } catch (error) {
+      // Fall through to a configured backend rather than failing outright.
+      if (env.BACKEND_URL) return proxyBackend(request, url, env);
+      return fail(error.status ?? 502, error.code ?? 'search_failed', error.message ?? 'Search failed');
+    }
+  }
 
   if (['/api/fetch-tiktok', '/api/fetch-ads', '/api/progress', '/api/datasets'].includes(path)) {
     return proxyBackend(request, url, env);

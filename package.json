@@ -1,0 +1,17 @@
+{
+  "name": "tiktoktrend",
+  "private": true,
+  "type": "module",
+  "description": "Cloudflare Worker (SPA + TikTok API) for the Pulse dashboard",
+  "scripts": {
+    "build": "npm --prefix dashboard ci && npm --prefix dashboard run build",
+    "deploy": "wrangler deploy",
+    "dev": "wrangler dev"
+  },
+  "dependencies": {
+    "@cloudflare/puppeteer": "^1.0.4"
+  },
+  "devDependencies": {
+    "wrangler": "^4.0.0"
+  }
+}
