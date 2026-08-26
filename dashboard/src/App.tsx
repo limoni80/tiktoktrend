@@ -224,15 +224,34 @@ function App() {
 
   // Silent background refresh — replaces the cached feed with a live one
   // without taking over the screen.
+  const BACKENDLESS = ['backend_not_configured', 'backend_unreachable', 'backend_bad_response', 'not_json'];
+
   const refreshFeed = async (keyword: string) => {
     if (busy || refreshing) return;
     setRefreshing(true);
     try {
       const payload = await api.searchTikTok({ q: keyword.trim(), count: target, from: filters.dateFrom, to: filters.dateTo });
       if (!payload.videos?.length) return;
-      setVideos(payload.videos); setVideosMeta(payload); setDataMode('live');
+      setVideos(payload.videos); setVideosMeta(payload); setDataMode('live'); setNeedsBackend(false);
       setHasMore(Boolean(payload.hasMore)); setScanned(payload.scanned ?? payload.videos.length);
     } catch (caught) {
+      // No scraping backend wired up? Country trends come straight from the
+      // Worker, so show those instead of an empty screen.
+      if (caught instanceof ApiError && BACKENDLESS.includes(caught.code)) {
+        setNeedsBackend(true);
+        try {
+          const trends = await api.trends({ region, period: '7' });
+          if (trends.videos?.length) {
+            setVideos(trends.videos); setVideosMeta(trends); setDataMode('live');
+            setHasMore(false); setScanned(trends.videos.length);
+            setFlash(`${trends.videos.length} real trend videos from TikTok (${region}). Keyword search needs the scraping backend.`);
+            return;
+          }
+        } catch (trendError) {
+          setError(trendError instanceof Error ? trendError.message : 'Could not load trends.');
+          return;
+        }
+      }
       if (caught instanceof ApiError && caught.code !== 'tiktok_empty') setError(caught.message);
     }
     finally { setRefreshing(false); }
@@ -258,8 +277,12 @@ function App() {
         setFlash(`${payload.videos.length} real TikTok videos loaded${payload.keyword ? ` for “${payload.keyword}”` : ' from Explore'} — scroll for more`);
       }
     } catch (caught) {
-      if (caught instanceof ApiError && (caught.code === 'backend_not_configured' || caught.code === 'backend_unreachable')) setNeedsBackend(true);
-      setError(caught instanceof Error ? caught.message : 'Fetch failed');
+      if (caught instanceof ApiError && BACKENDLESS.includes(caught.code)) {
+        setNeedsBackend(true);
+        setError(`“${query.trim()}” needs the scraping backend. Country trends below come straight from TikTok and work without it.`);
+      } else {
+        setError(caught instanceof Error ? caught.message : 'Fetch failed');
+      }
     } finally { setBusy(false); }
   };
 
