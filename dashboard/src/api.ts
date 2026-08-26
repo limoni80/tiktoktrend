@@ -27,10 +27,14 @@ export const BACKEND_CONFIGURED = true;
 export class ApiError extends Error {
   readonly code: string;
   readonly status: number;
-  constructor(message: string, code = 'request_failed', status = 0) {
+  /** Server-side diagnostics, when the API sends them. Shown in the UI so a
+   *  failure can be copied and reported instead of described. */
+  readonly debug: unknown;
+  constructor(message: string, code = 'request_failed', status = 0, debug: unknown = null) {
     super(message);
     this.code = code;
     this.status = status;
+    this.debug = debug;
   }
 }
 
@@ -74,15 +78,21 @@ async function request<T>(path: string, params?: Record<string, string | number 
   catch { throw new ApiError('The backend returned malformed JSON.', 'bad_json', response.status); }
 
   if (!response.ok) {
-    const error = (body as { error?: { code?: string; message?: string } })?.error;
-    throw new ApiError(error?.message ?? `Request failed (HTTP ${response.status})`, error?.code ?? 'http_error', response.status);
+    const payload = body as { error?: { code?: string; message?: string; debug?: unknown }; debug?: unknown };
+    const error = payload?.error;
+    throw new ApiError(
+      error?.message ?? `Request failed (HTTP ${response.status})`,
+      error?.code ?? 'http_error',
+      response.status,
+      error?.debug ?? payload?.debug ?? null,
+    );
   }
   return body as T;
 }
 
 export interface HealthResponse { status: string; service: string; uptimeSeconds: number; nodeEnv: string; persistentProfile: boolean }
 export interface ProgressResponse { active: boolean; phase: string; collected: number; matched: number; target: number; startedAt: number | null }
-export interface FeedResponse extends DatasetPayload { hasMore?: boolean; scanned?: number }
+export interface FeedResponse extends DatasetPayload { hasMore?: boolean; scanned?: number; debug?: unknown }
 
 export const api = {
   health: () => request<HealthResponse>('/api/health'),

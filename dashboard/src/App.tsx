@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import {
-  BarChart3, Bookmark, Clapperboard, Clock3, Download, Eye, Flame, Grid2X2, Hash, Heart, Import,
+  BarChart3, Bookmark, Bug, Clapperboard, Clock3, Copy, Download, Eye, Flame, Grid2X2, Hash, Heart, Import,
   LayoutDashboard, Megaphone, Menu, MessageCircle, Moon, Music2, Play, RefreshCw, Search, Share2, Sun,
   TrendingUp, Users, X,
 } from 'lucide-react';
@@ -85,6 +85,11 @@ function App() {
   const [needsBackend, setNeedsBackend] = useState(false);
   const [error, setError] = useState('');
   const [flash, setFlash] = useState('');
+  // Raw server-side diagnostics for the last fetch — shown verbatim so a bad
+  // search can be copied and reported instead of described.
+  const [diagnostics, setDiagnostics] = useState<{ when: string; label: string; payload: unknown } | null>(null);
+  const [diagOpen, setDiagOpen] = useState(false);
+  const [diagCopied, setDiagCopied] = useState(false);
   const [progress, setProgress] = useState<Progress | null>(null);
   const [region, setRegion] = useState('US');
   const [ccBusy, setCcBusy] = useState(false);
@@ -264,9 +269,32 @@ function App() {
           return;
         }
       }
+      recordError('background refresh failed', caught);
       if (caught instanceof ApiError && caught.code !== 'tiktok_empty') setError(caught.message);
     }
     finally { setRefreshing(false); }
+  };
+
+  /** Keep the last raw server diagnostics so a failure can be copied out. */
+  const recordDebug = (label: string, payload: unknown) => {
+    if (payload == null) return;
+    setDiagnostics({ when: new Date().toISOString(), label, payload });
+    setDiagCopied(false);
+  };
+  const recordError = (label: string, caught: unknown) => {
+    const apiError = caught instanceof ApiError ? caught : null;
+    setDiagnostics({
+      when: new Date().toISOString(),
+      label,
+      payload: {
+        message: caught instanceof Error ? caught.message : String(caught),
+        code: apiError?.code ?? null,
+        httpStatus: apiError?.status ?? null,
+        debug: apiError?.debug ?? null,
+      },
+    });
+    setDiagCopied(false);
+    setDiagOpen(true);
   };
 
   const runFetch = async (overrides?: { from?: string; to?: string }) => {
@@ -283,12 +311,14 @@ function App() {
           q: query.trim(), count: target,
           from: overrides?.from ?? filters.dateFrom, to: overrides?.to ?? filters.dateTo,
         });
-        if (!payload.videos?.length) throw new ApiError('No videos returned', 'tiktok_empty');
+        recordDebug(`search “${query.trim() || 'Explore'}”`, payload.debug);
+        if (!payload.videos?.length) throw new ApiError('No videos returned', 'tiktok_empty', 0, payload.debug);
         setVideos(payload.videos); setVideosMeta(payload); setDataMode('live');
         setHasMore(Boolean(payload.hasMore)); setScanned(payload.scanned ?? payload.videos.length);
         setFlash(`${payload.videos.length} real TikTok videos loaded${payload.keyword ? ` for “${payload.keyword}”` : ' from Explore'} — scroll for more`);
       }
     } catch (caught) {
+      recordError(`search “${query.trim() || 'Explore'}” failed`, caught);
       if (caught instanceof ApiError && BACKENDLESS.includes(caught.code)) {
         setNeedsBackend(caught.code.startsWith('backend'));
         setError(caught.code === 'browser_rate_limited'
@@ -318,6 +348,7 @@ function App() {
       setHasMore(Boolean(payload.hasMore) && (additions.length > 0 || Boolean(payload.hasMore)));
       if (!additions.length && !payload.hasMore) setFlash('TikTok has no more results for this search.');
     } catch (caught) {
+      recordError('load more failed', caught);
       setError(caught instanceof Error ? caught.message : 'Could not load more');
       setHasMore(false);
     } finally { setLoadingMore(false); }
@@ -465,6 +496,25 @@ function App() {
         {error && <div className="alert error"><span>{error}</span><button onClick={() => setError('')}><X size={15} /></button></div>}
         {flash && !busy && <div className="alert ok"><span>{flash}</span><button onClick={() => setFlash('')}><X size={15} /></button></div>}
         {USE_DEMO_DATA && dataMode === 'demo' && <div className="alert warn"><span><strong>DEMO MODE (VITE_USE_DEMO_DATA=true)</strong> — these videos are illustrative sample data, not real TikTok results. Search above to replace them with live data.</span></div>}
+        {diagnostics && <div className="diagnostics">
+          <button className="diag-head" onClick={() => setDiagOpen((open) => !open)}>
+            <Bug size={14} />
+            <strong>Fetch log</strong>
+            <span>{diagnostics.label} · {new Date(diagnostics.when).toLocaleTimeString()}</span>
+            <em>{diagOpen ? 'hide' : 'show'}</em>
+          </button>
+          {diagOpen && <>
+            <pre>{JSON.stringify(diagnostics.payload, null, 2)}</pre>
+            <div className="diag-actions">
+              <button onClick={() => {
+                const text = JSON.stringify({ label: diagnostics.label, when: diagnostics.when, payload: diagnostics.payload }, null, 2);
+                navigator.clipboard?.writeText(text).then(() => { setDiagCopied(true); }).catch(() => setDiagCopied(false));
+              }}><Copy size={13} /> {diagCopied ? 'Copied' : 'Copy log'}</button>
+              <button className="ghost" onClick={() => { setDiagnostics(null); setDiagOpen(false); }}>Clear</button>
+            </div>
+          </>}
+        </div>}
+
         {needsBackend && <div className="alert warn">
           <span><strong>Keyword search needs the scraping backend.</strong> Country trends work right here — they come straight from TikTok with no backend, no cookies and no login.</span>
           <button className="ghost" onClick={fetchCreativeCenter} disabled={ccBusy}>{ccBusy ? 'Loading trends…' : 'Load real trends'}</button>

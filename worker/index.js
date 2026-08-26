@@ -25,7 +25,7 @@ import {
 } from '../backend/src/normalize.mjs';
 
 const TIKTOK_LIST_PATTERN =
-  /\/api\/(explore\/item_list|recommend\/item_list|search\/general\/full|search\/item\/full|search\/general\/preview|item\/detail|related\/item_list)\//;
+  /\/api\/(explore\/item_list|recommend\/item_list|challenge\/item_list|search\/general\/full|search\/item\/full|search\/video\/full|search\/general\/preview|item\/detail|related\/item_list)\//;
 
 const UA = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36';
 const TRENDS_HOSTS = ['ads.us.tiktok.com', 'ads.tiktok.com', 'ads-sg.tiktok.com'];
@@ -134,10 +134,33 @@ async function searchWithBrowser(env, { keyword, want, knownIds, dateRange }) {
   const rangeEnd = dateRange.to ? Date.parse(`${dateRange.to}T23:59:59Z`) : null;
   const label = keyword ? `TikTok.com · search · “${keyword}”` : 'TikTok.com · Explore';
 
+  /**
+   * "trumps" must still match a caption that says "Trump", so a token also
+   * matches its singular stem. Only a real word is stemmed (>= 5 chars), so
+   * short keywords keep matching exactly.
+   */
+  const hasToken = (haystack, token) => {
+    if (haystack.includes(token)) return true;
+    if (token.length >= 5) {
+      const stem = token.replace(/(ies|es|s)$/, '');
+      if (stem.length >= 4 && haystack.includes(stem)) return true;
+    }
+    return false;
+  };
+
+  /**
+   * Where each video came from. Items served by TikTok's own search or hashtag
+   * endpoints are already relevance-ranked by TikTok, so they are kept even
+   * when the keyword never appears literally in the caption. Items from the
+   * generic recommendation feed are not, and must match the keyword.
+   */
+  const sources = new Map();
+
   const matches = (video) => {
-    if (tokens.length) {
+    const trusted = sources.get(video.id) === 'search';
+    if (tokens.length && !trusted) {
       const haystack = `${video.caption} ${video.hashtags.join(' ')} ${video.creator.username ?? ''} ${video.creator.displayName} ${video.soundName ?? ''}`.toLowerCase();
-      if (!tokens.every((token) => haystack.includes(token))) return false;
+      if (!tokens.every((token) => hasToken(haystack, token))) return false;
     }
     if (rangeStart == null && rangeEnd == null) return true;
     if (!video.publishedAt) return false;               // never guess a date
@@ -146,10 +169,23 @@ async function searchWithBrowser(env, { keyword, want, knownIds, dateRange }) {
   };
 
   const collected = new Map();
-  const add = (raw) => {
+  const add = (raw, source = 'feed') => {
     const video = normalizeTikTokItem(raw, label);
-    if (video && !collected.has(video.id)) collected.set(video.id, video);
+    if (!video) return;
+    if (!collected.has(video.id)) collected.set(video.id, video);
+    if (source === 'search' || !sources.has(video.id)) sources.set(video.id, source);
   };
+
+  // Diagnostics: returned with every search so a failure can be read off the
+  // response instead of guessed at.
+  const debug = {
+    keyword, want, knownIds: knownIds.size, dateRange,
+    reusedSession: false, strategies: [], apiHits: {},
+    collectedTotal: 0, matchedTotal: 0, fromSearchEndpoints: 0,
+    loginWall: false, captchaWall: false, bodySnippet: null, sampleCaptions: [],
+    startedAt: new Date().toISOString(), tookMs: 0,
+  };
+  const startedMs = Date.now();
 
   let browser;
   let reused = false;
@@ -183,10 +219,24 @@ async function searchWithBrowser(env, { keyword, want, knownIds, dateRange }) {
 
     const page = await browser.newPage();
 
+    // Which endpoint a batch of items came from decides whether it is trusted
+    // as a keyword match: /api/search/... and /api/challenge/... are targeted,
+    // /api/recommend/... is the generic "For You" feed.
+    const endpointSource = (pathname) => (/\/(search|challenge)\//.test(pathname) ? 'search' : 'feed');
+
     page.on('response', async (response) => {
       try {
-        if (!TIKTOK_LIST_PATTERN.test(response.url())) return;
-        itemsFromListBody(safeParse(await response.text())).forEach(add);
+        const responseUrl = response.url();
+        if (!TIKTOK_LIST_PATTERN.test(responseUrl)) return;
+        const key = new URL(responseUrl).pathname;
+        const source = endpointSource(key);
+        const before = collected.size;
+        itemsFromListBody(safeParse(await response.text())).forEach((item) => add(item, source));
+        const gained = collected.size - before;
+        debug.apiHits[key] = debug.apiHits[key] ?? { calls: 0, items: 0, source };
+        debug.apiHits[key].calls += 1;
+        debug.apiHits[key].items += gained;
+        if (source === 'search') debug.fromSearchEndpoints += gained;
       } catch { /* partial or non-JSON body */ }
     });
 
@@ -194,37 +244,85 @@ async function searchWithBrowser(env, { keyword, want, knownIds, dateRange }) {
     await page.goto('https://www.tiktok.com/', { waitUntil: 'domcontentloaded', timeout: 25_000 }).catch(() => {});
     await new Promise((resolve) => setTimeout(resolve, 1_200));
 
-    const target = keyword
-      ? `https://www.tiktok.com/search?q=${encodeURIComponent(keyword)}`
-      : 'https://www.tiktok.com/explore';
-    await page.goto(target, { waitUntil: 'domcontentloaded', timeout: 30_000 });
-    await new Promise((resolve) => setTimeout(resolve, 2_000));
-
-    const embedded = await page.evaluate(() =>
-      document.getElementById('__UNIVERSAL_DATA_FOR_REHYDRATION__')?.textContent
-      ?? document.getElementById('SIGI_STATE')?.textContent ?? null).catch(() => null);
-    if (embedded) collectEmbeddedItems(embedded).forEach(add);
-
     const fresh = () => [...collected.values()].filter((video) => matches(video) && !knownIds.has(video.id));
 
+    // TikTok does not always serve /search to a datacentre IP. Try the search
+    // page, then the video-only search tab, then the hashtag page — each is a
+    // different endpoint, and the first one that yields matches wins.
+    const slug = keyword.replace(/[^a-z0-9]+/gi, '').toLowerCase();
+    const plan = keyword
+      ? [
+          { name: 'search', url: `https://www.tiktok.com/search?q=${encodeURIComponent(keyword)}`, trusted: true },
+          { name: 'search-video-tab', url: `https://www.tiktok.com/search/video?q=${encodeURIComponent(keyword)}`, trusted: true },
+          ...(slug ? [{ name: 'hashtag', url: `https://www.tiktok.com/tag/${encodeURIComponent(slug)}`, trusted: true }] : []),
+        ]
+      : [{ name: 'explore', url: 'https://www.tiktok.com/explore', trusted: false }];
+
     let stagnant = 0;
-    let previous = collected.size;
-    for (let round = 0; round < 14 && fresh().length < want && stagnant < 5; round += 1) {
-      await page.evaluate(() => window.scrollBy(0, document.body.scrollHeight)).catch(() => {});
-      await new Promise((resolve) => setTimeout(resolve, 1_100));
-      stagnant = collected.size === previous ? stagnant + 1 : 0;
-      previous = collected.size;
+
+    for (const step of plan) {
+      const stepStarted = Date.now();
+      const record = { name: step.name, url: step.url, finalUrl: null, title: null, scrollRounds: 0, collectedAfter: 0, matchedAfter: 0, error: null, tookMs: 0 };
+      debug.strategies.push(record);
+
+      try {
+        await page.goto(step.url, { waitUntil: 'domcontentloaded', timeout: 30_000 });
+        await new Promise((resolve) => setTimeout(resolve, 2_500));
+        record.finalUrl = await page.url();
+        record.title = await page.title().catch(() => null);
+
+        const embedded = await page.evaluate(() =>
+          document.getElementById('__UNIVERSAL_DATA_FOR_REHYDRATION__')?.textContent
+          ?? document.getElementById('SIGI_STATE')?.textContent ?? null).catch(() => null);
+        if (embedded) collectEmbeddedItems(embedded).forEach((item) => add(item, step.trusted ? 'search' : 'feed'));
+
+        stagnant = 0;
+        let previous = collected.size;
+        for (let round = 0; round < 14 && fresh().length < want && stagnant < 5; round += 1) {
+          await page.evaluate(() => window.scrollBy(0, document.body.scrollHeight)).catch(() => {});
+          await new Promise((resolve) => setTimeout(resolve, 1_100));
+          stagnant = collected.size === previous ? stagnant + 1 : 0;
+          previous = collected.size;
+          record.scrollRounds = round + 1;
+        }
+
+        const body = await page.evaluate(() => document.body.innerText.slice(0, 400)).catch(() => '');
+        debug.bodySnippet = body.replace(/\s+/g, ' ').slice(0, 300);
+        if (/log in|sign up|se connecter/i.test(body)) debug.loginWall = true;
+        if (/verify to continue|captcha|are a robot|security check/i.test(body)) debug.captchaWall = true;
+      } catch (stepError) {
+        record.error = String(stepError?.message ?? stepError).slice(0, 200);
+      }
+
+      record.collectedAfter = collected.size;
+      record.matchedAfter = fresh().length;
+      record.tookMs = Date.now() - stepStarted;
+
+      if (record.matchedAfter >= Math.min(want, 1)) break;      // this route worked
+      if (debug.captchaWall) break;                             // no point retrying
     }
+
+    debug.reusedSession = reused;
+    debug.collectedTotal = collected.size;
+    debug.matchedTotal = fresh().length;
+    debug.sampleCaptions = [...collected.values()].slice(0, 5)
+      .map((video) => `[${sources.get(video.id)}] @${video.creator.username ?? '?'}: ${String(video.caption).slice(0, 70)}`);
+    debug.tookMs = Date.now() - startedMs;
 
     const batch = fresh().slice(0, want);
     if (!batch.length && !knownIds.size) {
-      const body = await page.evaluate(() => document.body.innerText.slice(0, 300)).catch(() => '');
-      if (/verify|captcha|robot/i.test(body)) {
-        throw Object.assign(new Error('TikTok served a verification page to this Worker. Try again shortly.'), { code: 'tiktok_captcha', status: 429 });
+      if (debug.captchaWall) {
+        throw Object.assign(new Error('TikTok served a verification page to this Worker. Try again shortly.'), { code: 'tiktok_captcha', status: 429, debug });
       }
-      throw Object.assign(new Error(keyword ? `TikTok returned no public videos for “${keyword}”.` : 'TikTok returned no public videos.'), { code: 'tiktok_empty', status: 502 });
+      // The browser worked but nothing matched: say which of the two it was.
+      const why = collected.size === 0
+        ? `TikTok served no video data at all for “${keyword}” (last page title: ${debug.strategies.at(-1)?.title ?? 'unknown'}${debug.loginWall ? ', login wall detected' : ''}).`
+        : debug.fromSearchEndpoints === 0
+          ? `TikTok loaded ${collected.size} videos but never answered a search request — only its generic feed was served to this Worker, so nothing matches “${keyword}”.`
+          : `TikTok returned ${debug.fromSearchEndpoints} search results, but none of them are inside the selected date range for “${keyword}”.`;
+      throw Object.assign(new Error(why), { code: 'tiktok_empty', status: 502, debug });
     }
-    return { videos: batch, hasMore: stagnant < 5, scanned: collected.size, reusedSession: reused };
+    return { videos: batch, hasMore: stagnant < 5, scanned: collected.size, reusedSession: reused, debug };
   } finally {
     // disconnect() leaves the browser running so the next request can reuse it;
     // close() would force the next one to launch and burn the launch quota.
@@ -339,7 +437,8 @@ async function handleApi(request, env, url) {
     } catch (error) {
       // Fall through to a configured backend rather than failing outright.
       if (env.BACKEND_URL) return proxyBackend(request, url, env);
-      return fail(error.status ?? 502, error.code ?? 'search_failed', error.message ?? 'Search failed');
+      return fail(error.status ?? 502, error.code ?? 'search_failed', error.message ?? 'Search failed',
+        error.debug ? { debug: error.debug } : {});
     }
   }
 

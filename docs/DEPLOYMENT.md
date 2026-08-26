@@ -199,3 +199,19 @@ node backend/scripts/verify.mjs <backend> dog
 | `429 tiktok_captcha` | TikTok challenged the server IP | Retry later, or set `TIKTOK_COOKIE` |
 | CORS error in the console | Origin not allow-listed | Add the exact origin to `ALLOWED_ORIGINS` |
 | Playback fails after a while | TikTok play URLs expire in hours | Re-run the search |
+| A search returns 0 results | TikTok served the generic feed instead of search results to the Cloudflare IP | Open **Fetch log** under the search bar and read `apiHits` / `fromSearchEndpoints`. `fromSearchEndpoints: 0` means no `/api/search/...` response ever arrived — the Worker then retries the video tab and the hashtag page automatically; if all three fail, that IP is being served the feed only. |
+
+### Reading the fetch log
+
+Every `/api/fetch-tiktok` response — success or failure — now carries a `debug`
+object, and the dashboard shows it in a collapsible **Fetch log** panel with a
+copy button. Fields worth reading first:
+
+| Field | Meaning |
+| --- | --- |
+| `strategies[]` | Each route tried (`search`, `search-video-tab`, `hashtag`), its final URL, page title, scroll rounds, and how many videos matched after it |
+| `apiHits` | Per TikTok endpoint: how many responses arrived, how many videos they contributed, and whether that endpoint counts as `search` or generic `feed` |
+| `fromSearchEndpoints` | Videos that came from a real search/hashtag endpoint. `0` = TikTok never answered a search request |
+| `loginWall` / `captchaWall` | TikTok showed a login or verification page instead of results |
+| `bodySnippet` | First 300 characters of the rendered page — the fastest way to see what TikTok actually served |
+| `sampleCaptions` | First five collected videos, tagged `[search]` or `[feed]` |
