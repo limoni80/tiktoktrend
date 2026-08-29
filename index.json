@@ -1,24 +1,34 @@
 {
-  "generatedAt": "2026-08-29T21:26:47.968Z",
-  "startedAt": "2026-08-29T21:22:18.643Z",
+  "generatedAt": "2026-08-29T21:29:36.403Z",
+  "startedAt": "2026-08-29T21:29:00.922Z",
   "repo": "limoni80/tiktoktrend",
-  "runUrl": "https://github.com/limoni80/tiktoktrend/actions/runs/33275876061",
+  "runUrl": "https://github.com/limoni80/tiktoktrend/actions/runs/33276156858",
   "entries": [
     {
       "kind": "feed",
       "file": "feed.json",
       "keyword": null,
-      "status": "ok",
+      "status": "carried",
       "count": 31,
       "updatedAt": "2026-08-29T21:22:32.551Z",
       "lastSuccessAt": "2026-08-29T21:22:32.551Z"
     },
     {
       "kind": "search",
+      "file": "search/origami-dragon.json",
+      "keyword": "origami dragon",
+      "slug": "origami-dragon",
+      "status": "ok",
+      "count": 60,
+      "updatedAt": "2026-08-29T21:29:32.770Z",
+      "lastSuccessAt": "2026-08-29T21:29:32.770Z"
+    },
+    {
+      "kind": "search",
       "file": "search/trump.json",
       "keyword": "trump",
       "slug": "trump",
-      "status": "ok",
+      "status": "carried",
       "count": 60,
       "updatedAt": "2026-08-29T21:23:01.959Z",
       "lastSuccessAt": "2026-08-29T21:23:01.959Z"
@@ -28,7 +38,7 @@
       "file": "search/ai-tools.json",
       "keyword": "ai tools",
       "slug": "ai-tools",
-      "status": "ok",
+      "status": "carried",
       "count": 60,
       "updatedAt": "2026-08-29T21:23:31.312Z",
       "lastSuccessAt": "2026-08-29T21:23:31.312Z"
@@ -38,7 +48,7 @@
       "file": "search/skincare.json",
       "keyword": "skincare",
       "slug": "skincare",
-      "status": "ok",
+      "status": "carried",
       "count": 60,
       "updatedAt": "2026-08-29T21:24:03.160Z",
       "lastSuccessAt": "2026-08-29T21:24:03.160Z"
@@ -48,7 +58,7 @@
       "file": "search/dropshipping.json",
       "keyword": "dropshipping",
       "slug": "dropshipping",
-      "status": "ok",
+      "status": "carried",
       "count": 60,
       "updatedAt": "2026-08-29T21:24:34.984Z",
       "lastSuccessAt": "2026-08-29T21:24:34.984Z"
@@ -58,7 +68,7 @@
       "file": "search/morocco.json",
       "keyword": "morocco",
       "slug": "morocco",
-      "status": "ok",
+      "status": "carried",
       "count": 60,
       "updatedAt": "2026-08-29T21:25:08.677Z",
       "lastSuccessAt": "2026-08-29T21:25:08.677Z"
@@ -68,7 +78,7 @@
       "file": "search/flower.json",
       "keyword": "flower",
       "slug": "flower",
-      "status": "ok",
+      "status": "carried",
       "count": 60,
       "updatedAt": "2026-08-29T21:25:41.827Z",
       "lastSuccessAt": "2026-08-29T21:25:41.827Z"
@@ -78,7 +88,7 @@
       "file": "search/dog.json",
       "keyword": "dog",
       "slug": "dog",
-      "status": "ok",
+      "status": "carried",
       "count": 60,
       "updatedAt": "2026-08-29T21:26:11.984Z",
       "lastSuccessAt": "2026-08-29T21:26:11.984Z"
@@ -88,7 +98,7 @@
       "file": "search/messi.json",
       "keyword": "messi",
       "slug": "messi",
-      "status": "ok",
+      "status": "carried",
       "count": 60,
       "updatedAt": "2026-08-29T21:26:45.746Z",
       "lastSuccessAt": "2026-08-29T21:26:45.746Z"
@@ -96,58 +106,65 @@
   ],
   "keywords": [
     {
+      "keyword": "origami dragon",
+      "slug": "origami-dragon",
+      "status": "ok",
+      "count": 60,
+      "updatedAt": "2026-08-29T21:29:32.770Z"
+    },
+    {
       "keyword": "trump",
       "slug": "trump",
-      "status": "ok",
+      "status": "carried",
       "count": 60,
       "updatedAt": "2026-08-29T21:23:01.959Z"
     },
     {
       "keyword": "ai tools",
       "slug": "ai-tools",
-      "status": "ok",
+      "status": "carried",
       "count": 60,
       "updatedAt": "2026-08-29T21:23:31.312Z"
     },
     {
       "keyword": "skincare",
       "slug": "skincare",
-      "status": "ok",
+      "status": "carried",
       "count": 60,
       "updatedAt": "2026-08-29T21:24:03.160Z"
     },
     {
       "keyword": "dropshipping",
       "slug": "dropshipping",
-      "status": "ok",
+      "status": "carried",
       "count": 60,
       "updatedAt": "2026-08-29T21:24:34.984Z"
     },
     {
       "keyword": "morocco",
       "slug": "morocco",
-      "status": "ok",
+      "status": "carried",
       "count": 60,
       "updatedAt": "2026-08-29T21:25:08.677Z"
     },
     {
       "keyword": "flower",
       "slug": "flower",
-      "status": "ok",
+      "status": "carried",
       "count": 60,
       "updatedAt": "2026-08-29T21:25:41.827Z"
     },
     {
       "keyword": "dog",
       "slug": "dog",
-      "status": "ok",
+      "status": "carried",
       "count": 60,
       "updatedAt": "2026-08-29T21:26:11.984Z"
     },
     {
       "keyword": "messi",
       "slug": "messi",
-      "status": "ok",
+      "status": "carried",
       "count": 60,
       "updatedAt": "2026-08-29T21:26:45.746Z"
     }
