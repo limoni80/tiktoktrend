@@ -1,9 +1,19 @@
 {
-  "generatedAt": "2026-08-29T22:44:24.815Z",
-  "startedAt": "2026-08-29T22:43:34.944Z",
+  "generatedAt": "2026-08-29T22:46:53.434Z",
+  "startedAt": "2026-08-29T22:46:04.247Z",
   "repo": "limoni80/tiktoktrend",
-  "runUrl": "https://github.com/limoni80/tiktoktrend/actions/runs/33279271391",
+  "runUrl": "https://github.com/limoni80/tiktoktrend/actions/runs/33279369450",
   "entries": [
+    {
+      "kind": "search",
+      "file": "search/chicken-recipe.json",
+      "keyword": "chicken recipe",
+      "slug": "chicken-recipe",
+      "status": "ok",
+      "count": 120,
+      "updatedAt": "2026-08-29T22:46:40.932Z",
+      "lastSuccessAt": "2026-08-29T22:46:40.932Z"
+    },
     {
       "kind": "search",
       "file": "search/chicken-meal-prep-ideas.json",
@@ -215,6 +225,13 @@
     }
   ],
   "keywords": [
+    {
+      "keyword": "chicken recipe",
+      "slug": "chicken-recipe",
+      "status": "ok",
+      "count": 120,
+      "updatedAt": "2026-08-29T22:46:40.932Z"
+    },
     {
       "keyword": "chicken meal prep ideas",
       "slug": "chicken-meal-prep-ideas",
