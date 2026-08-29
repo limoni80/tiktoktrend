@@ -20,6 +20,36 @@ fixes `Unexpected token '<'`: those paths can no longer return `index.html`.
 | `/api/fetch-tiktok` (keyword search) | no | yes |
 | `/api/fetch-ads` (Top Ads) | no | yes |
 
+## 0a. Direct HTTP search (no browser, no quota) — the primary path
+
+`worker/tiktok-http.js` searches TikTok with plain `fetch` calls from the
+Worker. No Chromium, no Browser Rendering quota, no cookies of yours, no login:
+
+1. one request to `https://www.tiktok.com/` collects the anonymous cookies
+   TikTok gives any visitor (cached in the Worker for 15 minutes);
+2. `/tag/<keyword>`, `/search?q=`, `/@user` are fetched as HTML — TikTok
+   server-renders them, so the videos and their metrics are already inside the
+   `__UNIVERSAL_DATA_FOR_REHYDRATION__` script tag;
+3. `/api/challenge/item_list/`, `/api/post/item_list/` and
+   `/api/search/*/full/` are then called with those cookies for cursor
+   pagination.
+
+Check what TikTok actually answers from your Worker:
+
+```bash
+curl -s "https://tiktoktrend.limoniastrum.workers.dev/api/probe?q=messi" | jq '.verdict, .usable, .results'
+```
+
+`verdict` says in one line whether browser-free search works; `results` lists
+every route with its HTTP status, byte count, whether an embedded payload was
+found and how many items it held. The dashboard runs the same call from the
+**Test connection** button next to the search bar.
+
+If `usable` is empty, TikTok is refusing Cloudflare's IPs — then the GitHub
+Actions datasets below, or a backend on a residential IP, are the answer.
+
+---
+
 ## 0b. Unlimited keyword search with GitHub Actions (no browser quota)
 
 Cloudflare's free Browser Rendering plan allows only **2 browser launches per
@@ -257,7 +287,7 @@ node backend/scripts/verify.mjs <backend> dog
 | `429 tiktok_captcha` | TikTok challenged the server IP | Retry later, or set `TIKTOK_COOKIE` |
 | CORS error in the console | Origin not allow-listed | Add the exact origin to `ALLOWED_ORIGINS` |
 | Playback fails after a while | TikTok play URLs expire in hours | Re-run the search |
-| `browser_rate_limited` / “Rate limit exceeded” | Browser Rendering on the free plan allows **2 concurrent browsers and 2 new browsers per minute per account** | The Worker now reuses idle browser sessions, retries a 429 for up to 40 s, and serves a cached copy of the same search (up to 1 h old, labelled in the UI) instead of failing. If it still fails, wait a minute — or add a Workers Paid plan for higher limits |
+| `browser_rate_limited` / “Rate limit exceeded” | Browser Rendering on the Workers Free plan allows 3 concurrent browsers, one new browser per 20s, and **10 minutes of browser time per day per account** — a 429 with zero open sessions usually means the daily 10 minutes are spent | Direct HTTP (§0a) now runs first and needs no browser at all, so this should no longer block a search. The browser is only the last resort, and a failure falls back to a labelled dataset or cached copy |
 | A search returns 0 results | TikTok served the generic feed instead of search results to the Cloudflare IP | Open **Fetch log** under the search bar and read `apiHits` / `fromSearchEndpoints`. `fromSearchEndpoints: 0` means no `/api/search/...` response ever arrived — the Worker then retries the video tab and the hashtag page automatically; if all three fail, that IP is being served the feed only. |
 
 ### Reading the fetch log

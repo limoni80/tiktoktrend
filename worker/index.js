@@ -11,15 +11,23 @@
  *   /api/fetch         → REAL TikTok Creative Center trends, fetched directly
  *                        from Cloudflare. No browser, no cookies, no login.
  *   /api/video         → streams TikTok CDN media (Range supported)
- *   /api/fetch-tiktok  → keyword search + full engagement metrics. Needs the
- *   /api/fetch-ads       Node/Playwright backend, so it is proxied to
- *   /api/progress        BACKEND_URL when that variable is set, and returns a
- *   /api/datasets        structured JSON error explaining why when it is not.
+ *   /api/fetch-tiktok  → keyword search + full engagement metrics. Resolved in
+ *                        this order: GitHub Actions dataset → direct HTTP
+ *                        (worker/tiktok-http.js, no browser, no quota) →
+ *                        Browser Rendering (last resort, 10 min/day on the
+ *                        free plan) → BACKEND_URL → labelled cached data.
+ *   /api/probe         → runs every browser-free route once and reports what
+ *                        TikTok actually answered, from Cloudflare's own IP.
+ *   /api/catalogue     → what the GitHub Actions collector has ready
+ *   /api/fetch-ads     → proxied to BACKEND_URL when set
+ *   /api/progress      → poller, always answers
+ *   /api/datasets      → cached feed + catalogue
  *
  * Everything else is served from dashboard/dist via the ASSETS binding.
  */
 
 import puppeteer from '@cloudflare/puppeteer';
+import { probeHttp, searchOverHttp } from './tiktok-http.js';
 import {
   collectEmbeddedItems, itemsFromListBody, normalizeTikTokItem, normalizeTrendEntity, safeParse,
 } from '../backend/src/normalize.mjs';
@@ -33,15 +41,17 @@ const CONTENT_LABELS = ['11001','11002','11003','11004','11005','11007','11008',
 const ALLOWED_REGIONS = new Set(['US','FR','DE','IT','ES','GB','AR','AU','BR','CA','CO','EG','ID','IL','JP','KR','MY','MX','PH','SA','SG','ZA','TW','TH','TR','AE','VN']);
 const ALLOWED_PERIODS = new Set(['7', '30']);
 /**
- * Cloudflare Browser Rendering (free plan) allows only **2 concurrent browsers
- * and 2 new browsers per minute per account**. Launching one per search burns
- * that budget instantly, so:
- *   1. an idle session is always reused before launching (a reuse is free),
- *   2. a 429 is retried with backoff instead of being thrown at the user,
- *   3. results are cached, and a cached copy is served when the quota is gone.
+ * Cloudflare Browser Rendering on the Workers **Free** plan: 3 concurrent
+ * browsers, one new browser every 20 seconds, and **10 minutes of browser time
+ * per day for the whole account**. That daily cap is a wall no retry loop can
+ * climb, which is why `worker/tiktok-http.js` (plain fetch, no browser) is the
+ * primary search path and this browser is only the last resort.
+ *
+ * When it is used: reuse an idle session first (free), retry a 429 briefly,
+ * keep the browser hot for the next request, and cache the result.
  */
 const BROWSER_KEEP_ALIVE_MS = 600_000;   // keep the browser hot for reuse
-const BROWSER_ACQUIRE_BUDGET_MS = 40_000; // how long we wait out a 429
+const BROWSER_ACQUIRE_BUDGET_MS = 12_000; // brief retry; HTTP already tried
 const SEARCH_CACHE_FRESH_S = 120;         // serve a cached search without a browser
 const SEARCH_CACHE_MAX_S = 3_600;         // keep it this long as a 429 fallback
 const DATASET_FRESH_S = 1_800;            // a GitHub Actions dataset this recent is served as-is
@@ -200,7 +210,7 @@ async function acquireBrowser(env, debug) {
   const waitedMs = Date.now() - startedAt;
   debug.browserAcquire = { reused: false, attempts: attempt, waitedMs, trail, error: lastRateLimitDetail };
   throw Object.assign(
-    new Error(`Cloudflare Browser Rendering is out of browser slots (free plan: 2 browsers, 2 launches per minute per account). Waited ${Math.round(waitedMs / 1000)}s and retried ${attempt}×. Wait a minute and search again — country trends need no browser and keep working.`),
+    new Error(`Cloudflare Browser Rendering has no slot free (Workers Free plan: 3 browsers, one new browser per 20s, and 10 minutes of browser time per DAY for the whole account — a repeated 429 with no sessions open usually means the daily 10 minutes are spent). Waited ${Math.round(waitedMs / 1000)}s over ${attempt} attempts. This is only the fallback path: direct HTTP and country trends need no browser at all.`),
     { code: 'browser_rate_limited', status: 429, debug },
   );
 }
@@ -536,6 +546,17 @@ async function handleApi(request, env, url, ctx) {
   }
   // Catalogue of what GitHub Actions has collected, so the UI can show which
   // keywords answer instantly and how old each one is.
+  // Measures, from Cloudflare's own IP, which browser-free routes TikTok
+  // actually answers. Run this before blaming anything else.
+  if (path === '/api/probe') {
+    const keyword = String(url.searchParams.get('q') ?? 'fyp').trim().slice(0, 80);
+    try {
+      return json(await probeHttp(env, keyword));
+    } catch (error) {
+      return fail(502, 'probe_failed', String(error?.message ?? error).slice(0, 300));
+    }
+  }
+
   if (path === '/api/catalogue') {
     const index = await fetchDataset(env, 'index.json');
     if (!index) return json({ configured: Boolean(datasetBase(env)), generatedAt: null, keywords: [], entries: [] });
@@ -551,7 +572,7 @@ async function handleApi(request, env, url, ctx) {
     });
   }
 
-  if (path === '/api/fetch-tiktok' && env.MYBROWSER) {
+  if (path === '/api/fetch-tiktok') {
     const keyword = String(url.searchParams.get('q') ?? '').trim().slice(0, 80);
     const want = Math.min(60, Math.max(5, Number(url.searchParams.get('count') ?? 40) || 40));
     const knownIds = new Set(String(url.searchParams.get('known') ?? '').split(',').map((id) => id.trim()).filter(Boolean));
@@ -584,20 +605,59 @@ async function handleApi(request, env, url, ctx) {
       return json({ ...cached.payload, cached: true, cacheAgeSeconds: cached.ageSeconds });
     }
 
+    const store = async (payload) => {
+      if (!cacheable || !payload.videos?.length) return;
+      const stored = cache.put(cacheKey, new Response(JSON.stringify(payload), {
+        headers: { 'Content-Type': 'application/json; charset=utf-8', 'Cache-Control': `max-age=${SEARCH_CACHE_MAX_S}` },
+      })).catch(() => {});
+      if (ctx?.waitUntil) ctx.waitUntil(stored); else await stored;
+    };
+
+    // 2. HTTP provider — plain fetch, no browser, no quota, no login. This is
+    //    the path that makes search unlimited, so it runs BEFORE the browser.
+    let httpDebug = null;
+    if (!wantsLive) {
+      try {
+        const result = await searchOverHttp(env, { keyword, want, knownIds, dateRange });
+        httpDebug = result.debug;
+        if (result.videos.length) {
+          const payload = {
+            ...result,
+            source: keyword ? `TikTok.com · “${keyword}” (direct HTTP, no browser)` : 'TikTok.com Explore (direct HTTP, no browser)',
+            keyword: keyword || null,
+            provider: 'http',
+            fetchedAt: new Date().toISOString(),
+          };
+          await store(payload);
+          return json(payload);
+        }
+      } catch (error) {
+        httpDebug = { provider: 'http', error: String(error?.message ?? error).slice(0, 200) };
+      }
+    }
+
+    // 3. Browser Rendering — last resort only, because its free quota is 10
+    //    minutes of browser time PER DAY for the whole account.
+    if (!env.MYBROWSER) {
+      if (env.BACKEND_URL) return proxyBackend(request, url, env);
+      const entry = cacheable ? await fetchDataset(env, keyword ? `search/${slugify(keyword)}.json` : 'feed.json') : null;
+      if (entry?.payload?.videos?.length) {
+        return json({ ...datasetResponse(entry, { reason: 'TikTok served no data over direct HTTP just now.' }), debug: { http: httpDebug } });
+      }
+      return fail(502, 'tiktok_empty', `TikTok returned no public videos for “${keyword}” over direct HTTP, and no browser or backend is configured.`, { debug: { http: httpDebug } });
+    }
+
     try {
       const result = await searchWithBrowser(env, { keyword, want, knownIds, dateRange });
       const payload = {
         ...result,
         source: keyword ? `TikTok.com search · “${keyword}”` : 'TikTok.com Explore feed',
         keyword: keyword || null,
+        provider: 'browser',
+        debug: { browser: result.debug, http: httpDebug },
         fetchedAt: new Date().toISOString(),
       };
-      if (cacheable && payload.videos?.length) {
-        const stored = cache.put(cacheKey, new Response(JSON.stringify(payload), {
-          headers: { 'Content-Type': 'application/json; charset=utf-8', 'Cache-Control': `max-age=${SEARCH_CACHE_MAX_S}` },
-        })).catch(() => {});
-        if (ctx?.waitUntil) ctx.waitUntil(stored); else await stored;
-      }
+      await store(payload);
       return json(payload);
     } catch (error) {
       // Fall through to a configured backend rather than failing outright.
@@ -611,7 +671,7 @@ async function handleApi(request, env, url, ctx) {
           const reason = error.code === 'browser_rate_limited'
             ? "Cloudflare's browser quota is used up right now."
             : 'A live TikTok run did not return results just now.';
-          return json({ ...datasetResponse(entry, { reason }), debug: { live: error.debug ?? null, fallback: 'github-dataset' } });
+          return json({ ...datasetResponse(entry, { reason }), debug: { browser: error.debug ?? null, http: httpDebug, fallback: 'github-dataset' } });
         }
       }
 
@@ -624,11 +684,11 @@ async function handleApi(request, env, url, ctx) {
           stale: true,
           cacheAgeSeconds: cached.ageSeconds,
           notice: `Cloudflare's browser quota is used up right now, so these are the results from ${Math.round(cached.ageSeconds / 60)} min ago. Search again in a minute for fresh ones.`,
-          debug: { ...(error.debug ?? {}), servedFromCache: true },
+          debug: { browser: error.debug ?? null, http: httpDebug, servedFromCache: true },
         });
       }
       return fail(error.status ?? 502, error.code ?? 'search_failed', error.message ?? 'Search failed',
-        error.debug ? { debug: error.debug } : {});
+        { debug: { browser: error.debug ?? null, http: httpDebug } });
     }
   }
 

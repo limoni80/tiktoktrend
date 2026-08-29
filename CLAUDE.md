@@ -17,8 +17,8 @@ sorting and unbounded pagination.
 | `worker/` | Cloudflare Worker script. Owns `/api/*` on the deployed site and serves the SPA from the ASSETS binding. |
 | `dashboard/` | React + Vite SPA. Deployed to Cloudflare Workers as static assets. |
 | `backend/` | Node + Playwright scraping API. **Must run on a real Node host.** |
-| `tiktok-profile-scraper-main/` | Apify profile collector; source of the field mapping reused by `backend/src/normalize.mjs`. |
-| `tiktok-scraper-master/` | Legacy 2020 scraper kept for reference. Its internal endpoints are dead — do not wire it up as a live provider. |
+| `tiktok-profile-scraper-main/` | Apify profile collector. Source of the field mapping in `backend/src/normalize.mjs` **and of the browser-free technique** in `worker/tiktok-http.js`: plain HTTP + `__UNIVERSAL_DATA_FOR_REHYDRATION__` + cookies from the first response. |
+| `tiktok-scraper-master/` | Legacy 2020 scraper. Reference for web-API parameter names only — its `_signature` scheme and `m.tiktok.com` endpoints are dead. Do not wire it up as a live provider. |
 | `docs/DEPLOYMENT.md` | How to deploy both halves. |
 
 ## 2. Architecture
@@ -45,23 +45,51 @@ always return JSON, even on error.
   `index.html` for unknown *asset* paths — which is why `worker/index.js` must
   keep intercepting `/api/*` before the ASSETS binding, and why
   `dashboard/src/api.ts` must keep checking `Content-Type` before `JSON.parse`.
-- **Keyword search cannot run on Cloudflare.** It needs a real Chromium, so it
-  lives in `backend/` and the Worker proxies to it via the `BACKEND_URL`
-  variable. Country trends need no backend at all.
-- **The scraper needs a Node.js runtime with a real Chromium**, so it cannot run
-  on Cloudflare Workers. It is a separate deployment (Railway / Render / Fly.io /
-  VPS / Docker).
-- **Browser Rendering quota is the tightest constraint on Cloudflare.** The
-  free plan allows only *2 concurrent browsers and 2 new browsers per minute
-  per account*. `worker/index.js` therefore: reuses an idle
+- **Keyword search does run on Cloudflare, without a browser.**
+  `worker/tiktok-http.js` fetches TikTok's server-rendered pages and its own
+  list endpoints with plain `fetch`. `backend/` (Node + Playwright) remains the
+  optional high-fidelity provider behind `BACKEND_URL`; country trends need
+  neither.
+- **Browser Rendering quota is the tightest constraint on Cloudflare.** Workers
+  Free gives 3 concurrent browsers, one new browser every 20 seconds, and
+  **10 minutes of browser time per day per account** — a hard daily wall.
+  So the browser is the *last* resort: `worker/index.js` reuses an idle
   `puppeteer.sessions()` session before launching, launches with
-  `keep_alive: 600_000` so the next request can reuse it, `disconnect()`s
-  instead of `close()`, retries a 429 with backoff for ~40 s, and caches
-  first-page searches in the Cache API (fresh for 2 min, kept 1 h as a
-  rate-limit fallback). Do not add code that launches a browser on page load or
-  on a timer.
+  `keep_alive: 600_000`, `disconnect()`s instead of `close()`, retries a 429
+  only briefly (~12 s, because HTTP was already tried), and caches first-page
+  searches in the Cache API. Never launch a browser on page load or on a timer,
+  and never put the browser ahead of the HTTP provider.
 - Frontend → backend URL construction lives in **one module**:
   `dashboard/src/api.ts`. Do not scatter `fetch('/api/...')` calls again.
+
+### Search resolution order (do not reorder without reading this)
+
+```
+/api/fetch-tiktok
+  1. GitHub Actions dataset  (< 30 min old)      → 0 browser, instant
+  2. Worker cache            (same search < 2m)  → 0 browser
+  3. worker/tiktok-http.js   DIRECT HTTP         → 0 browser, unlimited   ← primary
+  4. Browser Rendering       (last resort)       → 10 min/day, free plan
+  5. BACKEND_URL / dataset of any age            → labelled as cached
+```
+
+**`worker/tiktok-http.js` is the important one.** It reproduces what
+`tiktok-profile-scraper-main/` proved: TikTok server-renders its pages, so a
+plain `fetch` of `/tag/<slug>`, `/@user`, `/search?q=` returns HTML containing
+`__UNIVERSAL_DATA_FOR_REHYDRATION__` with real items and real metrics. Cookies
+from that first response then authorise the site's own list endpoints
+(`/api/challenge/item_list/`, `/api/post/item_list/`, `/api/search/*/full/`)
+for cursor pagination. Parameter names come from `tiktok-scraper-master/`, but
+its `_signature` scheme and `m.tiktok.com` endpoints are dead — never revive
+them.
+
+A Worker `fetch` is not metered by Browser Rendering, so this path has **no
+quota at all**. Keep it ahead of the browser.
+
+`GET /api/probe?q=<keyword>` runs every browser-free route once and reports
+status, bytes, embedded-payload detection and item counts from Cloudflare's own
+IP. Use it before diagnosing anything by guesswork; the dashboard exposes it as
+**Test connection**.
 
 ### Unlimited search without a browser: the GitHub Actions dataset layer
 
@@ -184,6 +212,8 @@ backend directly), `VITE_USE_DEMO_DATA`.
 - `wrangler.jsonc` (`main: worker/index.js` + build hook + `dashboard/dist`
   assets + `ASSETS` binding + SPA fallback)
 - `worker/index.js` (API routes must stay ahead of the ASSETS binding)
+- `worker/tiktok-http.js` (the browser-free provider — the only path with no
+  quota; it must stay ahead of Browser Rendering in `/api/fetch-tiktok`)
 - `dashboard/src/api.ts` (single source of API URLs, content-type guards)
 - `backend/src/**` (production API; no persistent profile)
 - `.gitignore` entries for data, profiles, env files

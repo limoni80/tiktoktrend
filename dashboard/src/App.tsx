@@ -91,6 +91,7 @@ function App() {
   const [diagnostics, setDiagnostics] = useState<{ when: string; label: string; payload: unknown } | null>(null);
   const [diagOpen, setDiagOpen] = useState(false);
   const [diagCopied, setDiagCopied] = useState(false);
+  const [probing, setProbing] = useState(false);
   // Keywords GitHub Actions keeps collected — these answer instantly and cost
   // no Cloudflare browser quota.
   const [catalogue, setCatalogue] = useState<CatalogueEntry[]>([]);
@@ -308,6 +309,20 @@ function App() {
     setDiagOpen(true);
   };
 
+  /** Server-side connection test: which browser-free routes still work. */
+  const runProbe = async () => {
+    setProbing(true);
+    try {
+      const payload = await api.probe(query.trim() || 'fyp');
+      recordDebug('connection test', payload);
+      setDiagOpen(true);
+      const verdict = typeof payload.verdict === 'string' ? payload.verdict : 'Connection test finished.';
+      setFlash(verdict);
+    } catch (caught) {
+      recordError('connection test failed', caught);
+    } finally { setProbing(false); }
+  };
+
   const runFetch = async (overrides?: { from?: string; to?: string; q?: string; live?: boolean }) => {
     if (busy) return;
     const q = (overrides?.q ?? query).trim();
@@ -508,8 +523,8 @@ function App() {
           Typing filters the {feed.length} loaded {feedType === 'ads' ? 'ads' : 'videos'} instantly · press <kbd>Enter</kbd> or hit Search to pull fresh results straight from TikTok{feedType === 'videos' ? ' · results keep loading as you scroll, with no cap' : ''}
         </p>
 
-        {feedType === 'videos' && catalogue.length > 0 && <div className="instant-keywords">
-          <span>Instant (collected every 30 min, no quota):</span>
+        {feedType === 'videos' && <div className="instant-keywords">
+          <span>{catalogue.length > 0 ? 'Instant (collected every 30 min, no quota):' : 'Search runs over direct HTTP first — no browser quota.'}</span>
           {catalogue.map((entry) => (
             <button key={entry.slug} onClick={() => { setQuery(entry.keyword); void runFetch({ q: entry.keyword }); }} disabled={busy}
               title={`${entry.count} videos · updated ${entry.updatedAt ? relativeTime(entry.updatedAt) : 'unknown'}`}>
@@ -519,6 +534,10 @@ function App() {
           <button className="live" onClick={() => void runFetch({ live: true })} disabled={busy}
             title="Skip the dataset and run a live TikTok browser now (uses Cloudflare browser quota)">
             Live fetch
+          </button>
+          <button className="live" onClick={() => void runProbe()} disabled={busy || probing}
+            title="Ask the server which browser-free routes TikTok is answering right now">
+            {probing ? 'Testing…' : 'Test connection'}
           </button>
         </div>}
 

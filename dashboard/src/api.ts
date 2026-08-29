@@ -101,6 +101,9 @@ export interface FeedResponse extends DatasetPayload {
   stale?: boolean;
   cacheAgeSeconds?: number;
   notice?: string;
+  /** Which path produced this: 'http' (no browser), 'browser', or a dataset. */
+  provider?: 'http' | 'browser';
+  dataset?: boolean;
 }
 
 export interface CatalogueEntry { keyword: string; slug: string; status: 'ok' | 'empty' | 'stale'; count: number; updatedAt: string | null }
@@ -112,6 +115,8 @@ export const api = {
   datasets: () => request<{ videos: FeedResponse | null; ads: FeedResponse | null }>('/api/datasets'),
   /** Catalogue of datasets collected by GitHub Actions (instant, no browser). */
   catalogue: () => request<CatalogueResponse>('/api/catalogue'),
+  /** Runs every browser-free route once and reports what TikTok answered. */
+  probe: (q: string) => request<Record<string, unknown>>('/api/probe', { q }),
   searchTikTok: (params: { q: string; count: string | number; from?: string; to?: string; more?: boolean; known?: string[]; live?: boolean }) =>
     request<FeedResponse>('/api/fetch-tiktok', {
       q: params.q, count: params.count, from: params.from, to: params.to,
