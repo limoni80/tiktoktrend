@@ -1,9 +1,20 @@
 {
-  "generatedAt": "2026-08-29T23:41:37.972Z",
-  "startedAt": "2026-08-29T23:40:41.341Z",
+  "generatedAt": "2026-08-29T23:43:50.861Z",
+  "startedAt": "2026-08-29T23:42:55.367Z",
   "repo": "limoni80/tiktoktrend",
-  "runUrl": "https://github.com/limoni80/tiktoktrend/actions/runs/33281513971",
+  "runUrl": "https://github.com/limoni80/tiktoktrend/actions/runs/33281602424",
   "entries": [
+    {
+      "kind": "search",
+      "file": "search/animal.json",
+      "keyword": "Animal",
+      "slug": "animal",
+      "status": "ok",
+      "count": 120,
+      "emptyStreak": 0,
+      "updatedAt": "2026-08-29T23:43:32.361Z",
+      "lastSuccessAt": "2026-08-29T23:43:32.361Z"
+    },
     {
       "kind": "search",
       "file": "search/morocco.json",
@@ -357,6 +368,13 @@
     }
   ],
   "keywords": [
+    {
+      "keyword": "Animal",
+      "slug": "animal",
+      "status": "ok",
+      "count": 120,
+      "updatedAt": "2026-08-29T23:43:32.361Z"
+    },
     {
       "keyword": "morocco",
       "slug": "morocco",
