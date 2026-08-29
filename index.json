@@ -1,9 +1,19 @@
 {
-  "generatedAt": "2026-08-29T22:52:52.092Z",
-  "startedAt": "2026-08-29T22:52:03.033Z",
+  "generatedAt": "2026-08-29T22:54:14.098Z",
+  "startedAt": "2026-08-29T22:53:27.758Z",
   "repo": "limoni80/tiktoktrend",
-  "runUrl": "https://github.com/limoni80/tiktoktrend/actions/runs/33279598860",
+  "runUrl": "https://github.com/limoni80/tiktoktrend/actions/runs/33279655014",
   "entries": [
+    {
+      "kind": "search",
+      "file": "search/quick-chicken-lunch.json",
+      "keyword": "quick chicken lunch",
+      "slug": "quick-chicken-lunch",
+      "status": "empty",
+      "count": 0,
+      "updatedAt": "2026-08-29T22:54:02.989Z",
+      "lastSuccessAt": "2026-08-29T22:50:28.541Z"
+    },
     {
       "kind": "search",
       "file": "search/coloring.json",
@@ -43,16 +53,6 @@
       "count": 120,
       "updatedAt": "2026-08-29T22:50:40.680Z",
       "lastSuccessAt": "2026-08-29T22:50:40.680Z"
-    },
-    {
-      "kind": "search",
-      "file": "search/quick-chicken-lunch.json",
-      "keyword": "quick chicken lunch",
-      "slug": "quick-chicken-lunch",
-      "status": "empty",
-      "count": 0,
-      "updatedAt": "2026-08-29T22:50:28.541Z",
-      "lastSuccessAt": null
     },
     {
       "kind": "search",
@@ -296,6 +296,13 @@
   ],
   "keywords": [
     {
+      "keyword": "quick chicken lunch",
+      "slug": "quick-chicken-lunch",
+      "status": "empty",
+      "count": 0,
+      "updatedAt": "2026-08-29T22:54:02.989Z"
+    },
+    {
       "keyword": "coloring",
       "slug": "coloring",
       "status": "ok",
@@ -322,13 +329,6 @@
       "status": "ok",
       "count": 120,
       "updatedAt": "2026-08-29T22:50:40.680Z"
-    },
-    {
-      "keyword": "quick chicken lunch",
-      "slug": "quick-chicken-lunch",
-      "status": "empty",
-      "count": 0,
-      "updatedAt": "2026-08-29T22:50:28.541Z"
     },
     {
       "keyword": "chapeau",
