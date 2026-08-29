@@ -1,9 +1,20 @@
 {
-  "generatedAt": "2026-08-29T23:54:42.829Z",
+  "generatedAt": "2026-08-29T23:54:55.004Z",
   "startedAt": "2026-08-29T23:53:51.890Z",
   "repo": "limoni80/tiktoktrend",
   "runUrl": "https://github.com/limoni80/tiktoktrend/actions/runs/33282027989",
   "entries": [
+    {
+      "kind": "search",
+      "file": "search/aquarium-cleaning.json",
+      "keyword": "aquarium cleaning",
+      "slug": "aquarium-cleaning",
+      "status": "ok",
+      "count": 113,
+      "emptyStreak": 0,
+      "updatedAt": "2026-08-29T23:54:31.413Z",
+      "lastSuccessAt": "2026-08-29T23:54:31.413Z"
+    },
     {
       "kind": "search",
       "file": "search/volcano-cake.json",
@@ -423,6 +434,13 @@
     }
   ],
   "keywords": [
+    {
+      "keyword": "aquarium cleaning",
+      "slug": "aquarium-cleaning",
+      "status": "ok",
+      "count": 113,
+      "updatedAt": "2026-08-29T23:54:31.413Z"
+    },
     {
       "keyword": "volcano cake",
       "slug": "volcano-cake",
