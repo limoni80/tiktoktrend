@@ -1,9 +1,19 @@
 {
-  "generatedAt": "2026-08-29T23:24:49.564Z",
-  "startedAt": "2026-08-29T23:24:00.506Z",
+  "generatedAt": "2026-08-29T23:26:48.696Z",
+  "startedAt": "2026-08-29T23:25:58.437Z",
   "repo": "limoni80/tiktoktrend",
-  "runUrl": "https://github.com/limoni80/tiktoktrend/actions/runs/33280873177",
+  "runUrl": "https://github.com/limoni80/tiktoktrend/actions/runs/33280954288",
   "entries": [
+    {
+      "kind": "search",
+      "file": "search/macbook.json",
+      "keyword": "MACBOOK",
+      "slug": "macbook",
+      "status": "ok",
+      "count": 120,
+      "updatedAt": "2026-08-29T23:26:34.883Z",
+      "lastSuccessAt": "2026-08-29T23:26:34.883Z"
+    },
     {
       "kind": "search",
       "file": "search/palaestine.json",
@@ -335,6 +345,13 @@
     }
   ],
   "keywords": [
+    {
+      "keyword": "MACBOOK",
+      "slug": "macbook",
+      "status": "ok",
+      "count": 120,
+      "updatedAt": "2026-08-29T23:26:34.883Z"
+    },
     {
       "keyword": "PALAESTINE",
       "slug": "palaestine",
