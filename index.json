@@ -1,9 +1,19 @@
 {
-  "generatedAt": "2026-08-29T22:47:04.659Z",
-  "startedAt": "2026-08-29T22:46:16.757Z",
+  "generatedAt": "2026-08-29T22:47:23.768Z",
+  "startedAt": "2026-08-29T22:46:35.246Z",
   "repo": "limoni80/tiktoktrend",
-  "runUrl": "https://github.com/limoni80/tiktoktrend/actions/runs/33279372074",
+  "runUrl": "https://github.com/limoni80/tiktoktrend/actions/runs/33279388084",
   "entries": [
+    {
+      "kind": "search",
+      "file": "search/football.json",
+      "keyword": "football",
+      "slug": "football",
+      "status": "ok",
+      "count": 120,
+      "updatedAt": "2026-08-29T22:47:08.948Z",
+      "lastSuccessAt": "2026-08-29T22:47:08.948Z"
+    },
     {
       "kind": "search",
       "file": "search/easy-chicken-dinner.json",
@@ -235,6 +245,13 @@
     }
   ],
   "keywords": [
+    {
+      "keyword": "football",
+      "slug": "football",
+      "status": "ok",
+      "count": 120,
+      "updatedAt": "2026-08-29T22:47:08.948Z"
+    },
     {
       "keyword": "easy chicken dinner",
       "slug": "easy-chicken-dinner",
