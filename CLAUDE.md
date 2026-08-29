@@ -66,11 +66,11 @@ always return JSON, even on error.
 
 ```
 /api/fetch-tiktok
-  1. GitHub Actions dataset (alias-resolved, < 30 min)  → instant, no quota  ← primary
+  1. Exact GitHub Actions dataset page (< 30 min)       → instant, no quota  ← primary
   2. Worker cache           (same search < 2 min)       → no quota
   3. worker/tiktok-http.js  DIRECT HTTP                 → no quota, but see below
   4. Dataset of ANY age     (labelled with its age)     → no quota
-  5. workflow_dispatch      collect this keyword now    → ~100 s, then instant forever
+  5. workflow_dispatch + matching rolling-index preview → visible now; exact replaces it
   6. Browser Rendering      genuinely last              → 10 min/DAY, free plan
 ```
 
@@ -88,20 +88,20 @@ has no dataset, the Worker fires `workflow_dispatch` on
 `{ queued: true, etaSeconds }`, and the dashboard retries by itself. Requires
 `GITHUB_REPO` (var) and `GITHUB_TOKEN` (**secret only** —
 `npx wrangler secret put GITHUB_TOKEN`, fine-grained PAT, this repo,
-*Actions: read and write*). A 10-minute per-keyword cooldown stops repeat
+*Actions: read and write*). A 2-minute per-keyword cooldown stops repeat
 dispatches.
 
-Step 1 resolves aliases so “TRUMPS” finds the `trump` dataset: exact slug →
-singular stem → prefix overlap ≥ 4 chars, and anything but an exact match is
-labelled in the response (`matchedKeyword`, and a “Closest collected keyword”
-notice). Never make this fuzzier — a wrong match silently answers a different
-question.
+Step 1 always probes the deterministic exact slug. Approximate matches may be
+shown only as a clearly labelled rolling-index preview while the exact keyword
+collects; they must never prevent that exact collection from being dispatched.
 
-`backend/scripts/collect.mjs` treats the published `index.json` as its memory:
-every keyword already on the data branch is re-collected next run (newest
-request first, capped by `MAX_KEYWORDS`, with a time budget that carries the
-rest forward untouched). Without that, the branch is rebuilt from scratch each
-run and an on-demand keyword would vanish at the next cron tick.
+Scheduled collection is a dynamic GitHub Actions matrix (up to 10 collectors
+in parallel). Each collector emits one shard; a short serialized `publish` job
+uses `backend/scripts/merge-publish.mjs` to merge those shards into the latest
+`data` branch. Never return to rebuilding/force-pushing the branch from a stale
+collector checkout: concurrent searches would delete one another. The merge
+also builds `search-index.json`, a real-data-only rolling index used for an
+immediate matching preview while a new exact keyword is still collecting.
 
 `worker/tiktok-http.js` implements what `tiktok-profile-scraper-main/` proved:
 TikTok server-renders its pages, so a plain `fetch` of `/tag/<slug>`, `/@user`
@@ -130,9 +130,11 @@ results are also collected **outside** Cloudflare and served as static JSON:
 
 ```
 .github/workflows/refresh-data.yml   cron every 30 min + workflow_dispatch
-        └─► backend/scripts/collect.mjs   real Chromium on a GitHub runner
-                └─► force-push to the `data` branch
-                        out/index.json, out/feed.json, out/search/<slug>.json
+        ├─► plan-keywords.mjs             dynamic matrix (recent/configured keywords)
+        ├─► up to 10 × collect.mjs         real Chromium runners in parallel
+        └─► merge-publish.mjs              short serialized, race-safe publish
+                └─► `data` branch
+                        index.json, search-index.json, search/<slug>.json
                                 └─► Worker reads DATA_BASE_URL (raw.githubusercontent.com)
 ```
 
@@ -147,7 +149,7 @@ results are also collected **outside** Cloudflare and served as static JSON:
   present a dataset answer as a live one.**
 - A run that collects nothing must not overwrite good data: `collect.mjs` keeps
   the previous payload and marks it `stale`.
-- The `data` branch is force-pushed and must never be merged into `main`;
+- The `data` branch is merge-updated and must never be merged into `main`;
   pushing datasets to `main` would trigger a Cloudflare rebuild every 30 min.
 
 ### Data sources (all public, no paid API)

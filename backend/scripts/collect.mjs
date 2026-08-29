@@ -2,8 +2,8 @@
  * Dataset collector — runs in GitHub Actions, not in the browser and not on
  * Cloudflare.
  *
- * Why this exists: Cloudflare Browser Rendering allows only 2 browser launches
- * per minute on the free plan, so live keyword search there is rationed. A
+ * Why this exists: Cloudflare Browser Run Free allows only 3 concurrent
+ * browsers, one new browser every 20 seconds, and 10 browser-minutes/day. A
  * GitHub Actions runner has a real Chromium and free minutes on public repos,
  * so it scrapes a list of keywords on a schedule and publishes the results as
  * plain JSON. The Worker then serves those instantly, with no browser at all.
@@ -172,19 +172,25 @@ async function main() {
   const configRaw = await readFile('data/keywords.json', 'utf8').catch(() => '{}');
   const settings = JSON.parse(configRaw);
   const extra = (process.env.EXTRA_KEYWORD ?? '').trim();
+  const mergePublish = process.env.MERGE_PUBLISH === '1';
   const want = Math.min(120, Math.max(10, Number(settings.perKeyword ?? 60)));
   const startedAt = new Date().toISOString();
   const budgetMs = Math.max(60_000, Number(process.env.COLLECT_BUDGET_MS ?? 20 * 60_000));
   const deadline = Date.now() + budgetMs;
 
-  // The data branch is rebuilt from scratch every run, so a keyword requested
-  // once on demand would vanish at the next cron tick. The published index is
-  // therefore the memory: whatever was collected before stays on the list and
-  // keeps being refreshed, with the freshly requested keyword served first.
+  // Legacy/full runs use the published index as memory. The parallel workflow
+  // gives each fast job one keyword and merge-publish.mjs safely combines its
+  // shard with the latest data branch, so concurrent jobs cannot delete one
+  // another's results.
   const previousIndex = await previous('index.json');
   const remembered = (previousIndex?.keywords ?? []).map((entry) => String(entry?.keyword ?? '').trim()).filter(Boolean);
   const configured = (settings.keywords ?? []).map((value) => String(value).trim()).filter(Boolean);
-  const ordered = [...(extra ? [extra] : []), ...configured, ...remembered];
+  // The parallel workflow merges a fast artifact into the latest data branch,
+  // so an on-demand job only needs its own keyword. Legacy/full runs still
+  // retain the self-contained rebuild behaviour.
+  const ordered = extra && mergePublish
+    ? [extra]
+    : [...(extra ? [extra] : []), ...configured, ...remembered];
   const seen = new Set();
   const keywords = [];
   for (const keyword of ordered) {
@@ -200,10 +206,10 @@ async function main() {
   // untouched. The scheduled run (no EXTRA_KEYWORD) does the full refresh.
   const fast = Boolean(extra) && process.env.FULL_REFRESH !== '1';
   const targets = fast ? keywords.slice(0, 1) : keywords;
-  const carryOnly = fast ? keywords.slice(1) : [];
+  const carryOnly = fast && !mergePublish ? keywords.slice(1) : [];
 
   log(fast
-    ? `FAST run for “${extra}” — collecting 1 keyword, carrying ${carryOnly.length} forward`
+    ? `FAST run for “${extra}” — collecting 1 keyword${mergePublish ? ' for merge-publish' : `, carrying ${carryOnly.length} forward`}`
     : `Full run: up to ${targets.length} keyword(s) × ${want} videos, plus the Explore feed`);
   if (remembered.length) log(`Known from the last run: ${remembered.length} keyword(s)`);
 
@@ -250,10 +256,12 @@ async function main() {
   try {
     // 1. Explore feed for the home page (skipped on a fast run).
     if (fast) {
-      const old = await previous('feed.json');
-      if (old?.videos?.length) {
-        await writeJson(join(OUT, 'feed.json'), { ...old, carriedForward: true, carriedAt: startedAt });
-        catalogue.push({ kind: 'feed', file: 'feed.json', keyword: null, status: 'carried', count: old.videos.length, updatedAt: old.fetchedAt, lastSuccessAt: old.fetchedAt });
+      if (!mergePublish) {
+        const old = await previous('feed.json');
+        if (old?.videos?.length) {
+          await writeJson(join(OUT, 'feed.json'), { ...old, carriedForward: true, carriedAt: startedAt });
+          catalogue.push({ kind: 'feed', file: 'feed.json', keyword: null, status: 'carried', count: old.videos.length, updatedAt: old.fetchedAt, lastSuccessAt: old.fetchedAt });
+        }
       }
     } else {
       log('› Explore feed');
@@ -298,9 +306,9 @@ async function main() {
       await sleep(2_000);
     }
 
-    // 3. Everything this run did not collect stays exactly as it was — the
-    //    data branch is rebuilt from scratch, so a file that is not written
-    //    would be deleted.
+    // 3. Legacy fast publishing carries untouched files. The current parallel
+    //    workflow sets MERGE_PUBLISH=1, emits only the refreshed shard, and the
+    //    serialized publish job merges it without replacing newer files.
     for (const keyword of carryOnly) {
       const slug = slugify(keyword);
       const file = `search/${slug}.json`;

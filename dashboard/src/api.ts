@@ -104,6 +104,9 @@ export interface FeedResponse extends DatasetPayload {
   /** Which path produced this: 'http' (no browser), 'browser', or a dataset. */
   provider?: 'http' | 'browser';
   dataset?: boolean;
+  /** Matching real videos from the rolling index while exact collection runs. */
+  preview?: boolean;
+  exactPending?: boolean;
   /** A GitHub Actions run was started to collect this keyword; retry shortly. */
   queued?: boolean;
   etaSeconds?: number;

@@ -485,33 +485,66 @@ const datasetResponse = (entry, { reason } = {}) => {
   };
 };
 
+const inDateRange = (video, dateRange) => {
+  if (!dateRange.from && !dateRange.to) return true;
+  if (!video.publishedAt) return false;
+  const time = Date.parse(video.publishedAt);
+  if (!Number.isFinite(time)) return false;
+  if (dateRange.from && time < Date.parse(`${dateRange.from}T00:00:00Z`)) return false;
+  if (dateRange.to && time > Date.parse(`${dateRange.to}T23:59:59Z`)) return false;
+  return true;
+};
+
+/** Return a real page from a collected dataset, including subsequent pages. */
+const pagedDatasetResponse = (entry, { knownIds, want, dateRange, reason } = {}) => {
+  const all = (entry.payload?.videos ?? []).filter((video) => inDateRange(video, dateRange));
+  const remaining = all.filter((video) => !knownIds.has(video.id));
+  const videos = remaining.slice(0, want);
+  return {
+    ...datasetResponse(entry, { reason }),
+    videos,
+    scanned: all.length,
+    hasMore: remaining.length > videos.length,
+  };
+};
+
+const tokenMatches = (haystack, token) => {
+  if (haystack.includes(token)) return true;
+  if (token.length < 5) return false;
+  const stem = token.replace(/(ies|es|s)$/, '');
+  return stem.length >= 4 && haystack.includes(stem);
+};
+
 /**
- * A keyword the user typed rarely matches a slug character for character —
- * "TRUMPS" should find the `trump` dataset. Exact slug first, then the singular
- * stem, then a prefix overlap of at least four characters. Nothing fuzzier,
- * because a wrong match would quietly answer a different question.
+ * Real TikTok preview for a new keyword while its exact browser job starts.
+ * search-index.json is rebuilt after every publish from the latest datasets;
+ * no sample data and no unrelated country feed is ever labelled as a match.
  */
-const stemSlug = (slug) => slug.replace(/(ies|es|s)$/, '');
-
-async function resolveDatasetSlug(env, keyword) {
-  const slug = slugify(keyword);
-  if (!slug) return null;
-  const index = await fetchDataset(env, 'index.json');
-  const entries = (index?.payload?.keywords ?? []).filter((entry) => entry?.slug && entry.count > 0);
-  if (!entries.length) return null;
-
-  const exact = entries.find((entry) => entry.slug === slug);
-  if (exact) return { slug: exact.slug, match: 'exact', keyword: exact.keyword };
-
-  const stem = stemSlug(slug);
-  const stemmed = entries.find((entry) => stemSlug(entry.slug) === stem);
-  if (stemmed) return { slug: stemmed.slug, match: 'stem', keyword: stemmed.keyword };
-
-  if (stem.length >= 4) {
-    const prefix = entries.find((entry) => entry.slug.startsWith(stem) || stem.startsWith(stemSlug(entry.slug)));
-    if (prefix) return { slug: prefix.slug, match: 'prefix', keyword: prefix.keyword };
-  }
-  return null;
+async function instantDatasetPreview(env, keyword, { want, knownIds, dateRange }) {
+  const tokens = keyword.toLowerCase().trim().replace(/^#|^@/, '').split(/\s+/).filter(Boolean);
+  if (!tokens.length) return null;
+  const entry = await fetchDataset(env, 'search-index.json');
+  if (!entry?.payload?.videos?.length) return null;
+  const matches = entry.payload.videos.filter((video) => {
+    if (!inDateRange(video, dateRange)) return false;
+    const haystack = `${video.caption ?? ''} ${(video.hashtags ?? []).join(' ')} ${video.creator?.username ?? ''} ${video.creator?.displayName ?? ''} ${video.soundName ?? ''} ${(video.indexedKeywords ?? []).join(' ')}`.toLowerCase();
+    return tokens.every((token) => tokenMatches(haystack, token));
+  });
+  if (!matches.length) return null;
+  const remaining = matches.filter((video) => !knownIds.has(video.id));
+  const videos = remaining.slice(0, want);
+  return {
+    videos,
+    scanned: matches.length,
+    hasMore: remaining.length > videos.length,
+    cached: true,
+    dataset: true,
+    preview: true,
+    cacheAgeSeconds: entry.ageSeconds,
+    source: `Fresh TikTok index preview · “${keyword}”`,
+    keyword,
+    fetchedAt: entry.payload.fetchedAt,
+  };
 }
 
 /**
@@ -655,7 +688,7 @@ async function handleApi(request, env, url, ctx) {
 
   if (path === '/api/fetch-tiktok') {
     const keyword = String(url.searchParams.get('q') ?? '').trim().slice(0, 80);
-    const want = Math.min(60, Math.max(5, Number(url.searchParams.get('count') ?? 40) || 40));
+    const want = Math.min(100, Math.max(5, Number(url.searchParams.get('count') ?? 40) || 40));
     const knownIds = new Set(String(url.searchParams.get('known') ?? '').split(',').map((id) => id.trim()).filter(Boolean));
     const dateRange = {
       from: /^\d{4}-\d{2}-\d{2}$/.test(url.searchParams.get('from') ?? '') ? url.searchParams.get('from') : null,
@@ -669,21 +702,16 @@ async function handleApi(request, env, url, ctx) {
     // 1. A dataset collected by GitHub Actions costs no browser quota. If it is
     //    recent, serve it straight away — that is what makes repeated searches
     //    unlimited. `live=1` forces a fresh browser run instead.
-    const resolved = cacheable && keyword ? await resolveDatasetSlug(env, keyword) : null;
     // The catalogue is edge-cached briefly. A collector can publish the exact
     // keyword file before that cached index knows about it, so always probe the
-    // deterministic exact slug and use the catalogue only for aliases.
+    // deterministic exact slug. Approximate catalogue matches are previews,
+    // never a reason to skip collecting what the user actually typed.
     const exactSlug = keyword ? slugify(keyword) : '';
-    const datasetPath = keyword ? `search/${resolved?.slug ?? exactSlug}.json` : 'feed.json';
-    if (cacheable && !wantsLive && datasetPath) {
-      const entry = await fetchDataset(env, datasetPath);
-      if (entry?.payload?.videos?.length && entry.ageSeconds != null && entry.ageSeconds <= DATASET_FRESH_S) {
-        const alias = resolved && resolved.match !== 'exact'
-          ? `Closest collected keyword: “${resolved.keyword}”. `
-          : '';
-        const answer = datasetResponse(entry);
-        return json({ ...answer, notice: `${alias}${answer.notice}`, matchedKeyword: resolved?.keyword ?? null });
-      }
+    const datasetPath = keyword ? `search/${exactSlug}.json` : 'feed.json';
+    let datasetEntry = !wantsLive && datasetPath ? await fetchDataset(env, datasetPath) : null;
+    if (!wantsLive && datasetEntry?.payload?.videos?.length && datasetEntry.ageSeconds != null && datasetEntry.ageSeconds <= DATASET_FRESH_S) {
+        const answer = pagedDatasetResponse(datasetEntry, { knownIds, want, dateRange });
+        return json({ ...answer, matchedKeyword: datasetEntry.payload.keyword ?? null });
     }
     const cacheKey = searchCacheKey(keyword, dateRange, want);
     const cache = caches.default;
@@ -730,13 +758,27 @@ async function handleApi(request, env, url, ctx) {
     }
 
     // 3. A dataset of ANY age beats nothing, and beats spending browser quota.
-    if (cacheable && datasetPath) {
-      const entry = await fetchDataset(env, datasetPath);
-      if (entry?.payload?.videos?.length) {
+    if (datasetPath) {
+      datasetEntry ??= await fetchDataset(env, datasetPath);
+      if (datasetEntry?.payload?.videos?.length) {
         return json({
-          ...datasetResponse(entry, { reason: 'TikTok does not serve live data to Cloudflare IPs.' }),
-          matchedKeyword: resolved?.keyword ?? null,
+          ...pagedDatasetResponse(datasetEntry, { knownIds, want, dateRange, reason: 'TikTok does not serve live data to Cloudflare IPs.' }),
+          matchedKeyword: datasetEntry.payload.keyword ?? null,
           debug: { http: httpDebug },
+        });
+      }
+    }
+
+    // A user can scroll through all matching preview records while the exact
+    // collector is still running. Do not fall into the scarce browser path
+    // merely because this is a subsequent (`known` ids) request.
+    if (keyword && knownIds.size && !wantsLive) {
+      const preview = await instantDatasetPreview(env, keyword, { want, knownIds, dateRange });
+      if (preview) {
+        return json({
+          ...preview,
+          queued: true, exactPending: true, etaSeconds: 25,
+          notice: `Exact “${keyword}” results are collecting in parallel; showing the next matching page from the fresh TikTok index.`,
         });
       }
     }
@@ -748,12 +790,14 @@ async function handleApi(request, env, url, ctx) {
     if (keyword && cacheable && !wantsLive) {
       const dispatch = await requestCollection(env, keyword);
       if (dispatch.queued) {
+        const preview = await instantDatasetPreview(env, keyword, { want, knownIds, dateRange });
         return json({
-          videos: [], scanned: 0, hasMore: false, queued: true, etaSeconds: 35,
-          keyword, source: 'GitHub Actions collector',
+          ...(preview ?? { videos: [], scanned: 0, hasMore: false }),
+          queued: true, exactPending: true, etaSeconds: 25,
+          keyword, source: preview?.source ?? 'GitHub Actions collector',
           notice: dispatch.alreadyRunning
-            ? `“${keyword}” is already being collected (started ${dispatch.requestedAt ? new Date(dispatch.requestedAt).toLocaleTimeString() : 'just now'}). It takes about a minute — this page will retry on its own.`
-            : `Collecting “${keyword}” from TikTok — this first search takes about a minute. It will appear here on its own, and from then on the keyword is instant and refreshes every 30 minutes.`,
+            ? `Exact “${keyword}” results are already being collected (started ${dispatch.requestedAt ? new Date(dispatch.requestedAt).toLocaleTimeString() : 'just now'}).${preview ? ' Showing matching videos from the fresh TikTok index meanwhile.' : ''}`
+            : `Collecting exact “${keyword}” results in parallel.${preview ? ' Matching videos from the fresh TikTok index are shown now.' : ' This page will update automatically.'}`,
           fetchedAt: new Date().toISOString(),
           debug: { http: httpDebug, dispatch },
         });

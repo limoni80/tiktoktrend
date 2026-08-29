@@ -1,5 +1,5 @@
 name: Refresh TikTok datasets
-run-name: Collect TikTok — ${{ inputs.keyword || 'scheduled refresh' }}
+run-name: Collect TikTok — ${{ inputs.keyword || 'scheduled parallel refresh' }}
 
 on:
   schedule:
@@ -14,15 +14,38 @@ on:
 permissions:
   contents: write
 
+# Different keywords may scrape in parallel. Repeated requests for the exact
+# same keyword queue behind one another instead of consuming another runner.
 concurrency:
-  group: refresh-tiktok-datasets
+  group: collect-tiktok-${{ inputs.keyword || github.run_id }}
   queue: max
   cancel-in-progress: false
 
 jobs:
-  collect:
+  plan:
     runs-on: ubuntu-latest
-    timeout-minutes: 120
+    outputs:
+      keywords: ${{ steps.matrix.outputs.keywords }}
+    steps:
+      - name: Check out main
+        uses: actions/checkout@v4
+
+      - name: Plan keyword matrix
+        id: matrix
+        run: node backend/scripts/plan-keywords.mjs
+        env:
+          EXTRA_KEYWORD: ${{ inputs.keyword }}
+          MAX_KEYWORDS: "60"
+
+  collect:
+    needs: plan
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      max-parallel: 10
+      matrix:
+        keyword: ${{ fromJson(needs.plan.outputs.keywords) }}
 
     steps:
       - name: Check out main
@@ -55,35 +78,58 @@ jobs:
         working-directory: backend
         run: npx playwright install chromium
 
-      - name: Collect public TikTok datasets
+      - name: Collect one public TikTok dataset
         run: node backend/scripts/collect.mjs
         env:
-          EXTRA_KEYWORD: ${{ inputs.keyword }}
+          EXTRA_KEYWORD: ${{ matrix.keyword }}
+          MERGE_PUBLISH: "1"
 
-      - name: Publish the data branch
+      - name: Upload dataset shard
+        uses: actions/upload-artifact@v4
+        with:
+          name: dataset-${{ strategy.job-index }}
+          path: out
+          if-no-files-found: error
+          retention-days: 1
+
+  publish:
+    needs: [plan, collect]
+    if: ${{ always() && needs.plan.result == 'success' && needs.collect.result != 'cancelled' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    # Only this short commit stage is serialized. Browser collection remains
+    # parallel, while every published shard is merged into the latest branch.
+    concurrency:
+      group: publish-tiktok-data
+      queue: max
+      cancel-in-progress: false
+
+    steps:
+      - name: Check out main
+        uses: actions/checkout@v4
+
+      - name: Download all dataset shards
+        uses: actions/download-artifact@v4
+        with:
+          pattern: dataset-*
+          path: incoming
+
+      - name: Merge and publish the data branch
         shell: bash
         run: |
           set -euo pipefail
-          publish_dir="$RUNNER_TEMP/tiktoktrend-data"
-          mkdir -p "$publish_dir"
-          cp -R out/. "$publish_dir/"
+          data_dir="$RUNNER_TEMP/tiktoktrend-data"
+          git fetch origin data
+          git worktree add --detach "$data_dir" origin/data
 
-          git fetch origin data || true
-          if git show-ref --verify --quiet refs/remotes/origin/data; then
-            git switch --force-create data origin/data
-          else
-            git switch --orphan data
-          fi
+          node backend/scripts/merge-publish.mjs incoming "$data_dir"
 
-          git rm -rf --ignore-unmatch .
-          cp -R "$publish_dir/." .
-          git add -A
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-
-          if git diff --cached --quiet; then
+          git -C "$data_dir" add -A
+          git -C "$data_dir" config user.name "github-actions[bot]"
+          git -C "$data_dir" config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          if git -C "$data_dir" diff --cached --quiet; then
             echo "Dataset output is unchanged."
           else
-            git commit -m "data: refresh TikTok datasets"
-            git push origin HEAD:data
+            git -C "$data_dir" commit -m "data: merge parallel TikTok datasets"
+            git -C "$data_dir" push origin HEAD:data
           fi

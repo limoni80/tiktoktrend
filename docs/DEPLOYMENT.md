@@ -60,18 +60,20 @@ Actions datasets below, or a backend on a residential IP, are the answer.
 
 ## 0b. Unlimited keyword search with GitHub Actions (no browser quota)
 
-Cloudflare's free Browser Rendering plan allows only **2 browser launches per
-minute per account**, which is not enough for on-demand search. A GitHub
+Cloudflare's free Browser Run plan allows only **3 concurrent browsers, one new
+browser every 20 seconds, and 10 browser-minutes/day**, which is not enough for on-demand search. A GitHub
 Actions runner has a real Chromium and free minutes on public repositories, so
 it collects the keywords you care about on a schedule and publishes them as
 plain JSON. The Worker then answers those searches instantly, with no browser
 at all.
 
-### On-demand collection (any keyword, ~100 seconds)
+### On-demand collection (any keyword, parallel + instant preview)
 
-When a search has no dataset, the Worker asks GitHub Actions to collect that
-keyword right away, answers `{ queued: true }`, and the dashboard retries by
-itself. From then on the keyword is refreshed with every scheduled run.
+When a search has no exact dataset, the Worker asks GitHub Actions to collect
+that keyword right away and the dashboard retries by itself. A real-data-only
+`search-index.json` supplies matching videos immediately when available; the
+exact dataset replaces that preview automatically. Different keywords collect
+in parallel, while only the short data-branch publish stage is serialized.
 
 One-time setup:
 
@@ -95,7 +97,7 @@ automatic.
 
 1. `data/keywords.json` — the keywords to collect. Edit, commit, done.
    ```json
-   { "perKeyword": 60, "keywords": ["trump", "ai tools", "skincare"] }
+   { "perKeyword": 120, "keywords": ["trump", "ai tools", "skincare"] }
    ```
 2. The workflow is already committed at `.github/workflows/refresh-data.yml`.
    It runs every 30 minutes and can be started by hand from **Actions →
@@ -109,10 +111,10 @@ automatic.
 
 | Situation | Answer | Browser used |
 | --- | --- | --- |
-| Dataset < 30 min old (exact keyword, or its singular/prefix alias) | dataset, labelled with its age | none |
+| Exact dataset < 30 min old | paginated dataset, labelled with its age | none |
 | Same search repeated within 2 min | Worker cache | none |
 | Dataset exists but is older | that dataset, labelled with its age | none |
-| Keyword never collected | a collection run is triggered; `{queued:true}` and the UI retries | none |
+| Keyword never collected | parallel collection is triggered; matching rolling-index preview is shown while the UI retries | none |
 | Everything above failed and a browser is bound | Browser Rendering | 1 launch |
 | `?live=1` | forced live run | 1 launch |
 
@@ -132,7 +134,7 @@ and the video count, so a run that collected nothing is visible instead of
 silent. **A run that collects nothing never overwrites good data** — the
 previous payload is kept and marked `stale`.
 
-**Measured (2026-08-29):** GitHub runners *do* get real data — 60/60 videos for
+**Measured (2026-08-29):** GitHub runners *do* get real data — up to 120 videos for
 every keyword, about 30 seconds each. Cloudflare IPs do not. If that ever
 changes, the job summary shows `empty` per keyword and the previous payload is
 kept rather than overwritten, so a bad run is visible instead of silent; the

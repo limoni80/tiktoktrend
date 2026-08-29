@@ -378,6 +378,13 @@ function App() {
         // started for it. Poll the same JSON endpoint used by direct tests: the
         // first check is early enough for a cached Chromium run, then every 8s.
         if (payload.queued) {
+          // Never blank the screen while exact collection runs. When the
+          // rolling real-data index already has matching videos, show them now
+          // and replace them automatically with the exact TikTok result later.
+          if (payload.videos?.length) {
+            setVideos(payload.videos); setVideosMeta(payload); setDataMode('live');
+            setHasMore(Boolean(payload.hasMore)); setScanned(payload.scanned ?? payload.videos.length);
+          }
           const current = collectionPoll.current;
           const sameKeyword = current?.keyword === q;
           const attempts = sameKeyword ? current.attempts + 1 : 0;
@@ -389,7 +396,7 @@ function App() {
             const timer = window.setTimeout(() => { void runFetch({ q }); }, delay);
             collectionPoll.current = { keyword: q, since, attempts, timer };
             setCollecting({ keyword: q, since });
-            setFlash(payload.notice ?? `Collecting “${q}” from TikTok — about a minute.`);
+            setFlash(payload.notice ?? `Collecting exact “${q}” results in parallel.`);
           } else {
             collectionPoll.current = null;
             setCollecting(null);
@@ -572,8 +579,8 @@ function App() {
             {query && <button className="clear" onClick={() => setQuery('')} aria-label="Clear"><X size={16} /></button>}
           </div>
           {feedType === 'videos'
-            ? <select className="target-select" value={target} onChange={(event) => setTarget(event.target.value)} aria-label="Results per page">
-                {['20', '40', '60', '100'].map((value) => <option key={value} value={value}>{value} per page</option>)}
+            ? <select className="target-select" value={target} onChange={(event) => setTarget(event.target.value)} aria-label="Results per load">
+                {['20', '40', '60', '100'].map((value) => <option key={value} value={value}>{value} per load</option>)}
               </select>
             : <select className="target-select" value={region} onChange={(event) => setRegion(event.target.value)} aria-label="Ads region">
                 {fetchRegions.map(([code, name]) => <option key={code} value={code}>{name}</option>)}
@@ -608,7 +615,7 @@ function App() {
             <span>{Math.round((Date.now() - collecting.since) / 1000)}s</span>
           </div>
           <div className="progress-track indeterminate"><i /></div>
-          <small>First search for a new keyword takes about a minute — a collector runs it on a real browser, off Cloudflare. After this it is instant, and it refreshes every 30 minutes.</small>
+          <small>Exact results are collecting on a parallel runner. Matching real videos from the fresh index stay visible now; this page replaces them automatically, then keeps loading more as you scroll.</small>
         </div>}
 
         {busy && !collecting && <div className="progress-card">
