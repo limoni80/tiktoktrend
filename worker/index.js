@@ -709,9 +709,29 @@ async function handleApi(request, env, url, ctx) {
     const exactSlug = keyword ? slugify(keyword) : '';
     const datasetPath = keyword ? `search/${exactSlug}.json` : 'feed.json';
     let datasetEntry = !wantsLive && datasetPath ? await fetchDataset(env, datasetPath) : null;
+    const datasetIsFresh = datasetEntry?.ageSeconds != null && datasetEntry.ageSeconds <= DATASET_FRESH_S;
     if (!wantsLive && datasetEntry?.payload?.videos?.length && datasetEntry.ageSeconds != null && datasetEntry.ageSeconds <= DATASET_FRESH_S) {
         const answer = pagedDatasetResponse(datasetEntry, { knownIds, want, dateRange });
         return json({ ...answer, matchedKeyword: datasetEntry.payload.keyword ?? null });
+    }
+
+    // A fresh, explicit empty result is a completed collection, not a reason
+    // to dispatch the same workflow forever. Keep honest matching preview data
+    // visible and let the scheduled refresh try the exact keyword again later.
+    if (!wantsLive && keyword && datasetIsFresh && Array.isArray(datasetEntry?.payload?.videos) && datasetEntry.payload.videos.length === 0) {
+      const preview = await instantDatasetPreview(env, keyword, { want, knownIds, dateRange });
+      if (preview) {
+        return json({
+          ...preview,
+          queued: false, exactPending: false, exactEmpty: true,
+          notice: `TikTok returned no public exact items for “${keyword}” in the latest collection. Showing matching real videos from the fresh index; the scheduled refresh will try again.`,
+        });
+      }
+      return json({
+        ...datasetResponse(datasetEntry),
+        videos: [], scanned: 0, hasMore: false,
+        queued: false, exactPending: false, exactEmpty: true,
+      });
     }
     const cacheKey = searchCacheKey(keyword, dateRange, want);
     const cache = caches.default;

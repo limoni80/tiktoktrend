@@ -107,6 +107,7 @@ export interface FeedResponse extends DatasetPayload {
   /** Matching real videos from the rolling index while exact collection runs. */
   preview?: boolean;
   exactPending?: boolean;
+  exactEmpty?: boolean;
   /** A GitHub Actions run was started to collect this keyword; retry shortly. */
   queued?: boolean;
   etaSeconds?: number;
