@@ -1,0 +1,52 @@
+{
+  "videos": [],
+  "scanned": 1,
+  "hasMore": false,
+  "source": "TikTok.com search · “quick chicken lunch” · collected by GitHub Actions",
+  "keyword": "quick chicken lunch",
+  "fetchedAt": "2026-08-29T22:50:28.541Z",
+  "debug": {
+    "keyword": "quick chicken lunch",
+    "want": 120,
+    "strategies": [
+      {
+        "name": "search",
+        "url": "https://www.tiktok.com/search?q=quick%20chicken%20lunch",
+        "finalUrl": "https://www.tiktok.com/search?q=quick%20chicken%20lunch",
+        "title": "TikTok - Make Your Day",
+        "scrollRounds": 6,
+        "matchedAfter": 0,
+        "error": null
+      },
+      {
+        "name": "search-video-tab",
+        "url": "https://www.tiktok.com/search/video?q=quick%20chicken%20lunch",
+        "finalUrl": "https://www.tiktok.com/search/video?q=quick%20chicken%20lunch",
+        "title": "TikTok - Make Your Day",
+        "scrollRounds": 6,
+        "matchedAfter": 0,
+        "error": null
+      },
+      {
+        "name": "hashtag",
+        "url": "https://www.tiktok.com/tag/quickchickenlunch",
+        "finalUrl": "https://www.tiktok.com/tag/quickchickenlunch",
+        "title": "Couldn’t find this hashtag. Visit TikTok to discover more trending creators, hashtags, and sounds.",
+        "scrollRounds": 6,
+        "matchedAfter": 0,
+        "error": null
+      }
+    ],
+    "apiHits": {
+      "/api/recommend/item_list/": {
+        "calls": 1,
+        "items": 1,
+        "source": "feed"
+      }
+    },
+    "fromSearchEndpoints": 0,
+    "loginWall": true,
+    "captchaWall": false,
+    "bodySnippet": "TikTok Search For You Explore Following Shop Short dramas LIVE Upload Profile More Log in Company Program Terms & Policies © 2026 TikTok Couldn't find this hashtag Looking for videos? Try browsing our trending creators, hashtags, and sounds. Log in"
+  }
+}
