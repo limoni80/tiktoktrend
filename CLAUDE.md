@@ -68,9 +68,9 @@ always return JSON, even on error.
 /api/fetch-tiktok
   1. Exact GitHub Actions dataset page (< 30 min)       → instant, no quota  ← primary
   2. Worker cache           (same search < 2 min)       → no quota
-  3. worker/tiktok-http.js  DIRECT HTTP                 → no quota, but see below
-  4. Dataset of ANY age     (labelled with its age)     → no quota
-  5. workflow_dispatch + matching rolling-index preview → visible now; exact replaces it
+  3. rolling-index preview + parallel workflow_dispatch → visible now; exact replaces it
+  4. worker/tiktok-http.js  DIRECT HTTP when no preview → no quota, but see below
+  5. Exact dataset of ANY age (labelled with its age)    → no quota
   6. Browser Rendering      genuinely last              → 10 min/DAY, free plan
 ```
 

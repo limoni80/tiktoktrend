@@ -723,6 +723,9 @@ async function handleApi(request, env, url, ctx) {
       return json({ ...cached.payload, cached: true, cacheAgeSeconds: cached.ageSeconds });
     }
 
+    let httpDebug = null;
+    let earlyPreview = null;
+    let earlyDispatch = null;
     const store = async (payload) => {
       if (!cacheable || !payload.videos?.length) return;
       const stored = cache.put(cacheKey, new Response(JSON.stringify(payload), {
@@ -731,9 +734,37 @@ async function handleApi(request, env, url, ctx) {
       if (ctx?.waitUntil) ctx.waitUntil(stored); else await stored;
     };
 
-    // 2. HTTP provider — plain fetch, no browser, no quota, no login. This is
-    //    the path that makes search unlimited, so it runs BEFORE the browser.
-    let httpDebug = null;
+    const collectionResponse = (dispatch, preview) => json({
+      ...(preview ?? { videos: [], scanned: 0, hasMore: false }),
+      queued: true, exactPending: true, etaSeconds: 25,
+      keyword, source: preview?.source ?? 'GitHub Actions collector',
+      notice: dispatch.alreadyRunning
+        ? `Exact “${keyword}” results are already being collected (started ${dispatch.requestedAt ? new Date(dispatch.requestedAt).toLocaleTimeString() : 'just now'}).${preview ? ' Showing matching videos from the fresh TikTok index meanwhile.' : ''}`
+        : `Collecting exact “${keyword}” results in parallel.${preview ? ' Matching videos from the fresh TikTok index are shown now.' : ' This page will update automatically.'}`,
+      fetchedAt: new Date().toISOString(),
+      debug: { http: httpDebug, dispatch },
+    });
+
+    // The rolling index is the lowest-latency path for a brand-new keyword.
+    // If it has honest matching data, show it before probing the direct HTTP
+    // route that TikTok currently serves as an empty shell to Cloudflare.
+    if (keyword && !wantsLive) {
+      earlyPreview = await instantDatasetPreview(env, keyword, { want, knownIds, dateRange });
+      if (knownIds.size && earlyPreview) {
+        return json({
+          ...earlyPreview,
+          queued: true, exactPending: true, etaSeconds: 25,
+          notice: `Exact “${keyword}” results are collecting in parallel; showing the next matching page from the fresh TikTok index.`,
+        });
+      }
+      if (cacheable && earlyPreview) {
+        earlyDispatch = await requestCollection(env, keyword);
+        if (earlyDispatch.queued) return collectionResponse(earlyDispatch, earlyPreview);
+      }
+    }
+
+    // 2. HTTP provider — plain fetch, no browser, no quota, no login. It is
+    //    still tried before the browser when the rolling index has no match.
     if (!wantsLive) {
       try {
         // Cloudflare currently gets an empty shell from TikTok (see /api/probe),
@@ -769,38 +800,15 @@ async function handleApi(request, env, url, ctx) {
       }
     }
 
-    // A user can scroll through all matching preview records while the exact
-    // collector is still running. Do not fall into the scarce browser path
-    // merely because this is a subsequent (`known` ids) request.
-    if (keyword && knownIds.size && !wantsLive) {
-      const preview = await instantDatasetPreview(env, keyword, { want, knownIds, dateRange });
-      if (preview) {
-        return json({
-          ...preview,
-          queued: true, exactPending: true, etaSeconds: 25,
-          notice: `Exact “${keyword}” results are collecting in parallel; showing the next matching page from the fresh TikTok index.`,
-        });
-      }
-    }
-
     // 4. Nothing collected for this keyword yet: ask GitHub Actions to collect
     //    it. A runner has a real Chromium and an IP TikTok answers, and public
     //    repo minutes are free — so this, not the browser, is what makes any
     //    keyword work. It takes about a minute; the UI retries on its own.
     if (keyword && cacheable && !wantsLive) {
-      const dispatch = await requestCollection(env, keyword);
+      const dispatch = earlyDispatch ?? await requestCollection(env, keyword);
       if (dispatch.queued) {
-        const preview = await instantDatasetPreview(env, keyword, { want, knownIds, dateRange });
-        return json({
-          ...(preview ?? { videos: [], scanned: 0, hasMore: false }),
-          queued: true, exactPending: true, etaSeconds: 25,
-          keyword, source: preview?.source ?? 'GitHub Actions collector',
-          notice: dispatch.alreadyRunning
-            ? `Exact “${keyword}” results are already being collected (started ${dispatch.requestedAt ? new Date(dispatch.requestedAt).toLocaleTimeString() : 'just now'}).${preview ? ' Showing matching videos from the fresh TikTok index meanwhile.' : ''}`
-            : `Collecting exact “${keyword}” results in parallel.${preview ? ' Matching videos from the fresh TikTok index are shown now.' : ' This page will update automatically.'}`,
-          fetchedAt: new Date().toISOString(),
-          debug: { http: httpDebug, dispatch },
-        });
+        const preview = earlyPreview ?? await instantDatasetPreview(env, keyword, { want, knownIds, dateRange });
+        return collectionResponse(dispatch, preview);
       }
       httpDebug = { ...(httpDebug ?? {}), dispatch };
     }
