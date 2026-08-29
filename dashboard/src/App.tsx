@@ -99,6 +99,10 @@ function App() {
   const [region, setRegion] = useState('US');
   const [ccBusy, setCcBusy] = useState(false);
   const fileRef = useRef<HTMLInputElement>(null);
+  // How many times we have already waited for a keyword that is being collected.
+  const queuedRetries = useRef<Record<string, number>>({});
+  // A keyword nobody had collected yet: a run is in flight and we are polling.
+  const [collecting, setCollecting] = useState<{ keyword: string; since: number } | null>(null);
 
   // On open: show the cached results instantly, then silently pull FRESH ones
   // from TikTok so nobody is ever looking at yesterday's feed.
@@ -136,6 +140,14 @@ function App() {
     const timer = setInterval(() => setClockTick((value) => value + 1), 30_000);
     return () => clearInterval(timer);
   }, []);
+
+  // While a collection run is in flight, tick every second so the elapsed
+  // counter on the progress card is real rather than decorative.
+  useEffect(() => {
+    if (!collecting) return;
+    const timer = setInterval(() => setClockTick((value) => value + 1), 1_000);
+    return () => clearInterval(timer);
+  }, [collecting]);
 
   // Live progress while a fetch runs.
   useEffect(() => {
@@ -340,6 +352,27 @@ function App() {
           live: overrides?.live,
         });
         recordDebug(`search “${q || 'Explore'}”`, payload.debug);
+
+        // The keyword is not collected yet and a GitHub Actions run was just
+        // started for it. Wait it out once instead of showing an error.
+        if (payload.queued) {
+          const attempts = queuedRetries.current[q] ?? 0;
+          queuedRetries.current[q] = attempts + 1;
+          // Poll rather than wait once: the run usually lands in 45-90 s, and a
+          // short poll makes the wait feel like a search, not an error.
+          if (attempts < 14) {
+            setCollecting({ keyword: q, since: collecting?.keyword === q ? collecting.since : Date.now() });
+            setFlash(payload.notice ?? `Collecting “${q}” from TikTok — about a minute.`);
+            window.setTimeout(() => { void runFetch({ q }); }, attempts === 0 ? (payload.etaSeconds ?? 60) * 1000 : 12_000);
+          } else {
+            setCollecting(null);
+            setError(`“${q}” is still not ready after 3 minutes. Open the GitHub Actions run to see what happened, then search again.`);
+          }
+          return;
+        }
+        queuedRetries.current[q] = 0;
+        setCollecting(null);
+
         if (!payload.videos?.length) throw new ApiError('No videos returned', 'tiktok_empty', 0, payload.debug);
         setVideos(payload.videos); setVideosMeta(payload); setDataMode('live');
         setHasMore(Boolean(payload.hasMore)); setScanned(payload.scanned ?? payload.videos.length);
@@ -541,7 +574,16 @@ function App() {
           </button>
         </div>}
 
-        {busy && <div className="progress-card">
+        {collecting && <div className="progress-card collecting">
+          <div className="progress-head">
+            <strong>Collecting “{collecting.keyword}” from TikTok</strong>
+            <span>{Math.round((Date.now() - collecting.since) / 1000)}s</span>
+          </div>
+          <div className="progress-track indeterminate"><i /></div>
+          <small>First search for a new keyword takes about a minute — a collector runs it on a real browser, off Cloudflare. After this it is instant, and it refreshes every 30 minutes.</small>
+        </div>}
+
+        {busy && !collecting && <div className="progress-card">
           <div className="progress-head">
             <strong>{progress?.phase ?? 'Starting…'}</strong>
             <span>{progress?.startedAt ? `${Math.round((Date.now() - progress.startedAt) / 1000)}s` : ''}</span>

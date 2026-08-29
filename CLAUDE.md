@@ -66,25 +66,57 @@ always return JSON, even on error.
 
 ```
 /api/fetch-tiktok
-  1. GitHub Actions dataset  (< 30 min old)      → 0 browser, instant
-  2. Worker cache            (same search < 2m)  → 0 browser
-  3. worker/tiktok-http.js   DIRECT HTTP         → 0 browser, unlimited   ← primary
-  4. Browser Rendering       (last resort)       → 10 min/day, free plan
-  5. BACKEND_URL / dataset of any age            → labelled as cached
+  1. GitHub Actions dataset (alias-resolved, < 30 min)  → instant, no quota  ← primary
+  2. Worker cache           (same search < 2 min)       → no quota
+  3. worker/tiktok-http.js  DIRECT HTTP                 → no quota, but see below
+  4. Dataset of ANY age     (labelled with its age)     → no quota
+  5. workflow_dispatch      collect this keyword now    → ~100 s, then instant forever
+  6. Browser Rendering      genuinely last              → 10 min/DAY, free plan
 ```
 
-**`worker/tiktok-http.js` is the important one.** It reproduces what
-`tiktok-profile-scraper-main/` proved: TikTok server-renders its pages, so a
-plain `fetch` of `/tag/<slug>`, `/@user`, `/search?q=` returns HTML containing
-`__UNIVERSAL_DATA_FOR_REHYDRATION__` with real items and real metrics. Cookies
-from that first response then authorise the site's own list endpoints
-(`/api/challenge/item_list/`, `/api/post/item_list/`, `/api/search/*/full/`)
+**Measured, not assumed (`/api/probe`, 2026-08-29):** direct HTTP from a
+Cloudflare Worker gets `200 OK`, a ~350 KB page and a ~260 KB
+`__UNIVERSAL_DATA_FOR_REHYDRATION__` that contains **only app config** — zero
+items, no `challengeId`, and the generic “TikTok - Make Your Day” title. That
+is IP-level anti-bot: no header, signature, cookie or retry changes it from
+Cloudflare. The same collector on a **GitHub Actions runner returns 60/60
+videos per keyword**. So Cloudflare serves data; it does not gather it.
+
+Therefore step 5 is the engine that makes *any* keyword work: when a keyword
+has no dataset, the Worker fires `workflow_dispatch` on
+`.github/workflows/refresh-data.yml` with that keyword, answers
+`{ queued: true, etaSeconds }`, and the dashboard retries by itself. Requires
+`GITHUB_REPO` (var) and `GITHUB_TOKEN` (**secret only** —
+`npx wrangler secret put GITHUB_TOKEN`, fine-grained PAT, this repo,
+*Actions: read and write*). A 10-minute per-keyword cooldown stops repeat
+dispatches.
+
+Step 1 resolves aliases so “TRUMPS” finds the `trump` dataset: exact slug →
+singular stem → prefix overlap ≥ 4 chars, and anything but an exact match is
+labelled in the response (`matchedKeyword`, and a “Closest collected keyword”
+notice). Never make this fuzzier — a wrong match silently answers a different
+question.
+
+`backend/scripts/collect.mjs` treats the published `index.json` as its memory:
+every keyword already on the data branch is re-collected next run (newest
+request first, capped by `MAX_KEYWORDS`, with a time budget that carries the
+rest forward untouched). Without that, the branch is rebuilt from scratch each
+run and an on-demand keyword would vanish at the next cron tick.
+
+`worker/tiktok-http.js` implements what `tiktok-profile-scraper-main/` proved:
+TikTok server-renders its pages, so a plain `fetch` of `/tag/<slug>`, `/@user`
+or `/search?q=` returns HTML whose `__UNIVERSAL_DATA_FOR_REHYDRATION__` carries
+real items and metrics; cookies from that first response then authorise
+`/api/challenge/item_list/`, `/api/post/item_list/` and `/api/search/*/full/`
 for cursor pagination. Parameter names come from `tiktok-scraper-master/`, but
 its `_signature` scheme and `m.tiktok.com` endpoints are dead — never revive
 them.
 
-A Worker `fetch` is not metered by Browser Rendering, so this path has **no
-quota at all**. Keep it ahead of the browser.
+That technique works from a residential or GitHub-runner IP and is exactly what
+`backend/scripts/collect.mjs` relies on. From Cloudflare it currently returns
+the empty shell described above, so it is kept (it costs nothing, needs no
+quota, and may start working) but it is **not** what the product depends on.
+Re-run `/api/probe` before assuming either way.
 
 `GET /api/probe?q=<keyword>` runs every browser-free route once and reports
 status, bytes, embedded-payload detection and item counts from Cloudflare's own

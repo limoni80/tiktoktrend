@@ -54,6 +54,7 @@ const BROWSER_KEEP_ALIVE_MS = 600_000;   // keep the browser hot for reuse
 const BROWSER_ACQUIRE_BUDGET_MS = 12_000; // brief retry; HTTP already tried
 const SEARCH_CACHE_FRESH_S = 120;         // serve a cached search without a browser
 const SEARCH_CACHE_MAX_S = 3_600;         // keep it this long as a 429 fallback
+const DISPATCH_COOLDOWN_S = 600;          // do not re-trigger the same keyword for 10 min
 const DATASET_FRESH_S = 1_800;            // a GitHub Actions dataset this recent is served as-is
 
 const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
@@ -460,7 +461,7 @@ async function fetchDataset(env, path) {
     const text = await response.text();
     if (!contentType.includes('json') && !text.trimStart().startsWith('{')) return null;
     const payload = JSON.parse(text);
-    const fetchedAt = Date.parse(payload?.fetchedAt ?? '');
+    const fetchedAt = Date.parse(payload?.fetchedAt ?? payload?.generatedAt ?? '');
     return {
       payload,
       ageSeconds: Number.isFinite(fetchedAt) ? Math.max(0, Math.round((Date.now() - fetchedAt) / 1000)) : null,
@@ -483,6 +484,86 @@ const datasetResponse = (entry, { reason } = {}) => {
       : `Collected by GitHub Actions ${age} — refreshed automatically every 30 minutes.`,
   };
 };
+
+/**
+ * A keyword the user typed rarely matches a slug character for character —
+ * "TRUMPS" should find the `trump` dataset. Exact slug first, then the singular
+ * stem, then a prefix overlap of at least four characters. Nothing fuzzier,
+ * because a wrong match would quietly answer a different question.
+ */
+const stemSlug = (slug) => slug.replace(/(ies|es|s)$/, '');
+
+async function resolveDatasetSlug(env, keyword) {
+  const slug = slugify(keyword);
+  if (!slug) return null;
+  const index = await fetchDataset(env, 'index.json');
+  const entries = (index?.payload?.keywords ?? []).filter((entry) => entry?.slug && entry.count > 0);
+  if (!entries.length) return null;
+
+  const exact = entries.find((entry) => entry.slug === slug);
+  if (exact) return { slug: exact.slug, match: 'exact', keyword: exact.keyword };
+
+  const stem = stemSlug(slug);
+  const stemmed = entries.find((entry) => stemSlug(entry.slug) === stem);
+  if (stemmed) return { slug: stemmed.slug, match: 'stem', keyword: stemmed.keyword };
+
+  if (stem.length >= 4) {
+    const prefix = entries.find((entry) => entry.slug.startsWith(stem) || stem.startsWith(stemSlug(entry.slug)));
+    if (prefix) return { slug: prefix.slug, match: 'prefix', keyword: prefix.keyword };
+  }
+  return null;
+}
+
+/**
+ * Ask GitHub Actions to collect a keyword we do not have yet.
+ *
+ * This is the piece that makes arbitrary keywords work: a runner has a real
+ * Chromium and an IP TikTok answers, and public-repo minutes are free. The
+ * token lives ONLY as a Worker secret (`wrangler secret put GITHUB_TOKEN`) —
+ * never in the repo, never in a response.
+ */
+async function requestCollection(env, keyword) {
+  const repo = String(env.GITHUB_REPO ?? '').trim();
+  const workflow = String(env.GITHUB_WORKFLOW_FILE ?? 'refresh-data.yml').trim();
+  if (!repo || !env.GITHUB_TOKEN) return { queued: false, reason: 'not_configured' };
+
+  const cache = caches.default;
+  const key = new Request(`https://pulse-dispatch.internal/${slugify(keyword)}`);
+  try {
+    const hit = await cache.match(key);
+    if (hit) {
+      const info = await hit.json();
+      return { queued: true, alreadyRunning: true, requestedAt: info.at };
+    }
+  } catch { /* no cooldown recorded */ }
+
+  let response;
+  try {
+    response = await fetch(`https://api.github.com/repos/${repo}/actions/workflows/${workflow}/dispatches`, {
+      method: 'POST',
+      headers: {
+        authorization: `Bearer ${env.GITHUB_TOKEN}`,
+        accept: 'application/vnd.github+json',
+        'x-github-api-version': '2022-11-28',
+        'content-type': 'application/json',
+        'user-agent': 'tiktoktrend-worker',
+      },
+      body: JSON.stringify({ ref: String(env.GITHUB_REF ?? 'main'), inputs: { keyword } }),
+    });
+  } catch (error) {
+    return { queued: false, reason: 'github_unreachable', detail: String(error?.message ?? error).slice(0, 160) };
+  }
+
+  if (response.status === 204) {
+    const stored = new Response(JSON.stringify({ at: new Date().toISOString(), keyword }), {
+      headers: { 'Content-Type': 'application/json', 'Cache-Control': `max-age=${DISPATCH_COOLDOWN_S}` },
+    });
+    await cache.put(key, stored).catch(() => {});
+    return { queued: true };
+  }
+  // GitHub's error text is safe to surface; it never echoes the token.
+  return { queued: false, reason: `github_${response.status}`, detail: (await response.text()).slice(0, 200) };
+}
 
 /** Cache key for a first-page search. Pagination is never cached. */
 const searchCacheKey = (keyword, dateRange, want) => new Request(
@@ -588,11 +669,16 @@ async function handleApi(request, env, url, ctx) {
     // 1. A dataset collected by GitHub Actions costs no browser quota. If it is
     //    recent, serve it straight away — that is what makes repeated searches
     //    unlimited. `live=1` forces a fresh browser run instead.
-    if (cacheable && !wantsLive) {
-      const path = keyword ? `search/${slugify(keyword)}.json` : 'feed.json';
-      const entry = await fetchDataset(env, path);
+    const resolved = cacheable && keyword ? await resolveDatasetSlug(env, keyword) : null;
+    const datasetPath = keyword ? (resolved ? `search/${resolved.slug}.json` : null) : 'feed.json';
+    if (cacheable && !wantsLive && datasetPath) {
+      const entry = await fetchDataset(env, datasetPath);
       if (entry?.payload?.videos?.length && entry.ageSeconds != null && entry.ageSeconds <= DATASET_FRESH_S) {
-        return json(datasetResponse(entry));
+        const alias = resolved && resolved.match !== 'exact'
+          ? `Closest collected keyword: “${resolved.keyword}”. `
+          : '';
+        const answer = datasetResponse(entry);
+        return json({ ...answer, notice: `${alias}${answer.notice}`, matchedKeyword: resolved?.keyword ?? null });
       }
     }
     const cacheKey = searchCacheKey(keyword, dateRange, want);
@@ -618,7 +704,10 @@ async function handleApi(request, env, url, ctx) {
     let httpDebug = null;
     if (!wantsLive) {
       try {
-        const result = await searchOverHttp(env, { keyword, want, knownIds, dateRange });
+        // Cloudflare currently gets an empty shell from TikTok (see /api/probe),
+        // so this is a cheap "has that changed?" check, not a long crawl —
+        // someone is waiting for the answer.
+        const result = await searchOverHttp(env, { keyword, want, knownIds, dateRange, maxPages: 2 });
         httpDebug = result.debug;
         if (result.videos.length) {
           const payload = {
@@ -636,15 +725,43 @@ async function handleApi(request, env, url, ctx) {
       }
     }
 
-    // 3. Browser Rendering — last resort only, because its free quota is 10
+    // 3. A dataset of ANY age beats nothing, and beats spending browser quota.
+    if (cacheable && datasetPath) {
+      const entry = await fetchDataset(env, datasetPath);
+      if (entry?.payload?.videos?.length) {
+        return json({
+          ...datasetResponse(entry, { reason: 'TikTok does not serve live data to Cloudflare IPs.' }),
+          matchedKeyword: resolved?.keyword ?? null,
+          debug: { http: httpDebug },
+        });
+      }
+    }
+
+    // 4. Nothing collected for this keyword yet: ask GitHub Actions to collect
+    //    it. A runner has a real Chromium and an IP TikTok answers, and public
+    //    repo minutes are free — so this, not the browser, is what makes any
+    //    keyword work. It takes about a minute; the UI retries on its own.
+    if (keyword && cacheable && !wantsLive) {
+      const dispatch = await requestCollection(env, keyword);
+      if (dispatch.queued) {
+        return json({
+          videos: [], scanned: 0, hasMore: false, queued: true, etaSeconds: 60,
+          keyword, source: 'GitHub Actions collector',
+          notice: dispatch.alreadyRunning
+            ? `“${keyword}” is already being collected (started ${dispatch.requestedAt ? new Date(dispatch.requestedAt).toLocaleTimeString() : 'just now'}). It takes about a minute — this page will retry on its own.`
+            : `Collecting “${keyword}” from TikTok — this first search takes about a minute. It will appear here on its own, and from then on the keyword is instant and refreshes every 30 minutes.`,
+          fetchedAt: new Date().toISOString(),
+          debug: { http: httpDebug, dispatch },
+        });
+      }
+      httpDebug = { ...(httpDebug ?? {}), dispatch };
+    }
+
+    // 5. Browser Rendering — genuinely last, because its free quota is 10
     //    minutes of browser time PER DAY for the whole account.
     if (!env.MYBROWSER) {
       if (env.BACKEND_URL) return proxyBackend(request, url, env);
-      const entry = cacheable ? await fetchDataset(env, keyword ? `search/${slugify(keyword)}.json` : 'feed.json') : null;
-      if (entry?.payload?.videos?.length) {
-        return json({ ...datasetResponse(entry, { reason: 'TikTok served no data over direct HTTP just now.' }), debug: { http: httpDebug } });
-      }
-      return fail(502, 'tiktok_empty', `TikTok returned no public videos for “${keyword}” over direct HTTP, and no browser or backend is configured.`, { debug: { http: httpDebug } });
+      return fail(502, 'tiktok_empty', `TikTok returned no public videos for “${keyword}” over direct HTTP, and no collector, browser or backend could answer.`, { debug: { http: httpDebug } });
     }
 
     try {
@@ -666,7 +783,7 @@ async function handleApi(request, env, url, ctx) {
       // The live browser failed (quota, captcha, or TikTok serving only its
       // feed). A dataset of ANY age beats an empty screen — clearly labelled.
       if (cacheable) {
-        const entry = await fetchDataset(env, keyword ? `search/${slugify(keyword)}.json` : 'feed.json');
+        const entry = datasetPath ? await fetchDataset(env, datasetPath) : null;
         if (entry?.payload?.videos?.length) {
           const reason = error.code === 'browser_rate_limited'
             ? "Cloudflare's browser quota is used up right now."

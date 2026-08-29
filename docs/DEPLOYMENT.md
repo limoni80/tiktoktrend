@@ -34,7 +34,15 @@ Worker. No Chromium, no Browser Rendering quota, no cookies of yours, no login:
    `/api/search/*/full/` are then called with those cookies for cursor
    pagination.
 
-Check what TikTok actually answers from your Worker:
+**Measured result on this deployment (2026-08-29):** every route returns
+`200 OK` with a large page, the embedded payload is present (~260 KB) — and it
+holds **zero videos**, no `challengeId`, and the generic “TikTok - Make Your
+Day” title. TikTok gives Cloudflare IPs a data-less shell. The GitHub Actions
+collector, on the same code, gets 60/60 videos per keyword. So keep the HTTP
+path (it costs nothing and may start working), but **the collector is what
+actually gathers data.**
+
+Check what TikTok answers from your own Worker:
 
 ```bash
 curl -s "https://tiktoktrend.limoniastrum.workers.dev/api/probe?q=messi" | jq '.verdict, .usable, .results'
@@ -59,6 +67,30 @@ it collects the keywords you care about on a schedule and publishes them as
 plain JSON. The Worker then answers those searches instantly, with no browser
 at all.
 
+### On-demand collection (any keyword, ~100 seconds)
+
+When a search has no dataset, the Worker asks GitHub Actions to collect that
+keyword right away, answers `{ queued: true }`, and the dashboard retries by
+itself. From then on the keyword is refreshed with every scheduled run.
+
+One-time setup:
+
+1. GitHub → **Settings → Developer settings → Personal access tokens →
+   Fine-grained tokens → Generate new token**. Repository access: only
+   `limoni80/tiktoktrend`. Permissions: **Actions → Read and write**. Nothing
+   else.
+2. Store it as a Worker **secret** (never a var, never committed):
+   ```bash
+   npx wrangler secret put GITHUB_TOKEN
+   ```
+   Paste the token at the prompt. It is write-only from then on.
+3. `wrangler.jsonc` already sets `GITHUB_REPO`, `GITHUB_WORKFLOW_FILE` and
+   `GITHUB_REF`. Redeploy: `npx wrangler deploy`.
+
+Without the secret, an unknown keyword returns a clear message asking for it to
+be added to `data/keywords.json` instead — nothing breaks, it just is not
+automatic.
+
 **Setup — three things, all in this repo:**
 
 1. `data/keywords.json` — the keywords to collect. Edit, commit, done.
@@ -77,10 +109,11 @@ at all.
 
 | Situation | Answer | Browser used |
 | --- | --- | --- |
-| Dataset for that keyword is < 30 min old | dataset, labelled with its age | none |
+| Dataset < 30 min old (exact keyword, or its singular/prefix alias) | dataset, labelled with its age | none |
 | Same search repeated within 2 min | Worker cache | none |
-| Dataset older / keyword not collected | live Browser Rendering run | 1 launch |
-| Live run fails or is rate limited | dataset of any age, labelled | none |
+| Dataset exists but is older | that dataset, labelled with its age | none |
+| Keyword never collected | a collection run is triggered; `{queued:true}` and the UI retries | none |
+| Everything above failed and a browser is bound | Browser Rendering | 1 launch |
 | `?live=1` | forced live run | 1 launch |
 
 Every dataset answer carries `cached: true`, `dataset: true`, `cacheAgeSeconds`
@@ -99,12 +132,11 @@ and the video count, so a run that collected nothing is visible instead of
 silent. **A run that collects nothing never overwrites good data** — the
 previous payload is kept and marked `stale`.
 
-**Honest limitation:** GitHub runners use datacenter IPs, the same class of IP
-Cloudflare uses. If TikTok refuses to serve search results to those addresses,
-the collector records `fromSearchEndpoints: 0` and an empty result rather than
-inventing videos. The only IPs that reliably get TikTok search results are
-residential ones — i.e. running `backend/` on your own machine and pointing
-`BACKEND_URL` at it.
+**Measured (2026-08-29):** GitHub runners *do* get real data — 60/60 videos for
+every keyword, about 30 seconds each. Cloudflare IPs do not. If that ever
+changes, the job summary shows `empty` per keyword and the previous payload is
+kept rather than overwritten, so a bad run is visible instead of silent; the
+fallback then is `backend/` on a residential IP behind `BACKEND_URL`.
 
 ---
 

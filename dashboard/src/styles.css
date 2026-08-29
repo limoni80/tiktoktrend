@@ -292,3 +292,8 @@ header h1 { flex: 1; margin: 0; font-size: 22px; font-weight: 700; letter-spacin
 .instant-keywords button:hover:not(:disabled) { border-color: var(--accent); color: var(--accent); }
 .instant-keywords button:disabled { opacity: .5; cursor: default; }
 .instant-keywords button.live { border-style: dashed; }
+
+/* Waiting for an on-demand collection run */
+.progress-card.collecting .progress-track { overflow: hidden; }
+.progress-track.indeterminate i { width: 35%; animation: sweep 1.4s ease-in-out infinite; }
+@keyframes sweep { 0% { margin-left: -35%; } 100% { margin-left: 100%; } }

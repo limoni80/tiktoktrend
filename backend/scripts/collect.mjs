@@ -36,6 +36,9 @@ const UA = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML,
 const LIST_PATTERN =
   /\/api\/(explore\/item_list|recommend\/item_list|challenge\/item_list|post\/item_list|search\/general\/full|search\/item\/full|search\/video\/full|search\/general\/preview|item\/detail|related\/item_list)\//;
 
+/** Upper bound on the recurring keyword list (config + remembered on-demand). */
+const MAX_KEYWORDS = Number(process.env.MAX_KEYWORDS ?? 24);
+
 const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 const slugify = (value) => value.toLowerCase().trim().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '') || 'keyword';
 const log = (...parts) => console.log(...parts);
@@ -169,11 +172,40 @@ async function main() {
   const configRaw = await readFile('data/keywords.json', 'utf8').catch(() => '{}');
   const settings = JSON.parse(configRaw);
   const extra = (process.env.EXTRA_KEYWORD ?? '').trim();
-  const keywords = [...new Set([...(settings.keywords ?? []), ...(extra ? [extra] : [])].map((k) => String(k).trim()).filter(Boolean))].slice(0, 40);
   const want = Math.min(120, Math.max(10, Number(settings.perKeyword ?? 60)));
   const startedAt = new Date().toISOString();
+  const budgetMs = Math.max(60_000, Number(process.env.COLLECT_BUDGET_MS ?? 20 * 60_000));
+  const deadline = Date.now() + budgetMs;
 
-  log(`Collecting ${keywords.length} keyword(s) × ${want} videos, plus the Explore feed`);
+  // The data branch is rebuilt from scratch every run, so a keyword requested
+  // once on demand would vanish at the next cron tick. The published index is
+  // therefore the memory: whatever was collected before stays on the list and
+  // keeps being refreshed, with the freshly requested keyword served first.
+  const previousIndex = await previous('index.json');
+  const remembered = (previousIndex?.keywords ?? []).map((entry) => String(entry?.keyword ?? '').trim()).filter(Boolean);
+  const configured = (settings.keywords ?? []).map((value) => String(value).trim()).filter(Boolean);
+  const ordered = [...(extra ? [extra] : []), ...configured, ...remembered];
+  const seen = new Set();
+  const keywords = [];
+  for (const keyword of ordered) {
+    const key = slugify(keyword);
+    if (!key || seen.has(key)) continue;
+    seen.add(key);
+    keywords.push(keyword);
+    if (keywords.length >= MAX_KEYWORDS) break;
+  }
+
+  // A run triggered for one keyword must be FAST — someone is waiting for it.
+  // So it collects only that keyword and carries every other file forward
+  // untouched. The scheduled run (no EXTRA_KEYWORD) does the full refresh.
+  const fast = Boolean(extra) && process.env.FULL_REFRESH !== '1';
+  const targets = fast ? keywords.slice(0, 1) : keywords;
+  const carryOnly = fast ? keywords.slice(1) : [];
+
+  log(fast
+    ? `FAST run for “${extra}” — collecting 1 keyword, carrying ${carryOnly.length} forward`
+    : `Full run: up to ${targets.length} keyword(s) × ${want} videos, plus the Explore feed`);
+  if (remembered.length) log(`Known from the last run: ${remembered.length} keyword(s)`);
 
   const browser = await chromium.launch({
     headless: true,
@@ -216,19 +248,41 @@ async function main() {
   };
 
   try {
-    // 1. Explore feed for the home page.
-    log('› Explore feed');
-    const feed = await collectOne(context, { keyword: '', want });
-    catalogue.push(await publish('feed.json', {
-      videos: feed.videos, scanned: feed.scanned, hasMore: false,
-      source: 'TikTok.com Explore feed · collected by GitHub Actions',
-      keyword: null, fetchedAt: new Date().toISOString(), debug: feed.debug,
-    }, { kind: 'feed', file: 'feed.json', keyword: null }));
+    // 1. Explore feed for the home page (skipped on a fast run).
+    if (fast) {
+      const old = await previous('feed.json');
+      if (old?.videos?.length) {
+        await writeJson(join(OUT, 'feed.json'), { ...old, carriedForward: true, carriedAt: startedAt });
+        catalogue.push({ kind: 'feed', file: 'feed.json', keyword: null, status: 'carried', count: old.videos.length, updatedAt: old.fetchedAt, lastSuccessAt: old.fetchedAt });
+      }
+    } else {
+      log('› Explore feed');
+      const feed = await collectOne(context, { keyword: '', want });
+      catalogue.push(await publish('feed.json', {
+        videos: feed.videos, scanned: feed.scanned, hasMore: false,
+        source: 'TikTok.com Explore feed · collected by GitHub Actions',
+        keyword: null, fetchedAt: new Date().toISOString(), debug: feed.debug,
+      }, { kind: 'feed', file: 'feed.json', keyword: null }));
+    }
 
-    // 2. One file per keyword.
-    for (const keyword of keywords) {
-      log(`› “${keyword}”`);
+    // 2. One file per keyword, newest request first, within a time budget.
+    for (const keyword of targets) {
       const slug = slugify(keyword);
+      const file = `search/${slug}.json`;
+
+      // Out of time: keep the previous payload untouched rather than dropping
+      // the keyword off the branch (which would delete it for the dashboard).
+      if (Date.now() > deadline) {
+        const old = await previous(file);
+        if (old?.videos?.length) {
+          await writeJson(join(OUT, file), { ...old, carriedForward: true, carriedAt: startedAt });
+          catalogue.push({ kind: 'search', file, keyword, slug, status: 'carried', count: old.videos.length, updatedAt: old.fetchedAt, lastSuccessAt: old.fetchedAt });
+          log(`› “${keyword}” — carried forward (time budget reached)`);
+        }
+        continue;
+      }
+
+      log(`› “${keyword}”`);
       let result;
       try {
         result = await collectOne(context, { keyword, want });
@@ -236,14 +290,25 @@ async function main() {
         log(`    ! ${String(error?.message ?? error).split('\n')[0]}`);
         result = { videos: [], scanned: 0, debug: { keyword, error: String(error?.message ?? error).slice(0, 200) } };
       }
-      catalogue.push(await publish(`search/${slug}.json`, {
+      catalogue.push(await publish(file, {
         videos: result.videos, scanned: result.scanned, hasMore: false,
         source: `TikTok.com search · “${keyword}” · collected by GitHub Actions`,
         keyword, fetchedAt: new Date().toISOString(), debug: result.debug,
-      }, { kind: 'search', file: `search/${slug}.json`, keyword, slug }));
+      }, { kind: 'search', file, keyword, slug }));
       await sleep(2_000);
     }
 
+    // 3. Everything this run did not collect stays exactly as it was — the
+    //    data branch is rebuilt from scratch, so a file that is not written
+    //    would be deleted.
+    for (const keyword of carryOnly) {
+      const slug = slugify(keyword);
+      const file = `search/${slug}.json`;
+      const old = await previous(file);
+      if (!old?.videos?.length) continue;
+      await writeJson(join(OUT, file), { ...old, carriedForward: true, carriedAt: startedAt });
+      catalogue.push({ kind: 'search', file, keyword, slug, status: 'carried', count: old.videos.length, updatedAt: old.fetchedAt, lastSuccessAt: old.fetchedAt });
+    }
   } finally {
     await context.close().catch(() => {});
     await browser.close().catch(() => {});
@@ -262,7 +327,8 @@ async function main() {
   const ok = catalogue.filter((entry) => entry.status === 'ok').length;
   const empty = catalogue.filter((entry) => entry.status === 'empty').length;
   const stale = catalogue.filter((entry) => entry.status === 'stale').length;
-  log(`\nDone: ${ok} ok · ${empty} empty · ${stale} kept-stale`);
+  const carried = catalogue.filter((entry) => entry.status === 'carried').length;
+  log(`\nDone: ${ok} ok · ${empty} empty · ${stale} kept-stale · ${carried} carried forward`);
   // An empty run is reported, not hidden — but it must not fail the workflow,
   // or the next scheduled run would be skipped after a repeated failure.
   if (!ok) log('WARNING: nothing was collected in this run. Check the strategies/apiHits above — TikTok may be serving only its generic feed to this runner IP.');

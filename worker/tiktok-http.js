@@ -67,11 +67,22 @@ const PAGE_TIMEOUT_MS = 12_000;
 const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 export const slugify = (value) => String(value).toLowerCase().trim().replace(/[^a-z0-9]+/g, '');
 
-/** TikTok's own "you are a bot / please log in" markers. */
-const blockedBy = (html) => {
-  if (/captcha|verify to continue|security check|Please verify/i.test(html)) return 'captcha';
+/**
+ * What TikTok actually served.
+ *
+ * Measured from Cloudflare: TikTok answers 200 with a ~350 KB page whose
+ * `__UNIVERSAL_DATA_FOR_REHYDRATION__` is present and large (~260 KB of app
+ * config and translations) but carries **no content modules at all** — no
+ * items, no challengeId, and the generic "TikTok - Make Your Day" title
+ * instead of "#keyword …". That is the anti-bot shell, and it is the single
+ * most important thing to name correctly: the earlier heuristic matched the
+ * word "captcha" anywhere in that config blob and wrongly reported a captcha.
+ */
+const classifyPage = (html, { embedded, items }) => {
+  if (/captcha-verify-page|captcha_verify_container|verify-bar-close|slide to verify/i.test(html)) return 'captcha';
   if (/<title>[^<]*(Access Denied|Forbidden)/i.test(html)) return 'denied';
   if (html.length < 2_000) return 'short-body';
+  if (embedded && items === 0) return 'shell-no-content';
   return null;
 };
 
@@ -327,7 +338,7 @@ export async function searchOverHttp(env, { keyword, want, knownIds, dateRange, 
       const before = collected.size;
       if (raw) collectEmbeddedItems(raw).forEach((item) => add(item, 'targeted'));
       challengeId = challengeIdFrom(page.html);
-      const block = blockedBy(page.html);
+      const block = classifyPage(page.html, { embedded: Boolean(raw), items: collected.size - before });
       if (block) debug.blocked = block;
       record('hashtag-html', {
         url: tagUrl, status: page.status, bytes: page.bytes,
@@ -368,7 +379,7 @@ export async function searchOverHttp(env, { keyword, want, knownIds, dateRange, 
       const raw = embeddedState(page.html);
       const before = collected.size;
       if (raw) collectEmbeddedItems(raw).forEach((item) => add(item, 'targeted'));
-      const block = blockedBy(page.html);
+      const block = classifyPage(page.html, { embedded: Boolean(raw), items: collected.size - before });
       if (block && !debug.blocked) debug.blocked = block;
       record('search-html', { url: searchUrl, status: page.status, bytes: page.bytes, embedded: Boolean(raw), items: collected.size - before, blocked: block });
     } catch (error) {
@@ -509,7 +520,8 @@ export async function probeHttp(env, keyword) {
       status: page.status, bytes: page.bytes, finalUrl: page.finalUrl,
       embedded: Boolean(raw), embeddedBytes: raw?.length ?? 0,
       items: raw ? collectEmbeddedItems(raw).length : 0,
-      challengeId: challengeIdFrom(page.html), blocked: blockedBy(page.html),
+      challengeId: challengeIdFrom(page.html),
+      blocked: classifyPage(page.html, { embedded: Boolean(raw), items: raw ? collectEmbeddedItems(raw).length : 0 }),
       title: page.html.match(/<title>([^<]{0,120})/i)?.[1] ?? null,
     };
   });
@@ -528,7 +540,8 @@ export async function probeHttp(env, keyword) {
     const raw = embeddedState(page.html);
     return {
       status: page.status, bytes: page.bytes, embedded: Boolean(raw),
-      items: raw ? collectEmbeddedItems(raw).length : 0, blocked: blockedBy(page.html),
+      items: raw ? collectEmbeddedItems(raw).length : 0,
+      blocked: classifyPage(page.html, { embedded: Boolean(raw), items: raw ? collectEmbeddedItems(raw).length : 0 }),
       title: page.html.match(/<title>([^<]{0,120})/i)?.[1] ?? null,
     };
   });
@@ -545,17 +558,30 @@ export async function probeHttp(env, keyword) {
     return {
       status: page.status, bytes: page.bytes, embedded: Boolean(raw),
       items: raw ? collectEmbeddedItems(raw).length : 0,
-      secUid: Boolean(secUidFrom(page.html)), blocked: blockedBy(page.html),
+      secUid: Boolean(secUidFrom(page.html)),
+      blocked: classifyPage(page.html, { embedded: Boolean(raw), items: raw ? collectEmbeddedItems(raw).length : 0 }),
     };
   });
 
   await note('explore-html', async () => {
     const page = await getPage('https://www.tiktok.com/explore', session);
     const raw = embeddedState(page.html);
-    return { status: page.status, bytes: page.bytes, embedded: Boolean(raw), items: raw ? collectEmbeddedItems(raw).length : 0, blocked: blockedBy(page.html) };
+    const items = raw ? collectEmbeddedItems(raw).length : 0;
+    return { status: page.status, bytes: page.bytes, embedded: Boolean(raw), items, blocked: classifyPage(page.html, { embedded: Boolean(raw), items }) };
   });
 
   const usable = results.filter((entry) => entry.ok && (entry.items ?? 0) > 0).map((entry) => entry.name);
+  const shells = results.filter((entry) => entry.blocked === 'shell-no-content').length;
+  const captchas = results.filter((entry) => entry.blocked === 'captcha').length;
+
+  const verdict = usable.length
+    ? `Browser-free search works from this Worker via: ${usable.join(', ')}.`
+    : captchas
+      ? 'TikTok is challenging this Worker with a captcha page. Collection must run somewhere else (the GitHub Actions collector works).'
+      : shells
+        ? 'TikTok answers this Worker with a valid but EMPTY shell page: HTTP 200, a large embedded payload of config only, no videos and no challengeId. That is IP-level anti-bot, so no header, signature or retry fixes it from Cloudflare — collection has to run elsewhere. The GitHub Actions collector does work, and /api/fetch-tiktok now triggers it on demand for keywords it does not have.'
+        : 'No browser-free route returned videos, and the pages did not look like the usual anti-bot shell either — read `results` for the exact statuses.';
+
   return {
     keyword: keyword || null,
     cookies: [...session.jar.keys()],
@@ -563,8 +589,7 @@ export async function probeHttp(env, keyword) {
     trace,
     results,
     usable,
-    verdict: usable.length
-      ? `Browser-free search works from this Worker via: ${usable.join(', ')}.`
-      : 'No browser-free route returned videos from this Worker — TikTok is serving Cloudflare IPs a page with no data.',
+    shellPages: shells,
+    verdict,
   };
 }

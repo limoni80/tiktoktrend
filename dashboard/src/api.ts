@@ -104,6 +104,11 @@ export interface FeedResponse extends DatasetPayload {
   /** Which path produced this: 'http' (no browser), 'browser', or a dataset. */
   provider?: 'http' | 'browser';
   dataset?: boolean;
+  /** A GitHub Actions run was started to collect this keyword; retry shortly. */
+  queued?: boolean;
+  etaSeconds?: number;
+  /** Which collected keyword answered, when it is not an exact match. */
+  matchedKeyword?: string | null;
 }
 
 export interface CatalogueEntry { keyword: string; slug: string; status: 'ok' | 'empty' | 'stale'; count: number; updatedAt: string | null }
