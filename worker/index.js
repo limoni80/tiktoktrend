@@ -85,6 +85,12 @@ const json = (body, status = 200, maxAgeSeconds = 0) => new Response(JSON.string
 
 /** How long a dataset answer may be reused before we look again. */
 const DATASET_ANSWER_TTL_S = 45;
+/**
+ * raw.githubusercontent.com may keep a branch URL stale after Actions pushes
+ * a new file. A shared time bucket invalidates that origin URL predictably,
+ * while `cf.cacheTtl` still collapses all users in a POP onto one fetch.
+ */
+const DATASET_ORIGIN_BUCKET_MS = 30_000;
 
 const fail = (status, code, message, extra = {}) => json({ error: { code, message, ...extra } }, status);
 
@@ -474,9 +480,11 @@ async function fetchDataset(env, path) {
   const base = datasetBase(env);
   if (!base) return null;
   try {
-    const response = await fetch(`${base}/${path}`, {
+    const source = new URL(`${base}/${path}`);
+    source.searchParams.set('v', String(Math.floor(Date.now() / DATASET_ORIGIN_BUCKET_MS)));
+    const response = await fetch(source, {
       headers: { accept: 'application/json', 'user-agent': 'tiktoktrend-worker' },
-      cf: { cacheTtl: 60, cacheEverything: true },
+      cf: { cacheTtl: Math.round(DATASET_ORIGIN_BUCKET_MS / 1_000), cacheEverything: true },
     });
     if (!response.ok) return null;
     const contentType = response.headers.get('content-type') ?? '';
