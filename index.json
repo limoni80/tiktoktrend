@@ -1,9 +1,19 @@
 {
-  "generatedAt": "2026-08-29T22:57:56.685Z",
-  "startedAt": "2026-08-29T22:57:08.592Z",
+  "generatedAt": "2026-08-29T23:00:56.221Z",
+  "startedAt": "2026-08-29T23:00:07.591Z",
   "repo": "limoni80/tiktoktrend",
-  "runUrl": "https://github.com/limoni80/tiktoktrend/actions/runs/33279796386",
+  "runUrl": "https://github.com/limoni80/tiktoktrend/actions/runs/33279901524",
   "entries": [
+    {
+      "kind": "search",
+      "file": "search/morocco.json",
+      "keyword": "morocco",
+      "slug": "morocco",
+      "status": "ok",
+      "count": 120,
+      "updatedAt": "2026-08-29T23:00:42.234Z",
+      "lastSuccessAt": "2026-08-29T23:00:42.234Z"
+    },
     {
       "kind": "search",
       "file": "search/limoniastrum.json",
@@ -236,16 +246,6 @@
     },
     {
       "kind": "search",
-      "file": "search/morocco.json",
-      "keyword": "morocco",
-      "slug": "morocco",
-      "status": "carried",
-      "count": 60,
-      "updatedAt": "2026-08-29T21:25:08.677Z",
-      "lastSuccessAt": "2026-08-29T21:25:08.677Z"
-    },
-    {
-      "kind": "search",
       "file": "search/dropshipping.json",
       "keyword": "dropshipping",
       "slug": "dropshipping",
@@ -305,6 +305,13 @@
     }
   ],
   "keywords": [
+    {
+      "keyword": "morocco",
+      "slug": "morocco",
+      "status": "ok",
+      "count": 120,
+      "updatedAt": "2026-08-29T23:00:42.234Z"
+    },
     {
       "keyword": "limoniastrum",
       "slug": "limoniastrum",
@@ -465,13 +472,6 @@
       "status": "carried",
       "count": 60,
       "updatedAt": "2026-08-29T21:26:45.746Z"
-    },
-    {
-      "keyword": "morocco",
-      "slug": "morocco",
-      "status": "carried",
-      "count": 60,
-      "updatedAt": "2026-08-29T21:25:08.677Z"
     },
     {
       "keyword": "dropshipping",
