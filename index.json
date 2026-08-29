@@ -1,9 +1,20 @@
 {
-  "generatedAt": "2026-08-29T23:32:42.032Z",
-  "startedAt": "2026-08-29T23:31:57.665Z",
+  "generatedAt": "2026-08-29T23:37:50.043Z",
+  "startedAt": "2026-08-29T23:37:00.158Z",
   "repo": "limoni80/tiktoktrend",
-  "runUrl": "https://github.com/limoni80/tiktoktrend/actions/runs/33281173602",
+  "runUrl": "https://github.com/limoni80/tiktoktrend/actions/runs/33281377369",
   "entries": [
+    {
+      "kind": "search",
+      "file": "search/morocco.json",
+      "keyword": "morocco",
+      "slug": "morocco",
+      "status": "ok",
+      "count": 120,
+      "emptyStreak": 0,
+      "updatedAt": "2026-08-29T23:37:35.874Z",
+      "lastSuccessAt": "2026-08-29T23:37:35.874Z"
+    },
     {
       "kind": "search",
       "file": "search/tigre.json",
@@ -54,16 +65,6 @@
       "count": 120,
       "updatedAt": "2026-08-29T23:03:30.229Z",
       "lastSuccessAt": "2026-08-29T23:03:30.229Z"
-    },
-    {
-      "kind": "search",
-      "file": "search/morocco.json",
-      "keyword": "morocco",
-      "slug": "morocco",
-      "status": "ok",
-      "count": 120,
-      "updatedAt": "2026-08-29T23:00:42.234Z",
-      "lastSuccessAt": "2026-08-29T23:00:42.234Z"
     },
     {
       "kind": "search",
@@ -357,6 +358,13 @@
   ],
   "keywords": [
     {
+      "keyword": "morocco",
+      "slug": "morocco",
+      "status": "ok",
+      "count": 120,
+      "updatedAt": "2026-08-29T23:37:35.874Z"
+    },
+    {
       "keyword": "tigre",
       "slug": "tigre",
       "status": "ok",
@@ -390,13 +398,6 @@
       "status": "ok",
       "count": 120,
       "updatedAt": "2026-08-29T23:03:30.229Z"
-    },
-    {
-      "keyword": "morocco",
-      "slug": "morocco",
-      "status": "ok",
-      "count": 120,
-      "updatedAt": "2026-08-29T23:00:42.234Z"
     },
     {
       "keyword": "limoniastrum",
