@@ -1,9 +1,19 @@
 {
-  "generatedAt": "2026-08-29T22:51:59.265Z",
-  "startedAt": "2026-08-29T22:51:09.726Z",
+  "generatedAt": "2026-08-29T22:52:26.973Z",
+  "startedAt": "2026-08-29T22:51:37.569Z",
   "repo": "limoni80/tiktoktrend",
-  "runUrl": "https://github.com/limoni80/tiktoktrend/actions/runs/33279564228",
+  "runUrl": "https://github.com/limoni80/tiktoktrend/actions/runs/33279583028",
   "entries": [
+    {
+      "kind": "search",
+      "file": "search/digital-products.json",
+      "keyword": "digital products",
+      "slug": "digital-products",
+      "status": "ok",
+      "count": 120,
+      "updatedAt": "2026-08-29T22:52:14.110Z",
+      "lastSuccessAt": "2026-08-29T22:52:14.110Z"
+    },
     {
       "kind": "search",
       "file": "search/digital.json",
@@ -275,6 +285,13 @@
     }
   ],
   "keywords": [
+    {
+      "keyword": "digital products",
+      "slug": "digital-products",
+      "status": "ok",
+      "count": 120,
+      "updatedAt": "2026-08-29T22:52:14.110Z"
+    },
     {
       "keyword": "digital",
       "slug": "digital",
