@@ -33,8 +33,25 @@ jobs:
           cache: npm
           cache-dependency-path: backend/package-lock.json
 
-      - name: Install collector and Chromium
-        run: npm ci --prefix backend
+      - name: Restore Playwright Chromium
+        id: playwright-cache
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/ms-playwright
+          key: ${{ runner.os }}-playwright-${{ hashFiles('backend/package-lock.json') }}
+
+      - name: Install collector dependencies
+        run: npm ci --prefix backend --ignore-scripts
+
+      - name: Install Chromium and system dependencies
+        if: steps.playwright-cache.outputs.cache-hit != 'true'
+        working-directory: backend
+        run: npx playwright install --with-deps chromium
+
+      - name: Verify cached Chromium
+        if: steps.playwright-cache.outputs.cache-hit == 'true'
+        working-directory: backend
+        run: npx playwright install chromium
 
       - name: Collect public TikTok datasets
         run: node backend/scripts/collect.mjs

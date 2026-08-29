@@ -99,8 +99,10 @@ function App() {
   const [region, setRegion] = useState('US');
   const [ccBusy, setCcBusy] = useState(false);
   const fileRef = useRef<HTMLInputElement>(null);
-  // How many times we have already waited for a keyword that is being collected.
-  const queuedRetries = useRef<Record<string, number>>({});
+  // The polling state lives in a ref so scheduled retries always see the
+  // latest attempt count even when they were created by an older render.
+  const collectionPoll = useRef<{ keyword: string; since: number; attempts: number; timer: number | null } | null>(null);
+  const busyRef = useRef(false);
   // A keyword nobody had collected yet: a run is in flight and we are polling.
   const [collecting, setCollecting] = useState<{ keyword: string; since: number } | null>(null);
 
@@ -149,6 +151,11 @@ function App() {
     return () => clearInterval(timer);
   }, [collecting]);
 
+  // Never leave a queued retry running after the dashboard unmounts.
+  useEffect(() => () => {
+    if (collectionPoll.current?.timer != null) window.clearTimeout(collectionPoll.current.timer);
+  }, []);
+
   // Live progress while a fetch runs.
   useEffect(() => {
     if (!busy) { setProgress(null); return; }
@@ -170,7 +177,14 @@ function App() {
 
   const visible = useMemo(() => feed.filter((video) => {
     const needle = query.toLowerCase().trim().replace(/^#|^@/, '');
-    if (needle) {
+    // A server-side TikTok search is already ranked for this keyword. Applying
+    // the instant local text filter again can hide valid results whose caption
+    // does not literally repeat the query. Keep local filtering only while the
+    // user is typing a different query over the currently loaded dataset.
+    const loadedNeedle = feedType === 'videos'
+      ? String(videosMeta?.keyword ?? '').toLowerCase().trim().replace(/^#|^@/, '')
+      : '';
+    if (needle && needle !== loadedNeedle) {
       const haystack = `${video.caption} ${video.creator.username ?? ''} ${video.creator.displayName} ${video.hashtags.join(' ')} ${video.soundName ?? ''} ${video.industry ?? ''} ${video.topic ?? ''}`.toLowerCase();
       if (!haystack.includes(needle)) return false;
     }
@@ -203,7 +217,7 @@ function App() {
       if (filters.dateTo && time > new Date(`${filters.dateTo}T23:59:59`).getTime()) return false;
     }
     return true;
-  }).sort((a, b) => sortValue(b, sort) - sortValue(a, sort)), [feed, query, activeNav, watchlist, filters, customFilters, sort]);
+  }).sort((a, b) => sortValue(b, sort) - sortValue(a, sort)), [feed, feedType, videosMeta?.keyword, query, activeNav, watchlist, filters, customFilters, sort]);
 
   const creators = useMemo(() => [...new Map(enriched.map((video) => [video.creator.username ?? video.creator.displayName, video.creator])).values()]
     .sort((a, b) => (b.followers ?? -1) - (a.followers ?? -1)), [enriched]);
@@ -336,8 +350,15 @@ function App() {
   };
 
   const runFetch = async (overrides?: { from?: string; to?: string; q?: string; live?: boolean }) => {
-    if (busy) return;
+    if (busyRef.current) return;
     const q = (overrides?.q ?? query).trim();
+    const activePoll = collectionPoll.current;
+    if (activePoll && activePoll.keyword !== q) {
+      if (activePoll.timer != null) window.clearTimeout(activePoll.timer);
+      collectionPoll.current = null;
+      setCollecting(null);
+    }
+    busyRef.current = true;
     setBusy(true); setError(''); setFlash(''); setHasMore(false);
     try {
       if (feedType === 'ads') {
@@ -354,23 +375,30 @@ function App() {
         recordDebug(`search “${q || 'Explore'}”`, payload.debug);
 
         // The keyword is not collected yet and a GitHub Actions run was just
-        // started for it. Wait it out once instead of showing an error.
+        // started for it. Poll the same JSON endpoint used by direct tests: the
+        // first check is early enough for a cached Chromium run, then every 8s.
         if (payload.queued) {
-          const attempts = queuedRetries.current[q] ?? 0;
-          queuedRetries.current[q] = attempts + 1;
-          // Poll rather than wait once: the run usually lands in 45-90 s, and a
-          // short poll makes the wait feel like a search, not an error.
-          if (attempts < 14) {
-            setCollecting({ keyword: q, since: collecting?.keyword === q ? collecting.since : Date.now() });
+          const current = collectionPoll.current;
+          const sameKeyword = current?.keyword === q;
+          const attempts = sameKeyword ? current.attempts + 1 : 0;
+          const since = sameKeyword ? current.since : Date.now();
+          if (attempts < 24) {
+            if (current?.timer != null) window.clearTimeout(current.timer);
+            const firstDelay = Math.min(payload.etaSeconds ?? 35, 35) * 1_000;
+            const delay = attempts === 0 ? firstDelay : 8_000;
+            const timer = window.setTimeout(() => { void runFetch({ q }); }, delay);
+            collectionPoll.current = { keyword: q, since, attempts, timer };
+            setCollecting({ keyword: q, since });
             setFlash(payload.notice ?? `Collecting “${q}” from TikTok — about a minute.`);
-            window.setTimeout(() => { void runFetch({ q }); }, attempts === 0 ? (payload.etaSeconds ?? 60) * 1000 : 12_000);
           } else {
+            collectionPoll.current = null;
             setCollecting(null);
             setError(`“${q}” is still not ready after 3 minutes. Open the GitHub Actions run to see what happened, then search again.`);
           }
           return;
         }
-        queuedRetries.current[q] = 0;
+        if (collectionPoll.current?.timer != null) window.clearTimeout(collectionPoll.current.timer);
+        collectionPoll.current = null;
         setCollecting(null);
 
         if (!payload.videos?.length) throw new ApiError('No videos returned', 'tiktok_empty', 0, payload.debug);
@@ -399,7 +427,7 @@ function App() {
       } else {
         setError(`${caught instanceof Error ? caught.message : 'Fetch failed'}${hint}`);
       }
-    } finally { setBusy(false); }
+    } finally { busyRef.current = false; setBusy(false); }
   };
 
   // Infinite scroll — the server keeps its TikTok session open, so each call

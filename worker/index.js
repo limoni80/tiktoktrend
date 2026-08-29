@@ -745,7 +745,7 @@ async function handleApi(request, env, url, ctx) {
       const dispatch = await requestCollection(env, keyword);
       if (dispatch.queued) {
         return json({
-          videos: [], scanned: 0, hasMore: false, queued: true, etaSeconds: 60,
+          videos: [], scanned: 0, hasMore: false, queued: true, etaSeconds: 35,
           keyword, source: 'GitHub Actions collector',
           notice: dispatch.alreadyRunning
             ? `“${keyword}” is already being collected (started ${dispatch.requestedAt ? new Date(dispatch.requestedAt).toLocaleTimeString() : 'just now'}). It takes about a minute — this page will retry on its own.`
