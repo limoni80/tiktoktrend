@@ -186,8 +186,8 @@ async function main() {
   const remembered = (previousIndex?.keywords ?? []).map((entry) => String(entry?.keyword ?? '').trim()).filter(Boolean);
   const configured = (settings.keywords ?? []).map((value) => String(value).trim()).filter(Boolean);
   // The parallel workflow merges a fast artifact into the latest data branch,
-  // so an on-demand job only needs its own keyword. Legacy/full runs still
-  // retain the self-contained rebuild behaviour.
+  // so an on-demand job only needs its own keyword. Scheduled staleness and
+  // empty-result cooldowns are planned centrally in plan-keywords.mjs.
   const ordered = extra && mergePublish
     ? [extra]
     : [...(extra ? [extra] : []), ...configured, ...remembered];
@@ -243,11 +243,15 @@ async function main() {
       await writeJson(join(OUT, path), kept);
       return { ...meta, status: 'stale', count: old.videos.length, updatedAt: old.fetchedAt, lastSuccessAt: old.fetchedAt };
     }
-    await writeJson(join(OUT, path), payload);
+    // Count consecutive empty results so a keyword TikTok has nothing for can
+    // stop being re-collected every run. Any success resets it.
+    const emptyStreak = payload.videos.length ? 0 : Number(old?.emptyStreak ?? 0) + 1;
+    await writeJson(join(OUT, path), { ...payload, emptyStreak });
     return {
       ...meta,
       status: payload.videos.length ? 'ok' : 'empty',
       count: payload.videos.length,
+      emptyStreak,
       updatedAt: payload.fetchedAt,
       lastSuccessAt: payload.videos.length ? payload.fetchedAt : (old?.fetchedAt ?? null),
     };
@@ -273,8 +277,9 @@ async function main() {
       }, { kind: 'feed', file: 'feed.json', keyword: null }));
     }
 
-    // 2. One file per keyword, newest request first, within a time budget.
-    for (const keyword of targets) {
+    // 2. One file per keyword, within a time budget. Production gives this
+    // process one keyword and parallelizes across the GitHub Actions matrix.
+    const collectKeyword = async (keyword) => {
       const slug = slugify(keyword);
       const file = `search/${slug}.json`;
 
@@ -284,10 +289,10 @@ async function main() {
         const old = await previous(file);
         if (old?.videos?.length) {
           await writeJson(join(OUT, file), { ...old, carriedForward: true, carriedAt: startedAt });
-          catalogue.push({ kind: 'search', file, keyword, slug, status: 'carried', count: old.videos.length, updatedAt: old.fetchedAt, lastSuccessAt: old.fetchedAt });
+          catalogue.push({ kind: 'search', file, keyword, slug, status: 'carried', count: old.videos.length, emptyStreak: Number(old.emptyStreak ?? 0), updatedAt: old.fetchedAt, lastSuccessAt: old.fetchedAt });
           log(`› “${keyword}” — carried forward (time budget reached)`);
         }
-        continue;
+        return;
       }
 
       log(`› “${keyword}”`);
@@ -304,7 +309,9 @@ async function main() {
         keyword, fetchedAt: new Date().toISOString(), debug: result.debug,
       }, { kind: 'search', file, keyword, slug }));
       await sleep(2_000);
-    }
+    };
+
+    for (const keyword of targets) await collectKeyword(keyword);
 
     // 3. Legacy fast publishing carries untouched files. The current parallel
     //    workflow sets MERGE_PUBLISH=1, emits only the refreshed shard, and the
@@ -328,7 +335,8 @@ async function main() {
     repo: REPO,
     runUrl: process.env.GITHUB_RUN_ID ? `https://github.com/${REPO}/actions/runs/${process.env.GITHUB_RUN_ID}` : null,
     entries: catalogue,
-    keywords: catalogue.filter((entry) => entry.kind === 'search').map(({ keyword, slug, status, count, updatedAt }) => ({ keyword, slug, status, count, updatedAt })),
+    keywords: catalogue.filter((entry) => entry.kind === 'search')
+      .map(({ keyword, slug, status, count, updatedAt, emptyStreak }) => ({ keyword, slug, status, count, updatedAt, ...(emptyStreak ? { emptyStreak } : {}) })),
   };
   await writeJson(join(OUT, 'index.json'), index);
 

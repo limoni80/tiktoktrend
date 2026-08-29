@@ -73,7 +73,10 @@ const index = {
   entries,
   keywords: entries
     .filter((entry) => entry.kind === 'search')
-    .map(({ keyword, slug, status, count, updatedAt }) => ({ keyword, slug, status, count, updatedAt })),
+    .map(({ keyword, slug, status, count, updatedAt, emptyStreak }) => ({
+      keyword, slug, status, count, updatedAt,
+      ...(Number(emptyStreak) > 0 ? { emptyStreak: Number(emptyStreak) } : {}),
+    })),
 };
 await writeJson(currentIndexPath, index);
 

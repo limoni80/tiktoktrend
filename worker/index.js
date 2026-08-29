@@ -67,10 +67,24 @@ const CORS = {
   'Access-Control-Allow-Headers': 'Content-Type',
 };
 
-const json = (body, status = 200) => new Response(JSON.stringify(body), {
+/**
+ * `maxAgeSeconds` is for answers that are already a snapshot — a collected
+ * dataset, the catalogue — so a scroll, a filter change or a second tab does
+ * not re-fetch and re-parse a 250 KB file. Live answers stay `no-store`.
+ */
+const json = (body, status = 200, maxAgeSeconds = 0) => new Response(JSON.stringify(body), {
   status,
-  headers: { 'Content-Type': 'application/json; charset=utf-8', 'Cache-Control': 'no-store', ...CORS },
+  headers: {
+    'Content-Type': 'application/json; charset=utf-8',
+    'Cache-Control': maxAgeSeconds > 0
+      ? `public, max-age=${maxAgeSeconds}, s-maxage=${maxAgeSeconds}`
+      : 'no-store',
+    ...CORS,
+  },
 });
+
+/** How long a dataset answer may be reused before we look again. */
+const DATASET_ANSWER_TTL_S = 45;
 
 const fail = (status, code, message, extra = {}) => json({ error: { code, message, ...extra } }, status);
 
@@ -406,12 +420,20 @@ async function proxyVideo(request, url) {
   const range = request.headers.get('range');
   if (range) headers.range = range;
 
-  const upstream = await fetch(target, { headers });
+  // A full-file request can be edge-cached, so scrolling back to a video plays
+  // it from Cloudflare instead of TikTok's CDN. Range requests are left
+  // uncached: a partial body must never be stored as if it were the whole file.
+  const upstream = await fetch(target, {
+    headers,
+    ...(range ? {} : { cf: { cacheEverything: true, cacheTtl: 1_800 } }),
+  });
   const out = new Headers(CORS);
   for (const name of ['content-type', 'content-range', 'accept-ranges', 'content-length']) {
     const value = upstream.headers.get(name);
     if (value) out.set(name, value);
   }
+  // TikTok play URLs expire in hours, so never let a client cache one for long.
+  out.set('Cache-Control', range ? 'no-store' : 'public, max-age=900');
   return new Response(upstream.body, { status: upstream.status, headers: out });
 }
 
@@ -674,7 +696,7 @@ async function handleApi(request, env, url, ctx) {
   if (path === '/api/catalogue') {
     const index = await fetchDataset(env, 'index.json');
     if (!index) return json({ configured: Boolean(datasetBase(env)), generatedAt: null, keywords: [], entries: [] });
-    return json({ configured: true, ...index.payload, ageSeconds: index.ageSeconds });
+    return json({ configured: true, ...index.payload, ageSeconds: index.ageSeconds }, 200, DATASET_ANSWER_TTL_S);
   }
 
   if (path === '/api/datasets' && !env.BACKEND_URL) {
@@ -712,7 +734,7 @@ async function handleApi(request, env, url, ctx) {
     const datasetIsFresh = datasetEntry?.ageSeconds != null && datasetEntry.ageSeconds <= DATASET_FRESH_S;
     if (!wantsLive && datasetEntry?.payload?.videos?.length && datasetEntry.ageSeconds != null && datasetEntry.ageSeconds <= DATASET_FRESH_S) {
         const answer = pagedDatasetResponse(datasetEntry, { knownIds, want, dateRange });
-        return json({ ...answer, matchedKeyword: datasetEntry.payload.keyword ?? null });
+        return json({ ...answer, matchedKeyword: datasetEntry.payload.keyword ?? null }, 200, DATASET_ANSWER_TTL_S);
     }
 
     // A fresh, explicit empty result is a completed collection, not a reason

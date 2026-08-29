@@ -3,7 +3,8 @@ run-name: Collect TikTok — ${{ inputs.keyword || 'scheduled parallel refresh' 
 
 on:
   schedule:
-    - cron: "*/30 * * * *"
+    # Avoid minute 0/30, when GitHub's scheduled-run queue is busiest.
+    - cron: "7,37 * * * *"
   workflow_dispatch:
     inputs:
       keyword:
