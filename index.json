@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-08-29T21:58:58.095Z",
-  "startedAt": "2026-08-29T21:58:24.449Z",
+  "generatedAt": "2026-08-29T22:01:16.214Z",
+  "startedAt": "2026-08-29T22:00:40.629Z",
   "repo": "limoni80/tiktoktrend",
-  "runUrl": "https://github.com/limoni80/tiktoktrend/actions/runs/33277392142",
+  "runUrl": "https://github.com/limoni80/tiktoktrend/actions/runs/33277481062",
   "entries": [
     {
       "kind": "feed",
@@ -15,13 +15,13 @@
     },
     {
       "kind": "search",
-      "file": "search/dragon-ball.json",
-      "keyword": "dragon ball",
-      "slug": "dragon-ball",
+      "file": "search/recipes.json",
+      "keyword": "recipes",
+      "slug": "recipes",
       "status": "ok",
       "count": 60,
-      "updatedAt": "2026-08-29T21:58:54.243Z",
-      "lastSuccessAt": "2026-08-29T21:58:54.243Z"
+      "updatedAt": "2026-08-29T22:01:13.815Z",
+      "lastSuccessAt": "2026-08-29T22:01:13.815Z"
     },
     {
       "kind": "search",
@@ -156,11 +156,11 @@
   ],
   "keywords": [
     {
-      "keyword": "dragon ball",
-      "slug": "dragon-ball",
+      "keyword": "recipes",
+      "slug": "recipes",
       "status": "ok",
       "count": 60,
-      "updatedAt": "2026-08-29T21:58:54.243Z"
+      "updatedAt": "2026-08-29T22:01:13.815Z"
     },
     {
       "keyword": "trump",
