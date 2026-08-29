@@ -1,17 +1,18 @@
 {
-  "generatedAt": "2026-08-29T22:26:28.878Z",
-  "startedAt": "2026-08-29T22:25:56.111Z",
+  "generatedAt": "2026-08-29T22:44:24.815Z",
+  "startedAt": "2026-08-29T22:43:34.944Z",
   "repo": "limoni80/tiktoktrend",
-  "runUrl": "https://github.com/limoni80/tiktoktrend/actions/runs/33278566669",
+  "runUrl": "https://github.com/limoni80/tiktoktrend/actions/runs/33279271391",
   "entries": [
     {
-      "kind": "feed",
-      "file": "feed.json",
-      "keyword": null,
-      "status": "carried",
-      "count": 31,
-      "updatedAt": "2026-08-29T21:22:32.551Z",
-      "lastSuccessAt": "2026-08-29T21:22:32.551Z"
+      "kind": "search",
+      "file": "search/chicken-meal-prep-ideas.json",
+      "keyword": "chicken meal prep ideas",
+      "slug": "chicken-meal-prep-ideas",
+      "status": "ok",
+      "count": 120,
+      "updatedAt": "2026-08-29T22:44:11.047Z",
+      "lastSuccessAt": "2026-08-29T22:44:11.047Z"
     },
     {
       "kind": "search",
@@ -22,56 +23,6 @@
       "count": 60,
       "updatedAt": "2026-08-29T22:26:25.184Z",
       "lastSuccessAt": "2026-08-29T22:26:25.184Z"
-    },
-    {
-      "kind": "search",
-      "file": "search/trump.json",
-      "keyword": "trump",
-      "slug": "trump",
-      "status": "carried",
-      "count": 60,
-      "updatedAt": "2026-08-29T21:23:01.959Z",
-      "lastSuccessAt": "2026-08-29T21:23:01.959Z"
-    },
-    {
-      "kind": "search",
-      "file": "search/ai-tools.json",
-      "keyword": "ai tools",
-      "slug": "ai-tools",
-      "status": "carried",
-      "count": 60,
-      "updatedAt": "2026-08-29T21:23:31.312Z",
-      "lastSuccessAt": "2026-08-29T21:23:31.312Z"
-    },
-    {
-      "kind": "search",
-      "file": "search/skincare.json",
-      "keyword": "skincare",
-      "slug": "skincare",
-      "status": "carried",
-      "count": 60,
-      "updatedAt": "2026-08-29T21:24:03.160Z",
-      "lastSuccessAt": "2026-08-29T21:24:03.160Z"
-    },
-    {
-      "kind": "search",
-      "file": "search/dropshipping.json",
-      "keyword": "dropshipping",
-      "slug": "dropshipping",
-      "status": "carried",
-      "count": 60,
-      "updatedAt": "2026-08-29T21:24:34.984Z",
-      "lastSuccessAt": "2026-08-29T21:24:34.984Z"
-    },
-    {
-      "kind": "search",
-      "file": "search/morocco.json",
-      "keyword": "morocco",
-      "slug": "morocco",
-      "status": "carried",
-      "count": 60,
-      "updatedAt": "2026-08-29T21:25:08.677Z",
-      "lastSuccessAt": "2026-08-29T21:25:08.677Z"
     },
     {
       "kind": "search",
@@ -175,6 +126,16 @@
     },
     {
       "kind": "search",
+      "file": "search/messi.json",
+      "keyword": "messi",
+      "slug": "messi",
+      "status": "carried",
+      "count": 60,
+      "updatedAt": "2026-08-29T21:26:45.746Z",
+      "lastSuccessAt": "2026-08-29T21:26:45.746Z"
+    },
+    {
+      "kind": "search",
       "file": "search/flower.json",
       "keyword": "flower",
       "slug": "flower",
@@ -185,6 +146,65 @@
     },
     {
       "kind": "search",
+      "file": "search/morocco.json",
+      "keyword": "morocco",
+      "slug": "morocco",
+      "status": "carried",
+      "count": 60,
+      "updatedAt": "2026-08-29T21:25:08.677Z",
+      "lastSuccessAt": "2026-08-29T21:25:08.677Z"
+    },
+    {
+      "kind": "search",
+      "file": "search/dropshipping.json",
+      "keyword": "dropshipping",
+      "slug": "dropshipping",
+      "status": "carried",
+      "count": 60,
+      "updatedAt": "2026-08-29T21:24:34.984Z",
+      "lastSuccessAt": "2026-08-29T21:24:34.984Z"
+    },
+    {
+      "kind": "search",
+      "file": "search/skincare.json",
+      "keyword": "skincare",
+      "slug": "skincare",
+      "status": "carried",
+      "count": 60,
+      "updatedAt": "2026-08-29T21:24:03.160Z",
+      "lastSuccessAt": "2026-08-29T21:24:03.160Z"
+    },
+    {
+      "kind": "search",
+      "file": "search/ai-tools.json",
+      "keyword": "ai tools",
+      "slug": "ai-tools",
+      "status": "carried",
+      "count": 60,
+      "updatedAt": "2026-08-29T21:23:31.312Z",
+      "lastSuccessAt": "2026-08-29T21:23:31.312Z"
+    },
+    {
+      "kind": "search",
+      "file": "search/trump.json",
+      "keyword": "trump",
+      "slug": "trump",
+      "status": "carried",
+      "count": 60,
+      "updatedAt": "2026-08-29T21:23:01.959Z",
+      "lastSuccessAt": "2026-08-29T21:23:01.959Z"
+    },
+    {
+      "kind": "feed",
+      "file": "feed.json",
+      "keyword": null,
+      "status": "carried",
+      "count": 31,
+      "updatedAt": "2026-08-29T21:22:32.551Z",
+      "lastSuccessAt": "2026-08-29T21:22:32.551Z"
+    },
+    {
+      "kind": "search",
       "file": "search/dog.json",
       "keyword": "dog",
       "slug": "dog",
@@ -192,60 +212,22 @@
       "count": 60,
       "updatedAt": "2026-08-29T21:09:20.691Z",
       "lastSuccessAt": "2026-08-29T21:09:20.691Z"
-    },
-    {
-      "kind": "search",
-      "file": "search/messi.json",
-      "keyword": "messi",
-      "slug": "messi",
-      "status": "carried",
-      "count": 60,
-      "updatedAt": "2026-08-29T21:26:45.746Z",
-      "lastSuccessAt": "2026-08-29T21:26:45.746Z"
     }
   ],
   "keywords": [
+    {
+      "keyword": "chicken meal prep ideas",
+      "slug": "chicken-meal-prep-ideas",
+      "status": "ok",
+      "count": 120,
+      "updatedAt": "2026-08-29T22:44:11.047Z"
+    },
     {
       "keyword": "coloring pages",
       "slug": "coloring-pages",
       "status": "ok",
       "count": 60,
       "updatedAt": "2026-08-29T22:26:25.184Z"
-    },
-    {
-      "keyword": "trump",
-      "slug": "trump",
-      "status": "carried",
-      "count": 60,
-      "updatedAt": "2026-08-29T21:23:01.959Z"
-    },
-    {
-      "keyword": "ai tools",
-      "slug": "ai-tools",
-      "status": "carried",
-      "count": 60,
-      "updatedAt": "2026-08-29T21:23:31.312Z"
-    },
-    {
-      "keyword": "skincare",
-      "slug": "skincare",
-      "status": "carried",
-      "count": 60,
-      "updatedAt": "2026-08-29T21:24:03.160Z"
-    },
-    {
-      "keyword": "dropshipping",
-      "slug": "dropshipping",
-      "status": "carried",
-      "count": 60,
-      "updatedAt": "2026-08-29T21:24:34.984Z"
-    },
-    {
-      "keyword": "morocco",
-      "slug": "morocco",
-      "status": "carried",
-      "count": 60,
-      "updatedAt": "2026-08-29T21:25:08.677Z"
     },
     {
       "keyword": "CHICKEN",
@@ -318,6 +300,13 @@
       "updatedAt": "2026-08-29T21:30:36.295Z"
     },
     {
+      "keyword": "messi",
+      "slug": "messi",
+      "status": "carried",
+      "count": 60,
+      "updatedAt": "2026-08-29T21:26:45.746Z"
+    },
+    {
       "keyword": "flower",
       "slug": "flower",
       "status": "carried",
@@ -325,18 +314,46 @@
       "updatedAt": "2026-08-29T21:25:41.827Z"
     },
     {
+      "keyword": "morocco",
+      "slug": "morocco",
+      "status": "carried",
+      "count": 60,
+      "updatedAt": "2026-08-29T21:25:08.677Z"
+    },
+    {
+      "keyword": "dropshipping",
+      "slug": "dropshipping",
+      "status": "carried",
+      "count": 60,
+      "updatedAt": "2026-08-29T21:24:34.984Z"
+    },
+    {
+      "keyword": "skincare",
+      "slug": "skincare",
+      "status": "carried",
+      "count": 60,
+      "updatedAt": "2026-08-29T21:24:03.160Z"
+    },
+    {
+      "keyword": "ai tools",
+      "slug": "ai-tools",
+      "status": "carried",
+      "count": 60,
+      "updatedAt": "2026-08-29T21:23:31.312Z"
+    },
+    {
+      "keyword": "trump",
+      "slug": "trump",
+      "status": "carried",
+      "count": 60,
+      "updatedAt": "2026-08-29T21:23:01.959Z"
+    },
+    {
       "keyword": "dog",
       "slug": "dog",
       "status": "carried",
       "count": 60,
       "updatedAt": "2026-08-29T21:09:20.691Z"
-    },
-    {
-      "keyword": "messi",
-      "slug": "messi",
-      "status": "carried",
-      "count": 60,
-      "updatedAt": "2026-08-29T21:26:45.746Z"
     }
   ]
 }
