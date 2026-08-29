@@ -1,9 +1,19 @@
 {
-  "generatedAt": "2026-08-29T23:00:56.221Z",
-  "startedAt": "2026-08-29T23:00:07.591Z",
+  "generatedAt": "2026-08-29T23:01:40.535Z",
+  "startedAt": "2026-08-29T23:00:52.879Z",
   "repo": "limoni80/tiktoktrend",
-  "runUrl": "https://github.com/limoni80/tiktoktrend/actions/runs/33279901524",
+  "runUrl": "https://github.com/limoni80/tiktoktrend/actions/runs/33279934978",
   "entries": [
+    {
+      "kind": "search",
+      "file": "search/etsy.json",
+      "keyword": "etsy",
+      "slug": "etsy",
+      "status": "ok",
+      "count": 120,
+      "updatedAt": "2026-08-29T23:01:27.704Z",
+      "lastSuccessAt": "2026-08-29T23:01:27.704Z"
+    },
     {
       "kind": "search",
       "file": "search/morocco.json",
@@ -305,6 +315,13 @@
     }
   ],
   "keywords": [
+    {
+      "keyword": "etsy",
+      "slug": "etsy",
+      "status": "ok",
+      "count": 120,
+      "updatedAt": "2026-08-29T23:01:27.704Z"
+    },
     {
       "keyword": "morocco",
       "slug": "morocco",
