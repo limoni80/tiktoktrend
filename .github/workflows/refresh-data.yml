@@ -1,4 +1,5 @@
 name: Refresh TikTok datasets
+run-name: Collect TikTok — ${{ inputs.keyword || 'scheduled refresh' }}
 
 on:
   schedule:
@@ -15,6 +16,7 @@ permissions:
 
 concurrency:
   group: refresh-tiktok-datasets
+  queue: max
   cancel-in-progress: false
 
 jobs:

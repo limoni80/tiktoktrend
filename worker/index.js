@@ -54,7 +54,7 @@ const BROWSER_KEEP_ALIVE_MS = 600_000;   // keep the browser hot for reuse
 const BROWSER_ACQUIRE_BUDGET_MS = 12_000; // brief retry; HTTP already tried
 const SEARCH_CACHE_FRESH_S = 120;         // serve a cached search without a browser
 const SEARCH_CACHE_MAX_S = 3_600;         // keep it this long as a 429 fallback
-const DISPATCH_COOLDOWN_S = 600;          // do not re-trigger the same keyword for 10 min
+const DISPATCH_COOLDOWN_S = 120;          // let a cancelled run recover while avoiding rapid duplicates
 const DATASET_FRESH_S = 1_800;            // a GitHub Actions dataset this recent is served as-is
 
 const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));

@@ -382,7 +382,7 @@ function App() {
           const sameKeyword = current?.keyword === q;
           const attempts = sameKeyword ? current.attempts + 1 : 0;
           const since = sameKeyword ? current.since : Date.now();
-          if (attempts < 24) {
+          if (attempts < 36) {
             if (current?.timer != null) window.clearTimeout(current.timer);
             const firstDelay = Math.min(payload.etaSeconds ?? 35, 35) * 1_000;
             const delay = attempts === 0 ? firstDelay : 8_000;
@@ -393,7 +393,7 @@ function App() {
           } else {
             collectionPoll.current = null;
             setCollecting(null);
-            setError(`“${q}” is still not ready after 3 minutes. Open the GitHub Actions run to see what happened, then search again.`);
+            setError(`“${q}” is still not ready after 5 minutes. Open the GitHub Actions run to see what happened, then search again.`);
           }
           return;
         }
