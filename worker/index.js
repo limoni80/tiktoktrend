@@ -446,7 +446,7 @@ async function proxyBackend(request, url, env) {
  * quota at all, which is what makes repeat searches unlimited.
  */
 const datasetBase = (env) => String(env.DATA_BASE_URL ?? '').replace(/\/+$/, '');
-const slugify = (value) => value.toLowerCase().trim().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+const slugify = (value) => value.toLowerCase().trim().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '') || 'keyword';
 
 async function fetchDataset(env, path) {
   const base = datasetBase(env);
@@ -670,7 +670,11 @@ async function handleApi(request, env, url, ctx) {
     //    recent, serve it straight away — that is what makes repeated searches
     //    unlimited. `live=1` forces a fresh browser run instead.
     const resolved = cacheable && keyword ? await resolveDatasetSlug(env, keyword) : null;
-    const datasetPath = keyword ? (resolved ? `search/${resolved.slug}.json` : null) : 'feed.json';
+    // The catalogue is edge-cached briefly. A collector can publish the exact
+    // keyword file before that cached index knows about it, so always probe the
+    // deterministic exact slug and use the catalogue only for aliases.
+    const exactSlug = keyword ? slugify(keyword) : '';
+    const datasetPath = keyword ? `search/${resolved?.slug ?? exactSlug}.json` : 'feed.json';
     if (cacheable && !wantsLive && datasetPath) {
       const entry = await fetchDataset(env, datasetPath);
       if (entry?.payload?.videos?.length && entry.ageSeconds != null && entry.ageSeconds <= DATASET_FRESH_S) {
