@@ -1,9 +1,20 @@
 {
-  "generatedAt": "2026-08-29T23:54:09.699Z",
-  "startedAt": "2026-08-29T23:53:08.428Z",
+  "generatedAt": "2026-08-29T23:54:42.829Z",
+  "startedAt": "2026-08-29T23:53:51.890Z",
   "repo": "limoni80/tiktoktrend",
-  "runUrl": "https://github.com/limoni80/tiktoktrend/actions/runs/33281998434",
+  "runUrl": "https://github.com/limoni80/tiktoktrend/actions/runs/33282027989",
   "entries": [
+    {
+      "kind": "search",
+      "file": "search/volcano-cake.json",
+      "keyword": "volcano cake",
+      "slug": "volcano-cake",
+      "status": "ok",
+      "count": 120,
+      "emptyStreak": 0,
+      "updatedAt": "2026-08-29T23:54:26.763Z",
+      "lastSuccessAt": "2026-08-29T23:54:26.763Z"
+    },
     {
       "kind": "search",
       "file": "search/footing.json",
@@ -412,6 +423,13 @@
     }
   ],
   "keywords": [
+    {
+      "keyword": "volcano cake",
+      "slug": "volcano-cake",
+      "status": "ok",
+      "count": 120,
+      "updatedAt": "2026-08-29T23:54:26.763Z"
+    },
     {
       "keyword": "Footing",
       "slug": "footing",
