@@ -1,9 +1,19 @@
 {
-  "generatedAt": "2026-08-29T22:50:41.418Z",
-  "startedAt": "2026-08-29T22:49:54.050Z",
+  "generatedAt": "2026-08-29T22:50:51.729Z",
+  "startedAt": "2026-08-29T22:50:07.293Z",
   "repo": "limoni80/tiktoktrend",
-  "runUrl": "https://github.com/limoni80/tiktoktrend/actions/runs/33279516087",
+  "runUrl": "https://github.com/limoni80/tiktoktrend/actions/runs/33279523781",
   "entries": [
+    {
+      "kind": "search",
+      "file": "search/flower.json",
+      "keyword": "flower",
+      "slug": "flower",
+      "status": "ok",
+      "count": 120,
+      "updatedAt": "2026-08-29T22:50:40.680Z",
+      "lastSuccessAt": "2026-08-29T22:50:40.680Z"
+    },
     {
       "kind": "search",
       "file": "search/quick-chicken-lunch.json",
@@ -186,16 +196,6 @@
     },
     {
       "kind": "search",
-      "file": "search/flower.json",
-      "keyword": "flower",
-      "slug": "flower",
-      "status": "carried",
-      "count": 60,
-      "updatedAt": "2026-08-29T21:25:41.827Z",
-      "lastSuccessAt": "2026-08-29T21:25:41.827Z"
-    },
-    {
-      "kind": "search",
       "file": "search/morocco.json",
       "keyword": "morocco",
       "slug": "morocco",
@@ -265,6 +265,13 @@
     }
   ],
   "keywords": [
+    {
+      "keyword": "flower",
+      "slug": "flower",
+      "status": "ok",
+      "count": 120,
+      "updatedAt": "2026-08-29T22:50:40.680Z"
+    },
     {
       "keyword": "quick chicken lunch",
       "slug": "quick-chicken-lunch",
@@ -390,13 +397,6 @@
       "status": "carried",
       "count": 60,
       "updatedAt": "2026-08-29T21:26:45.746Z"
-    },
-    {
-      "keyword": "flower",
-      "slug": "flower",
-      "status": "carried",
-      "count": 60,
-      "updatedAt": "2026-08-29T21:25:41.827Z"
     },
     {
       "keyword": "morocco",
