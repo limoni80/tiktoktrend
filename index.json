@@ -1,20 +1,9 @@
 {
-  "generatedAt": "2026-08-30T20:59:09.269Z",
-  "startedAt": "2026-08-30T20:58:10.876Z",
+  "generatedAt": "2026-08-30T23:26:01.532Z",
+  "startedAt": "2026-08-30T23:24:56.935Z",
   "repo": "limoni80/tiktoktrend",
-  "runUrl": "https://github.com/limoni80/tiktoktrend/actions/runs/33335072783",
+  "runUrl": "https://github.com/limoni80/tiktoktrend/actions/runs/33341731553",
   "entries": [
-    {
-      "kind": "search",
-      "file": "search/skincare.json",
-      "keyword": "skincare",
-      "slug": "skincare",
-      "status": "ok",
-      "count": 120,
-      "emptyStreak": 0,
-      "updatedAt": "2026-08-30T20:58:48.652Z",
-      "lastSuccessAt": "2026-08-30T20:58:48.652Z"
-    },
     {
       "kind": "search",
       "file": "search/morocco.json",
@@ -23,8 +12,8 @@
       "status": "ok",
       "count": 120,
       "emptyStreak": 0,
-      "updatedAt": "2026-08-30T20:58:47.268Z",
-      "lastSuccessAt": "2026-08-30T20:58:47.268Z"
+      "updatedAt": "2026-08-30T23:25:40.397Z",
+      "lastSuccessAt": "2026-08-30T23:25:40.397Z"
     },
     {
       "kind": "search",
@@ -32,10 +21,21 @@
       "keyword": "ai tools",
       "slug": "ai-tools",
       "status": "ok",
+      "count": 111,
+      "emptyStreak": 0,
+      "updatedAt": "2026-08-30T23:25:38.927Z",
+      "lastSuccessAt": "2026-08-30T23:25:38.927Z"
+    },
+    {
+      "kind": "search",
+      "file": "search/skincare.json",
+      "keyword": "skincare",
+      "slug": "skincare",
+      "status": "ok",
       "count": 120,
       "emptyStreak": 0,
-      "updatedAt": "2026-08-30T20:58:46.011Z",
-      "lastSuccessAt": "2026-08-30T20:58:46.011Z"
+      "updatedAt": "2026-08-30T23:25:38.287Z",
+      "lastSuccessAt": "2026-08-30T23:25:38.287Z"
     },
     {
       "kind": "search",
@@ -45,8 +45,8 @@
       "status": "ok",
       "count": 120,
       "emptyStreak": 0,
-      "updatedAt": "2026-08-30T20:58:42.485Z",
-      "lastSuccessAt": "2026-08-30T20:58:42.485Z"
+      "updatedAt": "2026-08-30T23:25:35.173Z",
+      "lastSuccessAt": "2026-08-30T23:25:35.173Z"
     },
     {
       "kind": "search",
@@ -56,8 +56,8 @@
       "status": "ok",
       "count": 120,
       "emptyStreak": 0,
-      "updatedAt": "2026-08-30T20:58:41.732Z",
-      "lastSuccessAt": "2026-08-30T20:58:41.732Z"
+      "updatedAt": "2026-08-30T23:25:31.693Z",
+      "lastSuccessAt": "2026-08-30T23:25:31.693Z"
     },
     {
       "kind": "search",
@@ -500,39 +500,39 @@
   ],
   "keywords": [
     {
-      "keyword": "skincare",
-      "slug": "skincare",
-      "status": "ok",
-      "count": 120,
-      "updatedAt": "2026-08-30T20:58:48.652Z"
-    },
-    {
       "keyword": "morocco",
       "slug": "morocco",
       "status": "ok",
       "count": 120,
-      "updatedAt": "2026-08-30T20:58:47.268Z"
+      "updatedAt": "2026-08-30T23:25:40.397Z"
     },
     {
       "keyword": "ai tools",
       "slug": "ai-tools",
       "status": "ok",
+      "count": 111,
+      "updatedAt": "2026-08-30T23:25:38.927Z"
+    },
+    {
+      "keyword": "skincare",
+      "slug": "skincare",
+      "status": "ok",
       "count": 120,
-      "updatedAt": "2026-08-30T20:58:46.011Z"
+      "updatedAt": "2026-08-30T23:25:38.287Z"
     },
     {
       "keyword": "trump",
       "slug": "trump",
       "status": "ok",
       "count": 120,
-      "updatedAt": "2026-08-30T20:58:42.485Z"
+      "updatedAt": "2026-08-30T23:25:35.173Z"
     },
     {
       "keyword": "dropshipping",
       "slug": "dropshipping",
       "status": "ok",
       "count": 120,
-      "updatedAt": "2026-08-30T20:58:41.732Z"
+      "updatedAt": "2026-08-30T23:25:31.693Z"
     },
     {
       "keyword": "Crochets",
