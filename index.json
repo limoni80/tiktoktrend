@@ -1,9 +1,42 @@
 {
-  "generatedAt": "2026-08-30T13:18:44.255Z",
-  "startedAt": "2026-08-30T13:17:53.029Z",
+  "generatedAt": "2026-08-30T17:45:59.307Z",
+  "startedAt": "2026-08-30T17:45:03.481Z",
   "repo": "limoni80/tiktoktrend",
-  "runUrl": "https://github.com/limoni80/tiktoktrend/actions/runs/33313609851",
+  "runUrl": "https://github.com/limoni80/tiktoktrend/actions/runs/33326091205",
   "entries": [
+    {
+      "kind": "search",
+      "file": "search/ai-tools.json",
+      "keyword": "ai tools",
+      "slug": "ai-tools",
+      "status": "ok",
+      "count": 120,
+      "emptyStreak": 0,
+      "updatedAt": "2026-08-30T17:45:39.473Z",
+      "lastSuccessAt": "2026-08-30T17:45:39.473Z"
+    },
+    {
+      "kind": "search",
+      "file": "search/trump.json",
+      "keyword": "trump",
+      "slug": "trump",
+      "status": "ok",
+      "count": 120,
+      "emptyStreak": 0,
+      "updatedAt": "2026-08-30T17:45:35.768Z",
+      "lastSuccessAt": "2026-08-30T17:45:35.768Z"
+    },
+    {
+      "kind": "search",
+      "file": "search/skincare.json",
+      "keyword": "skincare",
+      "slug": "skincare",
+      "status": "empty",
+      "count": 0,
+      "emptyStreak": 1,
+      "updatedAt": "2026-08-30T17:45:33.226Z",
+      "lastSuccessAt": null
+    },
     {
       "kind": "search",
       "file": "search/morocco.json",
@@ -12,8 +45,19 @@
       "status": "ok",
       "count": 120,
       "emptyStreak": 0,
-      "updatedAt": "2026-08-30T13:18:28.837Z",
-      "lastSuccessAt": "2026-08-30T13:18:28.837Z"
+      "updatedAt": "2026-08-30T17:45:31.654Z",
+      "lastSuccessAt": "2026-08-30T17:45:31.654Z"
+    },
+    {
+      "kind": "search",
+      "file": "search/dropshipping.json",
+      "keyword": "dropshipping",
+      "slug": "dropshipping",
+      "status": "ok",
+      "count": 120,
+      "emptyStreak": 0,
+      "updatedAt": "2026-08-30T17:45:30.591Z",
+      "lastSuccessAt": "2026-08-30T17:45:30.591Z"
     },
     {
       "kind": "search",
@@ -336,17 +380,6 @@
     },
     {
       "kind": "search",
-      "file": "search/trump.json",
-      "keyword": "trump",
-      "slug": "trump",
-      "status": "ok",
-      "count": 120,
-      "emptyStreak": 0,
-      "updatedAt": "2026-08-30T13:15:43.061Z",
-      "lastSuccessAt": "2026-08-30T13:15:43.061Z"
-    },
-    {
-      "kind": "search",
       "file": "search/chicken-recipe.json",
       "keyword": "chicken recipe",
       "slug": "chicken-recipe",
@@ -355,17 +388,6 @@
       "emptyStreak": 0,
       "updatedAt": "2026-08-30T13:15:38.721Z",
       "lastSuccessAt": "2026-08-30T13:15:38.721Z"
-    },
-    {
-      "kind": "search",
-      "file": "search/ai-tools.json",
-      "keyword": "ai tools",
-      "slug": "ai-tools",
-      "status": "ok",
-      "count": 119,
-      "emptyStreak": 0,
-      "updatedAt": "2026-08-30T13:14:58.565Z",
-      "lastSuccessAt": "2026-08-30T13:14:58.565Z"
     },
     {
       "kind": "search",
@@ -402,17 +424,6 @@
     },
     {
       "kind": "search",
-      "file": "search/dropshipping.json",
-      "keyword": "dropshipping",
-      "slug": "dropshipping",
-      "status": "ok",
-      "count": 120,
-      "emptyStreak": 0,
-      "updatedAt": "2026-08-30T13:14:53.168Z",
-      "lastSuccessAt": "2026-08-30T13:14:53.168Z"
-    },
-    {
-      "kind": "search",
       "file": "search/ceramic-pottery.json",
       "keyword": "ceramic pottery",
       "slug": "ceramic-pottery",
@@ -443,17 +454,6 @@
       "emptyStreak": 0,
       "updatedAt": "2026-08-30T13:14:49.056Z",
       "lastSuccessAt": "2026-08-30T13:14:49.056Z"
-    },
-    {
-      "kind": "search",
-      "file": "search/skincare.json",
-      "keyword": "skincare",
-      "slug": "skincare",
-      "status": "ok",
-      "count": 120,
-      "emptyStreak": 0,
-      "updatedAt": "2026-08-30T13:14:48.389Z",
-      "lastSuccessAt": "2026-08-30T13:14:48.389Z"
     },
     {
       "kind": "search",
@@ -500,11 +500,40 @@
   ],
   "keywords": [
     {
+      "keyword": "ai tools",
+      "slug": "ai-tools",
+      "status": "ok",
+      "count": 120,
+      "updatedAt": "2026-08-30T17:45:39.473Z"
+    },
+    {
+      "keyword": "trump",
+      "slug": "trump",
+      "status": "ok",
+      "count": 120,
+      "updatedAt": "2026-08-30T17:45:35.768Z"
+    },
+    {
+      "keyword": "skincare",
+      "slug": "skincare",
+      "status": "empty",
+      "count": 0,
+      "updatedAt": "2026-08-30T17:45:33.226Z",
+      "emptyStreak": 1
+    },
+    {
       "keyword": "morocco",
       "slug": "morocco",
       "status": "ok",
       "count": 120,
-      "updatedAt": "2026-08-30T13:18:28.837Z"
+      "updatedAt": "2026-08-30T17:45:31.654Z"
+    },
+    {
+      "keyword": "dropshipping",
+      "slug": "dropshipping",
+      "status": "ok",
+      "count": 120,
+      "updatedAt": "2026-08-30T17:45:30.591Z"
     },
     {
       "keyword": "Crochets",
@@ -710,25 +739,11 @@
       "updatedAt": "2026-08-30T13:15:43.415Z"
     },
     {
-      "keyword": "trump",
-      "slug": "trump",
-      "status": "ok",
-      "count": 120,
-      "updatedAt": "2026-08-30T13:15:43.061Z"
-    },
-    {
       "keyword": "chicken recipe",
       "slug": "chicken-recipe",
       "status": "ok",
       "count": 120,
       "updatedAt": "2026-08-30T13:15:38.721Z"
-    },
-    {
-      "keyword": "ai tools",
-      "slug": "ai-tools",
-      "status": "ok",
-      "count": 119,
-      "updatedAt": "2026-08-30T13:14:58.565Z"
     },
     {
       "keyword": "origami dragon",
@@ -752,13 +767,6 @@
       "updatedAt": "2026-08-30T13:14:54.906Z"
     },
     {
-      "keyword": "dropshipping",
-      "slug": "dropshipping",
-      "status": "ok",
-      "count": 120,
-      "updatedAt": "2026-08-30T13:14:53.168Z"
-    },
-    {
       "keyword": "ceramic pottery",
       "slug": "ceramic-pottery",
       "status": "ok",
@@ -778,13 +786,6 @@
       "status": "ok",
       "count": 120,
       "updatedAt": "2026-08-30T13:14:49.056Z"
-    },
-    {
-      "keyword": "skincare",
-      "slug": "skincare",
-      "status": "ok",
-      "count": 120,
-      "updatedAt": "2026-08-30T13:14:48.389Z"
     },
     {
       "keyword": "chicken meal prep ideas",
