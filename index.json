@@ -1,41 +1,19 @@
 {
-  "generatedAt": "2026-08-30T17:45:59.307Z",
-  "startedAt": "2026-08-30T17:45:03.481Z",
+  "generatedAt": "2026-08-30T20:59:09.269Z",
+  "startedAt": "2026-08-30T20:58:10.876Z",
   "repo": "limoni80/tiktoktrend",
-  "runUrl": "https://github.com/limoni80/tiktoktrend/actions/runs/33326091205",
+  "runUrl": "https://github.com/limoni80/tiktoktrend/actions/runs/33335072783",
   "entries": [
-    {
-      "kind": "search",
-      "file": "search/ai-tools.json",
-      "keyword": "ai tools",
-      "slug": "ai-tools",
-      "status": "ok",
-      "count": 120,
-      "emptyStreak": 0,
-      "updatedAt": "2026-08-30T17:45:39.473Z",
-      "lastSuccessAt": "2026-08-30T17:45:39.473Z"
-    },
-    {
-      "kind": "search",
-      "file": "search/trump.json",
-      "keyword": "trump",
-      "slug": "trump",
-      "status": "ok",
-      "count": 120,
-      "emptyStreak": 0,
-      "updatedAt": "2026-08-30T17:45:35.768Z",
-      "lastSuccessAt": "2026-08-30T17:45:35.768Z"
-    },
     {
       "kind": "search",
       "file": "search/skincare.json",
       "keyword": "skincare",
       "slug": "skincare",
-      "status": "empty",
-      "count": 0,
-      "emptyStreak": 1,
-      "updatedAt": "2026-08-30T17:45:33.226Z",
-      "lastSuccessAt": null
+      "status": "ok",
+      "count": 120,
+      "emptyStreak": 0,
+      "updatedAt": "2026-08-30T20:58:48.652Z",
+      "lastSuccessAt": "2026-08-30T20:58:48.652Z"
     },
     {
       "kind": "search",
@@ -45,8 +23,30 @@
       "status": "ok",
       "count": 120,
       "emptyStreak": 0,
-      "updatedAt": "2026-08-30T17:45:31.654Z",
-      "lastSuccessAt": "2026-08-30T17:45:31.654Z"
+      "updatedAt": "2026-08-30T20:58:47.268Z",
+      "lastSuccessAt": "2026-08-30T20:58:47.268Z"
+    },
+    {
+      "kind": "search",
+      "file": "search/ai-tools.json",
+      "keyword": "ai tools",
+      "slug": "ai-tools",
+      "status": "ok",
+      "count": 120,
+      "emptyStreak": 0,
+      "updatedAt": "2026-08-30T20:58:46.011Z",
+      "lastSuccessAt": "2026-08-30T20:58:46.011Z"
+    },
+    {
+      "kind": "search",
+      "file": "search/trump.json",
+      "keyword": "trump",
+      "slug": "trump",
+      "status": "ok",
+      "count": 120,
+      "emptyStreak": 0,
+      "updatedAt": "2026-08-30T20:58:42.485Z",
+      "lastSuccessAt": "2026-08-30T20:58:42.485Z"
     },
     {
       "kind": "search",
@@ -56,8 +56,8 @@
       "status": "ok",
       "count": 120,
       "emptyStreak": 0,
-      "updatedAt": "2026-08-30T17:45:30.591Z",
-      "lastSuccessAt": "2026-08-30T17:45:30.591Z"
+      "updatedAt": "2026-08-30T20:58:41.732Z",
+      "lastSuccessAt": "2026-08-30T20:58:41.732Z"
     },
     {
       "kind": "search",
@@ -500,40 +500,39 @@
   ],
   "keywords": [
     {
-      "keyword": "ai tools",
-      "slug": "ai-tools",
-      "status": "ok",
-      "count": 120,
-      "updatedAt": "2026-08-30T17:45:39.473Z"
-    },
-    {
-      "keyword": "trump",
-      "slug": "trump",
-      "status": "ok",
-      "count": 120,
-      "updatedAt": "2026-08-30T17:45:35.768Z"
-    },
-    {
       "keyword": "skincare",
       "slug": "skincare",
-      "status": "empty",
-      "count": 0,
-      "updatedAt": "2026-08-30T17:45:33.226Z",
-      "emptyStreak": 1
+      "status": "ok",
+      "count": 120,
+      "updatedAt": "2026-08-30T20:58:48.652Z"
     },
     {
       "keyword": "morocco",
       "slug": "morocco",
       "status": "ok",
       "count": 120,
-      "updatedAt": "2026-08-30T17:45:31.654Z"
+      "updatedAt": "2026-08-30T20:58:47.268Z"
+    },
+    {
+      "keyword": "ai tools",
+      "slug": "ai-tools",
+      "status": "ok",
+      "count": 120,
+      "updatedAt": "2026-08-30T20:58:46.011Z"
+    },
+    {
+      "keyword": "trump",
+      "slug": "trump",
+      "status": "ok",
+      "count": 120,
+      "updatedAt": "2026-08-30T20:58:42.485Z"
     },
     {
       "keyword": "dropshipping",
       "slug": "dropshipping",
       "status": "ok",
       "count": 120,
-      "updatedAt": "2026-08-30T17:45:30.591Z"
+      "updatedAt": "2026-08-30T20:58:41.732Z"
     },
     {
       "keyword": "Crochets",
