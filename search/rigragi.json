@@ -1,0 +1,44 @@
+{
+  "videos": [],
+  "scanned": 1,
+  "hasMore": false,
+  "source": "TikTok.com search · “RIGRAGI” · collected by GitHub Actions",
+  "keyword": "RIGRAGI",
+  "fetchedAt": "2026-08-31T15:39:11.044Z",
+  "debug": {
+    "keyword": "RIGRAGI",
+    "want": 60,
+    "strategies": [
+      {
+        "name": "search",
+        "url": "https://www.tiktok.com/search?q=RIGRAGI",
+        "finalUrl": "https://www.tiktok.com/search?q=RIGRAGI",
+        "title": "TikTok - Make Your Day",
+        "scrollRounds": 6,
+        "matchedAfter": 0,
+        "error": null
+      },
+      {
+        "name": "search-video-tab",
+        "url": "https://www.tiktok.com/search/video?q=RIGRAGI",
+        "finalUrl": "https://www.tiktok.com/search/video?q=RIGRAGI",
+        "title": "TikTok - Make Your Day",
+        "scrollRounds": 6,
+        "matchedAfter": 0,
+        "error": null
+      }
+    ],
+    "apiHits": {
+      "/api/recommend/item_list/": {
+        "calls": 1,
+        "items": 1,
+        "source": "feed"
+      }
+    },
+    "fromSearchEndpoints": 0,
+    "loginWall": true,
+    "captchaWall": false,
+    "bodySnippet": "TikTok RIGRAGI For You Shop Explore Following Short dramas LIVE Upload Profile More Log in Company Program Terms & Policies © 2026 TikTok Top Users Videos LIVE Photo Log in"
+  },
+  "emptyStreak": 1
+}
