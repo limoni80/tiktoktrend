@@ -591,7 +591,7 @@ async function instantDatasetPreview(env, keyword, { want, knownIds, dateRange }
  * token lives ONLY as a Worker secret (`wrangler secret put GITHUB_TOKEN`) —
  * never in the repo, never in a response.
  */
-async function requestCollection(env, keyword) {
+async function requestCollection(env, keyword, { ctx, background = false } = {}) {
   const repo = String(env.GITHUB_REPO ?? '').trim();
   const workflow = String(env.GITHUB_WORKFLOW_FILE ?? 'refresh-data.yml').trim();
   if (!repo || !env.GITHUB_TOKEN) return { queued: false, reason: 'not_configured' };
@@ -606,32 +606,42 @@ async function requestCollection(env, keyword) {
     }
   } catch { /* no cooldown recorded */ }
 
-  let response;
-  try {
-    response = await fetch(`https://api.github.com/repos/${repo}/actions/workflows/${workflow}/dispatches`, {
-      method: 'POST',
-      headers: {
-        authorization: `Bearer ${env.GITHUB_TOKEN}`,
-        accept: 'application/vnd.github+json',
-        'x-github-api-version': '2022-11-28',
-        'content-type': 'application/json',
-        'user-agent': 'tiktoktrend-worker',
-      },
-      body: JSON.stringify({ ref: String(env.GITHUB_REF ?? 'main'), inputs: { keyword } }),
-    });
-  } catch (error) {
-    return { queued: false, reason: 'github_unreachable', detail: String(error?.message ?? error).slice(0, 160) };
-  }
+  const at = new Date().toISOString();
+  // Claim the keyword before contacting GitHub. Other users in this location
+  // then get an immediate queued answer instead of each issuing a dispatch.
+  await cache.put(key, new Response(JSON.stringify({ at, keyword, state: 'dispatching' }), {
+    headers: { 'Content-Type': 'application/json', 'Cache-Control': `max-age=${DISPATCH_COOLDOWN_S}` },
+  })).catch(() => {});
 
-  if (response.status === 204) {
-    const stored = new Response(JSON.stringify({ at: new Date().toISOString(), keyword }), {
-      headers: { 'Content-Type': 'application/json', 'Cache-Control': `max-age=${DISPATCH_COOLDOWN_S}` },
-    });
-    await cache.put(key, stored).catch(() => {});
-    return { queued: true };
+  const dispatch = async () => {
+    let response;
+    try {
+      response = await fetch(`https://api.github.com/repos/${repo}/actions/workflows/${workflow}/dispatches`, {
+        method: 'POST',
+        headers: {
+          authorization: `Bearer ${env.GITHUB_TOKEN}`,
+          accept: 'application/vnd.github+json',
+          'x-github-api-version': '2022-11-28',
+          'content-type': 'application/json',
+          'user-agent': 'tiktoktrend-worker',
+        },
+        body: JSON.stringify({ ref: String(env.GITHUB_REF ?? 'main'), inputs: { keyword } }),
+      });
+    } catch (error) {
+      await cache.delete(key).catch(() => {});
+      return { queued: false, reason: 'github_unreachable', detail: String(error?.message ?? error).slice(0, 160) };
+    }
+    if (response.status === 204) return { queued: true, requestedAt: at };
+    await cache.delete(key).catch(() => {});
+    // GitHub's error text is safe to surface; it never echoes the token.
+    return { queued: false, reason: `github_${response.status}`, detail: (await response.text()).slice(0, 200) };
+  };
+
+  if (background && ctx?.waitUntil) {
+    ctx.waitUntil(dispatch());
+    return { queued: true, requestedAt: at, dispatching: true };
   }
-  // GitHub's error text is safe to surface; it never echoes the token.
-  return { queued: false, reason: `github_${response.status}`, detail: (await response.text()).slice(0, 200) };
+  return dispatch();
 }
 
 /** Cache key for a first-page search. Pagination is never cached. */
@@ -814,7 +824,7 @@ async function handleApi(request, env, url, ctx) {
         });
       }
       if (cacheable && earlyPreview) {
-        earlyDispatch = await requestCollection(env, keyword);
+        earlyDispatch = await requestCollection(env, keyword, { ctx, background: true });
         if (earlyDispatch.queued) return collectionResponse(earlyDispatch, earlyPreview);
       }
     }
@@ -824,7 +834,7 @@ async function handleApi(request, env, url, ctx) {
     // burst of users gets the same immediate queued answer instead of each
     // waiting through a slow route that is known not to produce data here.
     if (keyword && cacheable && !wantsLive && !datasetEntry?.payload?.videos?.length) {
-      earlyDispatch ??= await requestCollection(env, keyword);
+      earlyDispatch ??= await requestCollection(env, keyword, { ctx, background: true });
       if (earlyDispatch.queued) return collectionResponse(earlyDispatch, earlyPreview);
       httpDebug = { ...(httpDebug ?? {}), dispatch: earlyDispatch };
     }
@@ -871,7 +881,7 @@ async function handleApi(request, env, url, ctx) {
     //    repo minutes are free — so this, not the browser, is what makes any
     //    keyword work. It takes about a minute; the UI retries on its own.
     if (keyword && cacheable && !wantsLive) {
-      const dispatch = earlyDispatch ?? await requestCollection(env, keyword);
+      const dispatch = earlyDispatch ?? await requestCollection(env, keyword, { ctx, background: true });
       if (dispatch.queued) {
         const preview = earlyPreview ?? await instantDatasetPreview(env, keyword, { want, knownIds, dateRange });
         return collectionResponse(dispatch, preview);
