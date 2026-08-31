@@ -5294,5 +5294,43 @@
     "captchaWall": false,
     "bodySnippet": "TikTok Search For You Explore Following Shop Short dramas LIVE Upload Profile More Log in Company Program Terms & Policies © 2026 TikTok #crochets DIY crochet This stitch looks very advanced and complicated, but I hope this tutorial will help you understand it! It’s absolutely gorgeous and I’m sure "
   },
-  "emptyStreak": 0
+  "emptyStreak": 0,
+  "stale": true,
+  "staleSince": "2026-08-31T15:50:49.193Z",
+  "lastAttemptAt": "2026-08-31T15:50:49.193Z",
+  "lastAttemptDebug": {
+    "keyword": "Crochets",
+    "want": 60,
+    "strategies": [
+      {
+        "name": "search",
+        "url": "https://www.tiktok.com/search?q=Crochets",
+        "finalUrl": "https://www.tiktok.com/search?q=Crochets",
+        "title": "TikTok - Make Your Day",
+        "scrollRounds": 6,
+        "matchedAfter": 0,
+        "error": null
+      },
+      {
+        "name": "search-video-tab",
+        "url": "https://www.tiktok.com/search/video?q=Crochets",
+        "finalUrl": "https://www.tiktok.com/search/video?q=Crochets",
+        "title": "TikTok - Make Your Day",
+        "scrollRounds": 6,
+        "matchedAfter": 0,
+        "error": null
+      }
+    ],
+    "apiHits": {
+      "/api/recommend/item_list/": {
+        "calls": 2,
+        "items": 1,
+        "source": "feed"
+      }
+    },
+    "fromSearchEndpoints": 0,
+    "loginWall": true,
+    "captchaWall": false,
+    "bodySnippet": "TikTok Crochets For You Explore Following Shop Short dramas LIVE Upload Profile More Log in Company Program Terms & Policies © 2026 TikTok Top Users Videos LIVE Photo Log in"
+  }
 }
