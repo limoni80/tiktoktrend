@@ -1,0 +1,38 @@
+{
+  "videos": [],
+  "scanned": 0,
+  "hasMore": false,
+  "source": "TikTok.com search · “nba” · collected by GitHub Actions",
+  "keyword": "nba",
+  "fetchedAt": "2026-08-31T16:23:52.851Z",
+  "debug": {
+    "keyword": "nba",
+    "want": 60,
+    "strategies": [
+      {
+        "name": "search",
+        "url": "https://www.tiktok.com/search?q=nba",
+        "finalUrl": "https://www.tiktok.com/search?q=nba",
+        "title": "TikTok - Make Your Day",
+        "scrollRounds": 6,
+        "matchedAfter": 0,
+        "error": null
+      },
+      {
+        "name": "search-video-tab",
+        "url": "https://www.tiktok.com/search/video?q=nba",
+        "finalUrl": "https://www.tiktok.com/search/video?q=nba",
+        "title": "TikTok - Make Your Day",
+        "scrollRounds": 6,
+        "matchedAfter": 0,
+        "error": null
+      }
+    ],
+    "apiHits": {},
+    "fromSearchEndpoints": 0,
+    "loginWall": true,
+    "captchaWall": false,
+    "bodySnippet": "TikTok nba For You Explore Following Shop Short dramas LIVE Upload Profile More Log in Company Program Terms & Policies © 2026 TikTok Top Users Videos LIVE Photo Log in"
+  },
+  "emptyStreak": 1
+}

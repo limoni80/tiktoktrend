@@ -1,9 +1,20 @@
 {
-  "generatedAt": "2026-08-31T16:22:00.263Z",
-  "startedAt": "2026-08-31T16:21:24.556Z",
+  "generatedAt": "2026-08-31T16:24:08.726Z",
+  "startedAt": "2026-08-31T16:23:32.301Z",
   "repo": "limoni80/tiktoktrend",
-  "runUrl": "https://github.com/limoni80/tiktoktrend/actions/runs/33413597316",
+  "runUrl": "https://github.com/limoni80/tiktoktrend/actions/runs/33413778681",
   "entries": [
+    {
+      "kind": "search",
+      "file": "search/nba.json",
+      "keyword": "nba",
+      "slug": "nba",
+      "status": "empty",
+      "count": 0,
+      "emptyStreak": 1,
+      "updatedAt": "2026-08-31T16:23:52.851Z",
+      "lastSuccessAt": null
+    },
     {
       "kind": "search",
       "file": "search/basketball-highlights.json",
@@ -575,6 +586,14 @@
     }
   ],
   "keywords": [
+    {
+      "keyword": "nba",
+      "slug": "nba",
+      "status": "empty",
+      "count": 0,
+      "updatedAt": "2026-08-31T16:23:52.851Z",
+      "emptyStreak": 1
+    },
     {
       "keyword": "basketball highlights",
       "slug": "basketball-highlights",
