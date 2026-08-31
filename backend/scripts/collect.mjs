@@ -198,6 +198,70 @@ async function githubOidcToken() {
 
 const stableMediaUrl = (id) => `${MEDIA_PUBLIC_BASE}/${encodeURIComponent(id)}`;
 
+async function refreshDownloadSource(context, video) {
+  // First try the server-rendered item page. It is much cheaper than opening a
+  // tab and often contains a freshly signed downloadAddr for this runner IP.
+  try {
+    const response = await context.request.get(video.url, { failOnStatusCode: false, timeout: 25_000 });
+    if (response.ok()) {
+      const html = await response.text();
+      const match = html.match(/<script[^>]+id=["'](?:__UNIVERSAL_DATA_FOR_REHYDRATION__|SIGI_STATE)["'][^>]*>([\s\S]*?)<\/script>/i);
+      if (match?.[1]) {
+        const item = collectEmbeddedItems(match[1]).find((candidate) => String(candidate?.id ?? '') === video.id);
+        const normalized = item ? normalizeTikTokItem(item, video.source) : null;
+        if (normalized?.downloadFileUrl) return normalized.downloadFileUrl;
+      }
+    }
+  } catch { /* fall back to a real page below */ }
+
+  let captured = null;
+  const page = await context.newPage();
+  page.on('response', async (response) => {
+    if (captured || !LIST_PATTERN.test(response.url())) return;
+    try {
+      const item = itemsFromListBody(safeParse(await response.text()))
+        .find((candidate) => String(candidate?.id ?? '') === video.id);
+      const normalized = item ? normalizeTikTokItem(item, video.source) : null;
+      if (normalized?.downloadFileUrl) captured = normalized.downloadFileUrl;
+    } catch { /* partial/non-JSON response */ }
+  });
+  try {
+    await page.goto(video.url, { waitUntil: 'domcontentloaded', timeout: 35_000 }).catch(() => {});
+    await sleep(1_200);
+    const embedded = await page.evaluate(() =>
+      document.getElementById('__UNIVERSAL_DATA_FOR_REHYDRATION__')?.textContent
+      ?? document.getElementById('SIGI_STATE')?.textContent ?? null).catch(() => null);
+    if (embedded) {
+      const item = collectEmbeddedItems(embedded).find((candidate) => String(candidate?.id ?? '') === video.id);
+      const normalized = item ? normalizeTikTokItem(item, video.source) : null;
+      if (normalized?.downloadFileUrl) captured = normalized.downloadFileUrl;
+    }
+    return captured;
+  } finally {
+    await page.close().catch(() => {});
+  }
+}
+
+async function fetchMediaBytes(context, video, source) {
+  const media = await context.request.get(source, {
+    failOnStatusCode: false,
+    timeout: 45_000,
+    headers: { accept: 'video/mp4,video/*;q=0.9,*/*;q=0.8', referer: video.url },
+  });
+  const headers = media.headers();
+  const contentType = String(headers['content-type'] ?? '').toLowerCase();
+  if (!media.ok() || !contentType.startsWith('video/')) {
+    throw new Error(`TikTok media response ${media.status()} (${contentType || 'no content type'})`);
+  }
+  const declared = Number(headers['content-length'] ?? 0);
+  if (declared > MEDIA_MAX_BYTES) throw new Error(`video is larger than ${Math.round(MEDIA_MAX_BYTES / 1024 / 1024)} MB`);
+  const bytes = await media.body();
+  if (bytes.byteLength < 1_024 || bytes.byteLength > MEDIA_MAX_BYTES) {
+    throw new Error(`unexpected video size ${bytes.byteLength} bytes`);
+  }
+  return { bytes, contentType: contentType.split(';')[0] || 'video/mp4' };
+}
+
 async function cacheOneMedia(context, video) {
   const stableUrl = stableMediaUrl(video.id);
   try {
@@ -210,21 +274,12 @@ async function cacheOneMedia(context, video) {
   // signed URL is moved to another machine where TikTok rejects it.
   if (!video.downloadFileUrl) return { ...video, downloadFileUrl: null };
   try {
-    const media = await context.request.get(video.downloadFileUrl, {
-      failOnStatusCode: false,
-      timeout: 45_000,
-      headers: { accept: 'video/mp4,video/*;q=0.9,*/*;q=0.8', referer: video.url },
-    });
-    const headers = media.headers();
-    const contentType = String(headers['content-type'] ?? '').toLowerCase();
-    if (!media.ok() || !contentType.startsWith('video/')) {
-      throw new Error(`TikTok media response ${media.status()} (${contentType || 'no content type'})`);
-    }
-    const declared = Number(headers['content-length'] ?? 0);
-    if (declared > MEDIA_MAX_BYTES) throw new Error(`video is larger than ${Math.round(MEDIA_MAX_BYTES / 1024 / 1024)} MB`);
-    const bytes = await media.body();
-    if (bytes.byteLength < 1_024 || bytes.byteLength > MEDIA_MAX_BYTES) {
-      throw new Error(`unexpected video size ${bytes.byteLength} bytes`);
+    let file;
+    try { file = await fetchMediaBytes(context, video, video.downloadFileUrl); }
+    catch {
+      const refreshed = await refreshDownloadSource(context, video);
+      if (!refreshed) throw new Error('TikTok did not expose a fresh downloadable source on the video page');
+      file = await fetchMediaBytes(context, video, refreshed);
     }
 
     const oidc = await githubOidcToken();
@@ -232,11 +287,11 @@ async function cacheOneMedia(context, video) {
       method: 'PUT',
       headers: {
         authorization: `Bearer ${oidc}`,
-        'content-type': contentType.split(';')[0] || 'video/mp4',
-        'content-length': String(bytes.byteLength),
+        'content-type': file.contentType,
+        'content-length': String(file.bytes.byteLength),
         'x-tiktok-source': 'download-addr',
       },
-      body: bytes,
+      body: file.bytes,
       signal: AbortSignal.timeout(60_000),
     });
     if (!upload.ok) {
@@ -341,7 +396,11 @@ async function main() {
     const old = await previous(path);
     if (!payload.videos.length && old?.videos?.length) {
       // Keep the last good result rather than publishing an empty file.
-      const kept = { ...old, stale: true, staleSince: startedAt, lastAttemptAt: startedAt, lastAttemptDebug: payload.debug };
+      // Media URLs from an older runner are IP/session-bound. Re-open those
+      // known video pages in this runner so their public download files can be
+      // stabilized in R2 even when TikTok search itself returned an empty shell.
+      const videos = await cacheMedia(context, old.videos);
+      const kept = { ...old, videos, stale: true, staleSince: startedAt, lastAttemptAt: startedAt, lastAttemptDebug: payload.debug };
       await writeJson(join(OUT, path), kept);
       return { ...meta, status: 'stale', count: old.videos.length, updatedAt: old.fetchedAt, lastSuccessAt: old.fetchedAt };
     }
