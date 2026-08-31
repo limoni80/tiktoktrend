@@ -375,8 +375,8 @@ function App() {
         recordDebug(`search “${q || 'Explore'}”`, payload.debug);
 
         // The keyword is not collected yet and a GitHub Actions run was just
-        // started for it. Poll the same JSON endpoint used by direct tests: the
-        // first check is early enough for a cached Chromium run, then every 8s.
+        // started for it. Start checking early, then poll lightly until the
+        // GitHub runner publishes the exact dataset.
         if (payload.queued) {
           // Never blank the screen while exact collection runs. When the
           // rolling real-data index already has matching videos, show them now
@@ -389,10 +389,9 @@ function App() {
           const sameKeyword = current?.keyword === q;
           const attempts = sameKeyword ? current.attempts + 1 : 0;
           const since = sameKeyword ? current.since : Date.now();
-          if (attempts < 36) {
+          if (attempts < 50) {
             if (current?.timer != null) window.clearTimeout(current.timer);
-            const firstDelay = Math.min(payload.etaSeconds ?? 35, 35) * 1_000;
-            const delay = attempts === 0 ? firstDelay : 8_000;
+            const delay = attempts === 0 ? 10_000 : 6_000;
             const timer = window.setTimeout(() => { void runFetch({ q }); }, delay);
             collectionPoll.current = { keyword: q, since, attempts, timer };
             setCollecting({ keyword: q, since });
@@ -772,8 +771,10 @@ function App() {
               ? <div className="empty">
                   <Search size={30} />
                   <h3>Nothing to show yet</h3>
-                  <p>{feed.length === 0
-                    ? `Hit Search to pull real ${feedType === 'ads' ? 'ads' : 'videos'} from TikTok via the backend.`
+                  <p>{collecting && feedType === 'videos'
+                    ? `Collecting exact real results for “${collecting.keyword}” now — they will appear here automatically.`
+                    : feed.length === 0
+                      ? `Hit Search to pull real ${feedType === 'ads' ? 'ads' : 'videos'} from TikTok via the backend.`
                     : (filters.dateFrom || filters.dateTo)
                       ? 'No loaded video was posted in that date range — try a wider range or search again.'
                       : 'No loaded result matches these filters — try clearing a few.'}</p>
@@ -880,6 +881,7 @@ function VideoCard({ video, saved, onSave }: { video: EnrichedVideo; saved: bool
   const [playing, setPlaying] = useState(false);
   const [failed, setFailed] = useState(false);
   const playable = Boolean(video.videoFileUrl) && !failed;
+  const downloadable = video.downloadFileUrl ?? video.videoFileUrl;
 
   return <article className={isAd ? 'card is-ad' : 'card'}>
     <div className={playable ? 'card-media playable' : 'card-media'} onClick={() => playable && !playing && setPlaying(true)}>
@@ -892,6 +894,7 @@ function VideoCard({ video, saved, onSave }: { video: EnrichedVideo; saved: bool
       {isAd ? <span className="badge ad">Ad</span> : <span className={`badge score s${Math.min(4, Math.floor(video.winningScore / 25))}`}>{video.winningScore}</span>}
       {video.durationSeconds != null && <span className="badge dur">{video.durationSeconds}s</span>}
       <button className={saved ? 'save on' : 'save'} onClick={(event) => { event.stopPropagation(); onSave(); }} aria-label="Save"><Bookmark size={15} fill={saved ? 'currentColor' : 'none'} /></button>
+      {downloadable && <a className="download-media" href={api.videoDownloadUrl(downloadable, video.id)} download={`tiktok-${video.id}.mp4`} onClick={(event) => event.stopPropagation()} title="Download TikTok's public source file" aria-label="Download video"><Download size={15} /></a>}
     </div>
 
     <div className="card-body">
@@ -950,7 +953,12 @@ function ResultTable({ videos, saved, onSave }: { videos: EnrichedVideo[]; saved
           <td>{video.engagementRate == null ? '—' : `${video.engagementRate.toFixed(1)}%`}</td>
           <td>{video.durationSeconds == null ? '—' : `${video.durationSeconds}s`}</td>
           <td>{video.kind === 'ad' ? <span className="pill ad">Ad</span> : <span className="pill">{video.winningScore}</span>}</td>
-          <td><button className="icon-button" onClick={() => onSave(video.id)} aria-label="Save"><Bookmark size={15} fill={saved.has(video.id) ? 'currentColor' : 'none'} /></button></td>
+          <td className="table-actions">
+            {video.downloadFileUrl || video.videoFileUrl
+              ? <a className="icon-button" href={api.videoDownloadUrl(video.downloadFileUrl ?? video.videoFileUrl!, video.id)} download={`tiktok-${video.id}.mp4`} title="Download TikTok's public source file" aria-label="Download video"><Download size={15} /></a>
+              : null}
+            <button className="icon-button" onClick={() => onSave(video.id)} aria-label="Save"><Bookmark size={15} fill={saved.has(video.id) ? 'currentColor' : 'none'} /></button>
+          </td>
         </tr>
       ))}</tbody>
     </table>

@@ -36,6 +36,10 @@ export function normalizeTikTokItem(item, sourceLabel = 'TikTok.com') {
   const playAddr = video.playAddr
     ?? video.bitrateInfo?.[0]?.PlayAddr?.UrlList?.at(-1)
     ?? video.downloadAddr ?? null;
+  // Keep TikTok's public download address separate from the play stream. When
+  // TikTok exposes it, the dashboard can request that original file directly;
+  // it never fabricates or removes any watermark itself.
+  const downloadAddr = video.downloadAddr ?? playAddr;
 
   return {
     id,
@@ -75,6 +79,7 @@ export function normalizeTikTokItem(item, sourceLabel = 'TikTok.com') {
     viewsPerHour: null,
     likesPerHour: null,
     videoFileUrl: playAddr,
+    downloadFileUrl: downloadAddr,
     source: sourceLabel,
   };
 }

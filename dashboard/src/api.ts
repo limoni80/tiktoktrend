@@ -137,6 +137,10 @@ export const api = {
   ads: (params: { region: string; period: string; keyword: string }) => request<FeedResponse>('/api/fetch-ads', params),
   /** Play URLs need TikTok headers, so they stream through the backend. */
   videoStreamUrl: (source: string) => apiUrl('/api/video', { src: source }),
+  /** Downloads only the public stream TikTok supplied for this video. */
+  videoDownloadUrl: (source: string, id: string) => apiUrl('/api/video', {
+    src: source, download: '1', filename: `tiktok-${id}.mp4`,
+  }),
 };
 
 export type { TikTokVideo };

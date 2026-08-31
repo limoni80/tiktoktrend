@@ -42,6 +42,8 @@ export interface TikTokVideo {
   viewsPerHour: number | null;
   likesPerHour: number | null;
   videoFileUrl?: string | null;
+  /** TikTok's public download stream when the source exposes one. */
+  downloadFileUrl?: string | null;
   source: string;
 }
 

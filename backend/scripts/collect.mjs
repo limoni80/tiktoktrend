@@ -67,7 +67,7 @@ const hasToken = (haystack, token) => {
   return false;
 };
 
-async function collectOne(context, { keyword, want }) {
+async function collectOne(context, { keyword, want, fast = false }) {
   const label = keyword ? `TikTok.com · search · “${keyword}”` : 'TikTok.com · Explore';
   const tokens = keyword.toLowerCase().split(/\s+/).filter(Boolean);
   const collected = new Map();
@@ -115,7 +115,7 @@ async function collectOne(context, { keyword, want }) {
       ? [
           { name: 'search', url: `https://www.tiktok.com/search?q=${encodeURIComponent(keyword)}` },
           { name: 'search-video-tab', url: `https://www.tiktok.com/search/video?q=${encodeURIComponent(keyword)}` },
-          ...(slug ? [{ name: 'hashtag', url: `https://www.tiktok.com/tag/${encodeURIComponent(slug)}` }] : []),
+          ...(!fast && slug ? [{ name: 'hashtag', url: `https://www.tiktok.com/tag/${encodeURIComponent(slug)}` }] : []),
         ]
       : [{ name: 'explore', url: 'https://www.tiktok.com/explore' }];
 
@@ -126,7 +126,7 @@ async function collectOne(context, { keyword, want }) {
       debug.strategies.push(record);
       try {
         await page.goto(step.url, { waitUntil: 'domcontentloaded', timeout: 45_000 });
-        await sleep(3_000);
+        await sleep(fast ? 1_800 : 3_000);
         record.finalUrl = page.url();
         record.title = await page.title().catch(() => null);
         await page.keyboard.press('Escape').catch(() => {});
@@ -138,9 +138,10 @@ async function collectOne(context, { keyword, want }) {
 
         let stagnant = 0;
         let seen = collected.size;
-        for (let round = 0; round < 30 && fresh().length < want && stagnant < 6; round += 1) {
+        const maxScrollRounds = fast ? 16 : 30;
+        for (let round = 0; round < maxScrollRounds && fresh().length < want && stagnant < 6; round += 1) {
           await page.evaluate(() => window.scrollBy(0, document.body.scrollHeight)).catch(() => {});
-          await sleep(1_200);
+          await sleep(fast ? 900 : 1_200);
           stagnant = collected.size === seen ? stagnant + 1 : 0;
           seen = collected.size;
           record.scrollRounds = round + 1;
@@ -156,6 +157,9 @@ async function collectOne(context, { keyword, want }) {
       record.matchedAfter = fresh().length;
       log(`    · ${step.name}: ${record.matchedAfter} matched / ${collected.size} collected${record.error ? ` (${record.error})` : ''}`);
       if (record.matchedAfter >= want) break;
+      // An on-demand run needs the first useful page quickly. If the normal
+      // search route already delivered it, skip slower alternate surfaces.
+      if (fast && step.name === 'search' && record.matchedAfter >= Math.min(want, 40)) break;
     }
 
     const videos = fresh()
@@ -173,7 +177,10 @@ async function main() {
   const settings = JSON.parse(configRaw);
   const extra = (process.env.EXTRA_KEYWORD ?? '').trim();
   const mergePublish = process.env.MERGE_PUBLISH === '1';
-  const want = Math.min(120, Math.max(10, Number(settings.perKeyword ?? 60)));
+  const fast = Boolean(extra) && process.env.FULL_REFRESH !== '1';
+  const onDemand = process.env.ON_DEMAND === '1';
+  const targetPerKeyword = onDemand ? process.env.ON_DEMAND_PER_KEYWORD : settings.perKeyword;
+  const want = Math.min(120, Math.max(10, Number(targetPerKeyword ?? 60)));
   const startedAt = new Date().toISOString();
   const budgetMs = Math.max(60_000, Number(process.env.COLLECT_BUDGET_MS ?? 20 * 60_000));
   const deadline = Date.now() + budgetMs;
@@ -204,7 +211,6 @@ async function main() {
   // A run triggered for one keyword must be FAST — someone is waiting for it.
   // So it collects only that keyword and carries every other file forward
   // untouched. The scheduled run (no EXTRA_KEYWORD) does the full refresh.
-  const fast = Boolean(extra) && process.env.FULL_REFRESH !== '1';
   const targets = fast ? keywords.slice(0, 1) : keywords;
   const carryOnly = fast && !mergePublish ? keywords.slice(1) : [];
 
@@ -298,7 +304,7 @@ async function main() {
       log(`› “${keyword}”`);
       let result;
       try {
-        result = await collectOne(context, { keyword, want });
+        result = await collectOne(context, { keyword, want, fast: onDemand });
       } catch (error) {
         log(`    ! ${String(error?.message ?? error).split('\n')[0]}`);
         result = { videos: [], scanned: 0, debug: { keyword, error: String(error?.message ?? error).slice(0, 200) } };

@@ -424,6 +424,7 @@ async function proxyVideo(request, url) {
   }
   const headers = { 'user-agent': UA, referer: 'https://www.tiktok.com/', 'accept-language': 'en-US,en;q=0.9' };
   const range = request.headers.get('range');
+  const download = url.searchParams.get('download') === '1';
   if (range) headers.range = range;
 
   // A full-file request can be edge-cached, so scrolling back to a video plays
@@ -440,6 +441,11 @@ async function proxyVideo(request, url) {
   }
   // TikTok play URLs expire in hours, so never let a client cache one for long.
   out.set('Cache-Control', range ? 'no-store' : 'public, max-age=900');
+  if (download && upstream.ok) {
+    const requested = String(url.searchParams.get('filename') ?? 'tiktok-video.mp4');
+    const filename = requested.replace(/[^a-zA-Z0-9._-]+/g, '-').slice(0, 100) || 'tiktok-video.mp4';
+    out.set('Content-Disposition', `attachment; filename="${filename.endsWith('.mp4') ? filename : `${filename}.mp4`}"`);
+  }
   return new Response(upstream.body, { status: upstream.status, headers: out });
 }
 
@@ -786,7 +792,7 @@ async function handleApi(request, env, url, ctx) {
 
     const collectionResponse = (dispatch, preview) => json({
       ...(preview ?? { videos: [], scanned: 0, hasMore: false }),
-      queued: true, exactPending: true, etaSeconds: 25,
+      queued: true, exactPending: true, etaSeconds: 45,
       keyword, source: preview?.source ?? 'GitHub Actions collector',
       notice: dispatch.alreadyRunning
         ? `Exact “${keyword}” results are already being collected (started ${dispatch.requestedAt ? new Date(dispatch.requestedAt).toLocaleTimeString() : 'just now'}).${preview ? ' Showing matching videos from the fresh TikTok index meanwhile.' : ''}`
@@ -811,6 +817,16 @@ async function handleApi(request, env, url, ctx) {
         earlyDispatch = await requestCollection(env, keyword);
         if (earlyDispatch.queued) return collectionResponse(earlyDispatch, earlyPreview);
       }
+    }
+
+    // The direct HTTP provider currently returns TikTok's empty shell from
+    // Cloudflare. For an unknown keyword, dispatch the real runner first so a
+    // burst of users gets the same immediate queued answer instead of each
+    // waiting through a slow route that is known not to produce data here.
+    if (keyword && cacheable && !wantsLive && !datasetEntry?.payload?.videos?.length) {
+      earlyDispatch ??= await requestCollection(env, keyword);
+      if (earlyDispatch.queued) return collectionResponse(earlyDispatch, earlyPreview);
+      httpDebug = { ...(httpDebug ?? {}), dispatch: earlyDispatch };
     }
 
     // 2. HTTP provider — plain fetch, no browser, no quota, no login. It is

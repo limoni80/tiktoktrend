@@ -58,6 +58,8 @@ export class WorkspaceJsonProvider implements TikTokProvider {
         collectedAt: String(video.scrapedAt ?? new Date().toISOString()),
         viewsPerHour: numberOrNull(video.viewsPerHour),
         likesPerHour: numberOrNull(video.likesPerHour),
+        videoFileUrl: textOrNull(video.videoFileUrl ?? video.playAddr ?? video?.videoMeta?.playAddr),
+        downloadFileUrl: textOrNull(video.downloadFileUrl ?? video.downloadAddr ?? video.downloadUrl ?? video?.videoMeta?.downloadAddr),
         source: this.name,
       };
     }).filter((video) => video.id);
