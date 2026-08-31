@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-08-31T16:28:05.896Z",
-  "startedAt": "2026-08-31T16:27:28.466Z",
+  "generatedAt": "2026-08-31T16:36:01.151Z",
+  "startedAt": "2026-08-31T16:34:14.539Z",
   "repo": "limoni80/tiktoktrend",
-  "runUrl": "https://github.com/limoni80/tiktoktrend/actions/runs/33414149031",
+  "runUrl": "https://github.com/limoni80/tiktoktrend/actions/runs/33414795615",
   "entries": [
     {
       "kind": "search",
@@ -97,9 +97,8 @@
       "file": "search/skincare.json",
       "keyword": "skincare",
       "slug": "skincare",
-      "status": "ok",
+      "status": "stale",
       "count": 120,
-      "emptyStreak": 0,
       "updatedAt": "2026-08-31T15:24:09.166Z",
       "lastSuccessAt": "2026-08-31T15:24:09.166Z"
     },
@@ -650,7 +649,7 @@
     {
       "keyword": "skincare",
       "slug": "skincare",
-      "status": "ok",
+      "status": "stale",
       "count": 120,
       "updatedAt": "2026-08-31T15:24:09.166Z"
     },
