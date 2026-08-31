@@ -23,11 +23,16 @@
   "browser": {
     "binding": "MYBROWSER"
   },
+  // R2 stores a stable MP4 copy of each collected video, uploaded by the
+  // GitHub Actions collector (OIDC-authenticated /api/media-upload). This is
+  // what makes downloads permanent instead of dying with TikTok's short-lived
+  // signed URLs. Create the bucket once:
+  //   npx wrangler r2 bucket create tiktoktrend-media
+  // Free tier: 10 GB storage, zero egress fees. Without this binding the
+  // Worker answers 503 media_storage_unavailable and the dashboard falls back
+  // to proxied CDN downloads (which expire within hours).
   "r2_buckets": [
-    {
-      "binding": "MEDIA",
-      "bucket_name": "tiktoktrend-media"
-    }
+    { "binding": "MEDIA", "bucket_name": "tiktoktrend-media" }
   ],
   "vars": {
     // Set this to the public URL of the Node/Playwright backend to enable
@@ -37,8 +42,6 @@
     // and published on the `data` branch. Serving these needs no browser at
     // all, which is what makes repeated searches unlimited. Set to "" to
     // disable and always use the live browser.
-    // Public repos use this anonymous URL. Private repos use the authenticated
-    // GitHub Contents API with GITHUB_TOKEN instead.
     "DATA_BASE_URL": "https://raw.githubusercontent.com/limoni80/tiktoktrend/data",
     "DATA_BRANCH": "data",
     // On-demand collection: when a searched keyword has no dataset yet, the
