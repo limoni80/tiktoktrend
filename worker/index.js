@@ -672,7 +672,10 @@ async function proxyVideo(request, url) {
   if (body && startsAtZero) {
     const reader = body.getReader();
     const { head, chunks } = await readHead(reader);
-    if (!looksLikeMediaHead(head)) {
+    // A tiny ranged probe (e.g. bytes=0-0) legitimately carries fewer bytes
+    // than any container signature — only judge when there is enough to judge,
+    // otherwise stream it through. A real download always has >= 12 bytes.
+    if (head.length >= 12 && !looksLikeMediaHead(head)) {
       await reader.cancel().catch(() => {});
       return fail(502, 'video_source_invalid',
         `TikTok answered with ${describeHead(head)} instead of video bytes — this signed URL has expired. Re-run the search to get a fresh one.`);

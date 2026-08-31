@@ -886,9 +886,9 @@ function DownloadVideoLink({ source, id, className, onProblem }: { source: strin
     if (checking) return;
     setChecking(true);
     try {
-      // Test a single byte before navigating. This prevents browsers from
-      // saving an error page as a fake .mp4 when TikTok denies a CDN source.
-      const probe = await fetch(href, { headers: { range: 'bytes=0-0' } });
+      // Probe the first 16 bytes before navigating — enough for the server to
+      // verify a real video signature, so an error page is never saved as .mp4.
+      const probe = await fetch(href, { headers: { range: 'bytes=0-15' } });
       if (!probe.ok) {
         let message = 'TikTok is not permitting this video file to be downloaded right now. Try a newer result or open it on TikTok.';
         if ((probe.headers.get('content-type') ?? '').includes('application/json')) {
