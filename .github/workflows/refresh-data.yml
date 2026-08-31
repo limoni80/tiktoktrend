@@ -14,6 +14,9 @@ on:
 
 permissions:
   contents: write
+  # The collector authenticates each R2 upload to our Worker with a short-lived
+  # GitHub OIDC token. No Cloudflare key or reusable upload secret is stored.
+  id-token: write
 
 # Different keywords may scrape in parallel. Repeated requests for the exact
 # same keyword queue behind one another instead of consuming another runner.
@@ -90,6 +93,9 @@ jobs:
           # Scheduled datasets still collect the full configured depth.
           ON_DEMAND: ${{ inputs.keyword && '1' || '0' }}
           ON_DEMAND_PER_KEYWORD: "60"
+          MEDIA_UPLOAD_BASE_URL: "https://tiktoktrend.limoniastrum.workers.dev/api/media-upload"
+          MEDIA_PUBLIC_BASE_URL: "https://tiktoktrend.limoniastrum.workers.dev/api/media"
+          MEDIA_PER_DATASET: "60"
 
       - name: Upload dataset shard
         uses: actions/upload-artifact@v4

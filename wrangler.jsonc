@@ -23,6 +23,12 @@
   "browser": {
     "binding": "MYBROWSER"
   },
+  "r2_buckets": [
+    {
+      "binding": "MEDIA",
+      "bucket_name": "tiktoktrend-media"
+    }
+  ],
   "vars": {
     // Set this to the public URL of the Node/Playwright backend to enable
     // keyword search and Top Ads. Country trends work without it.

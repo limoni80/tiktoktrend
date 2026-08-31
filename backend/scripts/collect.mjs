@@ -32,6 +32,11 @@ const REPO = process.env.GITHUB_REPOSITORY ?? 'limoni80/tiktoktrend';
 const DATA_BRANCH = process.env.DATA_BRANCH ?? 'data';
 const PREVIOUS_BASE = `https://raw.githubusercontent.com/${REPO}/${DATA_BRANCH}`;
 const UA = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36';
+const MEDIA_UPLOAD_BASE = String(process.env.MEDIA_UPLOAD_BASE_URL ?? '').replace(/\/+$/, '');
+const MEDIA_PUBLIC_BASE = String(process.env.MEDIA_PUBLIC_BASE_URL ?? '').replace(/\/+$/, '');
+const MEDIA_PER_DATASET = Math.min(100, Math.max(0, Number(process.env.MEDIA_PER_DATASET ?? 40)));
+const MEDIA_MAX_BYTES = Math.min(95 * 1024 * 1024, Math.max(1 * 1024 * 1024, Number(process.env.MEDIA_MAX_BYTES ?? 80 * 1024 * 1024)));
+const MEDIA_OIDC_AUDIENCE = 'tiktoktrend-media-upload';
 
 const LIST_PATTERN =
   /\/api\/(explore\/item_list|recommend\/item_list|challenge\/item_list|post\/item_list|search\/general\/full|search\/item\/full|search\/video\/full|search\/general\/preview|item\/detail|related\/item_list)\//;
@@ -172,6 +177,97 @@ async function collectOne(context, { keyword, want, fast = false }) {
   }
 }
 
+let oidcTokenPromise = null;
+async function githubOidcToken() {
+  if (oidcTokenPromise) return oidcTokenPromise;
+  const requestUrl = process.env.ACTIONS_ID_TOKEN_REQUEST_URL;
+  const requestToken = process.env.ACTIONS_ID_TOKEN_REQUEST_TOKEN;
+  if (!requestUrl || !requestToken) throw new Error('GitHub OIDC is unavailable; workflow needs id-token: write');
+  oidcTokenPromise = (async () => {
+    const separator = requestUrl.includes('?') ? '&' : '?';
+    const response = await fetch(`${requestUrl}${separator}audience=${encodeURIComponent(MEDIA_OIDC_AUDIENCE)}`, {
+      headers: { authorization: `Bearer ${requestToken}`, 'user-agent': 'tiktoktrend-collector' },
+    });
+    if (!response.ok) throw new Error(`GitHub OIDC token request failed (${response.status})`);
+    const payload = await response.json();
+    if (!payload?.value) throw new Error('GitHub OIDC response had no token');
+    return payload.value;
+  })();
+  return oidcTokenPromise;
+}
+
+const stableMediaUrl = (id) => `${MEDIA_PUBLIC_BASE}/${encodeURIComponent(id)}`;
+
+async function cacheOneMedia(context, video) {
+  const stableUrl = stableMediaUrl(video.id);
+  try {
+    const existing = await fetch(stableUrl, { method: 'HEAD', signal: AbortSignal.timeout(12_000) });
+    if (existing.ok) return { ...video, videoFileUrl: stableUrl, downloadFileUrl: stableUrl };
+  } catch { /* upload it below */ }
+
+  // TikTok explicitly supplied this download address during this very browser
+  // session. Fetch it now, from the same runner IP and cookie jar, before the
+  // signed URL is moved to another machine where TikTok rejects it.
+  if (!video.downloadFileUrl) return { ...video, downloadFileUrl: null };
+  try {
+    const media = await context.request.get(video.downloadFileUrl, {
+      failOnStatusCode: false,
+      timeout: 45_000,
+      headers: { accept: 'video/mp4,video/*;q=0.9,*/*;q=0.8', referer: video.url },
+    });
+    const headers = media.headers();
+    const contentType = String(headers['content-type'] ?? '').toLowerCase();
+    if (!media.ok() || !contentType.startsWith('video/')) {
+      throw new Error(`TikTok media response ${media.status()} (${contentType || 'no content type'})`);
+    }
+    const declared = Number(headers['content-length'] ?? 0);
+    if (declared > MEDIA_MAX_BYTES) throw new Error(`video is larger than ${Math.round(MEDIA_MAX_BYTES / 1024 / 1024)} MB`);
+    const bytes = await media.body();
+    if (bytes.byteLength < 1_024 || bytes.byteLength > MEDIA_MAX_BYTES) {
+      throw new Error(`unexpected video size ${bytes.byteLength} bytes`);
+    }
+
+    const oidc = await githubOidcToken();
+    const upload = await fetch(`${MEDIA_UPLOAD_BASE}/${encodeURIComponent(video.id)}`, {
+      method: 'PUT',
+      headers: {
+        authorization: `Bearer ${oidc}`,
+        'content-type': contentType.split(';')[0] || 'video/mp4',
+        'content-length': String(bytes.byteLength),
+        'x-tiktok-source': 'download-addr',
+      },
+      body: bytes,
+      signal: AbortSignal.timeout(60_000),
+    });
+    if (!upload.ok) {
+      const detail = await upload.text().catch(() => '');
+      throw new Error(`R2 upload failed (${upload.status}) ${detail.slice(0, 120)}`);
+    }
+    return { ...video, videoFileUrl: stableUrl, downloadFileUrl: stableUrl };
+  } catch (error) {
+    log(`    ! media ${video.id}: ${String(error?.message ?? error).slice(0, 180)}`);
+    return { ...video, downloadFileUrl: null };
+  }
+}
+
+async function cacheMedia(context, videos) {
+  if (!MEDIA_UPLOAD_BASE || !MEDIA_PUBLIC_BASE || MEDIA_PER_DATASET === 0) return videos;
+  const selected = videos.slice(0, MEDIA_PER_DATASET);
+  const output = new Array(selected.length);
+  let cursor = 0;
+  const workers = Array.from({ length: Math.min(4, selected.length) }, async () => {
+    while (cursor < selected.length) {
+      const index = cursor;
+      cursor += 1;
+      output[index] = await cacheOneMedia(context, selected[index]);
+    }
+  });
+  await Promise.all(workers);
+  const cached = output.filter((video) => video?.downloadFileUrl?.startsWith(MEDIA_PUBLIC_BASE)).length;
+  log(`    · R2 media: ${cached}/${selected.length} ready`);
+  return [...output, ...videos.slice(selected.length).map((video) => ({ ...video, downloadFileUrl: null }))];
+}
+
 async function main() {
   const configRaw = await readFile('data/keywords.json', 'utf8').catch(() => '{}');
   const settings = JSON.parse(configRaw);
@@ -276,6 +372,7 @@ async function main() {
     } else {
       log('› Explore feed');
       const feed = await collectOne(context, { keyword: '', want });
+      feed.videos = await cacheMedia(context, feed.videos);
       catalogue.push(await publish('feed.json', {
         videos: feed.videos, scanned: feed.scanned, hasMore: false,
         source: 'TikTok.com Explore feed · collected by GitHub Actions',
@@ -305,6 +402,7 @@ async function main() {
       let result;
       try {
         result = await collectOne(context, { keyword, want, fast: onDemand });
+        result.videos = await cacheMedia(context, result.videos);
       } catch (error) {
         log(`    ! ${String(error?.message ?? error).split('\n')[0]}`);
         result = { videos: [], scanned: 0, debug: { keyword, error: String(error?.message ?? error).slice(0, 200) } };

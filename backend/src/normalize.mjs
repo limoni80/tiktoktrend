@@ -39,7 +39,10 @@ export function normalizeTikTokItem(item, sourceLabel = 'TikTok.com') {
   // Keep TikTok's public download address separate from the play stream. When
   // TikTok exposes it, the dashboard can request that original file directly;
   // it never fabricates or removes any watermark itself.
-  const downloadAddr = video.downloadAddr ?? playAddr;
+  // Only advertise a download when TikTok explicitly supplied downloadAddr.
+  // playAddr remains usable for playback, but is not silently re-labelled as
+  // a downloadable original.
+  const downloadAddr = video.downloadAddr ?? null;
 
   return {
     id,

@@ -47,6 +47,15 @@ export const apiUrl = (path: string, params?: Record<string, string | number | u
   return `${API_BASE}${path}${suffix}`;
 };
 
+const hostedMediaUrl = (source: string, params?: Record<string, string>): string | null => {
+  try {
+    const url = new URL(source, window.location.origin);
+    if (!/^\/api\/media\/\d+$/.test(url.pathname)) return null;
+    for (const [key, value] of Object.entries(params ?? {})) url.searchParams.set(key, value);
+    return url.toString();
+  } catch { return null; }
+};
+
 const BACKEND_UNAVAILABLE =
   'Backend unavailable — the analytics API did not respond. Start the local backend, or set VITE_API_BASE_URL to your deployed backend.';
 
@@ -135,12 +144,13 @@ export const api = {
     }),
   trends: (params: { region: string; period: string }) => request<FeedResponse>('/api/fetch', params),
   ads: (params: { region: string; period: string; keyword: string }) => request<FeedResponse>('/api/fetch-ads', params),
+  isHostedMediaUrl: (source: string | null | undefined) => Boolean(source && hostedMediaUrl(source)),
   /** Play URLs need TikTok headers, so they stream through the backend. */
-  videoStreamUrl: (source: string) => apiUrl('/api/video', { src: source }),
+  videoStreamUrl: (source: string) => hostedMediaUrl(source) ?? apiUrl('/api/video', { src: source }),
   /** Downloads only the public stream TikTok supplied for this video. */
-  videoDownloadUrl: (source: string, id: string) => apiUrl('/api/video', {
-    src: source, download: '1', filename: `tiktok-${id}.mp4`,
-  }),
+  videoDownloadUrl: (source: string, id: string) => hostedMediaUrl(source, {
+    download: '1', filename: `tiktok-${id}.mp4`,
+  }) ?? apiUrl('/api/video', { src: source, download: '1', filename: `tiktok-${id}.mp4` }),
 };
 
 export type { TikTokVideo };

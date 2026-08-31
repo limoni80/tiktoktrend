@@ -921,7 +921,7 @@ function VideoCard({ video, saved, onSave, onDownloadError }: { video: EnrichedV
   const [playing, setPlaying] = useState(false);
   const [failed, setFailed] = useState(false);
   const playable = Boolean(video.videoFileUrl) && !failed;
-  const downloadable = video.downloadFileUrl ?? video.videoFileUrl;
+  const downloadable = api.isHostedMediaUrl(video.downloadFileUrl) ? video.downloadFileUrl : null;
 
   return <article className={isAd ? 'card is-ad' : 'card'}>
     <div className={playable ? 'card-media playable' : 'card-media'} onClick={() => playable && !playing && setPlaying(true)}>
@@ -994,8 +994,8 @@ function ResultTable({ videos, saved, onSave, onDownloadError }: { videos: Enric
           <td>{video.durationSeconds == null ? '—' : `${video.durationSeconds}s`}</td>
           <td>{video.kind === 'ad' ? <span className="pill ad">Ad</span> : <span className="pill">{video.winningScore}</span>}</td>
           <td className="table-actions">
-            {video.downloadFileUrl || video.videoFileUrl
-              ? <DownloadVideoLink className="icon-button" source={video.downloadFileUrl ?? video.videoFileUrl!} id={video.id} onProblem={onDownloadError} />
+            {api.isHostedMediaUrl(video.downloadFileUrl)
+              ? <DownloadVideoLink className="icon-button" source={video.downloadFileUrl!} id={video.id} onProblem={onDownloadError} />
               : null}
             <button className="icon-button" onClick={() => onSave(video.id)} aria-label="Save"><Bookmark size={15} fill={saved.has(video.id) ? 'currentColor' : 'none'} /></button>
           </td>

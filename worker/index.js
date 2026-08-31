@@ -11,6 +11,8 @@
  *   /api/fetch         → REAL TikTok Creative Center trends, fetched directly
  *                        from Cloudflare. No browser, no cookies, no login.
  *   /api/video         → streams TikTok CDN media (Range supported)
+ *   /api/media/:id     → stable R2-backed MP4 (Range + attachment supported)
+ *   /api/media-upload  → GitHub OIDC-authenticated collector upload to R2
  *   /api/fetch-tiktok  → keyword search + full engagement metrics. Resolved in
  *                        this order: GitHub Actions dataset → direct HTTP
  *                        (worker/tiktok-http.js, no browser, no quota) →
@@ -63,8 +65,8 @@ const VIDEO_HOST =/(^|\.)((tiktokcdn(-us|-eu)?\.com)|(tiktok\.com)|(tiktokv\.com
 
 const CORS = {
   'Access-Control-Allow-Origin': '*',
-  'Access-Control-Allow-Methods': 'GET,OPTIONS',
-  'Access-Control-Allow-Headers': 'Content-Type',
+  'Access-Control-Allow-Methods': 'GET,HEAD,PUT,OPTIONS',
+  'Access-Control-Allow-Headers': 'Content-Type,Authorization,Range,X-TikTok-Source',
 };
 
 /**
@@ -415,6 +417,127 @@ async function searchWithBrowser(env, { keyword, want, knownIds, dateRange }) {
   }
 }
 
+const MEDIA_OIDC_AUDIENCE = 'tiktoktrend-media-upload';
+const MEDIA_ID = /^\d{10,25}$/;
+
+const decodeBase64Url = (value) => {
+  const normalized = String(value).replace(/-/g, '+').replace(/_/g, '/');
+  const padded = normalized.padEnd(Math.ceil(normalized.length / 4) * 4, '=');
+  return Uint8Array.from(atob(padded), (character) => character.charCodeAt(0));
+};
+
+async function verifyGithubOidc(request, env) {
+  const authorization = request.headers.get('authorization') ?? '';
+  const token = authorization.startsWith('Bearer ') ? authorization.slice(7).trim() : '';
+  const parts = token.split('.');
+  if (parts.length !== 3) throw Object.assign(new Error('A GitHub OIDC bearer token is required'), { status: 401 });
+
+  let header;
+  let claims;
+  try {
+    header = JSON.parse(new TextDecoder().decode(decodeBase64Url(parts[0])));
+    claims = JSON.parse(new TextDecoder().decode(decodeBase64Url(parts[1])));
+  } catch {
+    throw Object.assign(new Error('Malformed GitHub OIDC token'), { status: 401 });
+  }
+  if (header.alg !== 'RS256' || !header.kid) throw Object.assign(new Error('Unsupported GitHub OIDC signature'), { status: 401 });
+
+  const jwksResponse = await fetch('https://token.actions.githubusercontent.com/.well-known/jwks', {
+    headers: { accept: 'application/json', 'user-agent': 'tiktoktrend-worker' },
+    cf: { cacheEverything: true, cacheTtl: 3_600 },
+  });
+  if (!jwksResponse.ok) throw Object.assign(new Error('GitHub OIDC keys are unavailable'), { status: 503 });
+  const jwk = (await jwksResponse.json())?.keys?.find((candidate) => candidate.kid === header.kid);
+  if (!jwk) throw Object.assign(new Error('Unknown GitHub OIDC signing key'), { status: 401 });
+  const key = await crypto.subtle.importKey('jwk', jwk, { name: 'RSASSA-PKCS1-v1_5', hash: 'SHA-256' }, false, ['verify']);
+  const valid = await crypto.subtle.verify(
+    { name: 'RSASSA-PKCS1-v1_5' }, key, decodeBase64Url(parts[2]),
+    new TextEncoder().encode(`${parts[0]}.${parts[1]}`),
+  );
+  if (!valid) throw Object.assign(new Error('Invalid GitHub OIDC signature'), { status: 401 });
+
+  const now = Math.floor(Date.now() / 1_000);
+  const repo = String(env.GITHUB_REPO ?? 'limoni80/tiktoktrend');
+  const branch = String(env.GITHUB_REF ?? 'main');
+  const expectedWorkflow = `${repo}/.github/workflows/${String(env.GITHUB_WORKFLOW_FILE ?? 'refresh-data.yml')}@refs/heads/${branch}`;
+  const audience = Array.isArray(claims.aud) ? claims.aud : [claims.aud];
+  if (claims.iss !== 'https://token.actions.githubusercontent.com'
+      || !audience.includes(MEDIA_OIDC_AUDIENCE)
+      || claims.repository !== repo
+      || claims.ref !== `refs/heads/${branch}`
+      || claims.workflow_ref !== expectedWorkflow
+      || Number(claims.exp ?? 0) < now
+      || Number(claims.nbf ?? 0) > now + 30) {
+    throw Object.assign(new Error('GitHub OIDC claims do not match this collector workflow'), { status: 403 });
+  }
+  return claims;
+}
+
+const mediaObjectKey = (id) => `videos/${id}.mp4`;
+
+async function uploadMedia(request, env, url) {
+  if (!env.MEDIA) return fail(503, 'media_storage_unavailable', 'R2 media storage is not configured');
+  const id = decodeURIComponent(url.pathname.slice('/api/media-upload/'.length));
+  if (!MEDIA_ID.test(id)) return fail(400, 'bad_media_id', 'A numeric TikTok video id is required');
+  try { await verifyGithubOidc(request, env); }
+  catch (error) { return fail(error.status ?? 401, 'media_upload_unauthorized', error.message ?? 'Upload authorization failed'); }
+
+  const contentType = String(request.headers.get('content-type') ?? '').toLowerCase().split(';')[0];
+  const contentLength = Number(request.headers.get('content-length') ?? 0);
+  if (!contentType.startsWith('video/') || !request.body) return fail(415, 'not_video', 'Only video uploads are accepted');
+  if (!Number.isFinite(contentLength) || contentLength < 1_024 || contentLength > 95 * 1024 * 1024) {
+    return fail(413, 'media_size_invalid', 'Video must be between 1 KB and 95 MB');
+  }
+  await env.MEDIA.put(mediaObjectKey(id), request.body, {
+    httpMetadata: { contentType, cacheControl: 'public, max-age=604800' },
+    customMetadata: { source: 'tiktok-download-addr', uploadedAt: new Date().toISOString() },
+  });
+  const publicUrl = new URL(`/api/media/${id}`, request.url).toString();
+  return json({ ok: true, id, bytes: contentLength, downloadUrl: publicUrl }, 201);
+}
+
+async function serveMedia(request, env, url) {
+  if (!env.MEDIA) return fail(503, 'media_storage_unavailable', 'R2 media storage is not configured');
+  const id = decodeURIComponent(url.pathname.slice('/api/media/'.length));
+  if (!MEDIA_ID.test(id)) return fail(400, 'bad_media_id', 'A numeric TikTok video id is required');
+  const key = mediaObjectKey(id);
+  if (request.method === 'HEAD') {
+    const object = await env.MEDIA.head(key);
+    if (!object) return new Response(null, { status: 404, headers: CORS });
+    const headers = new Headers(CORS);
+    object.writeHttpMetadata(headers);
+    headers.set('Content-Length', String(object.size));
+    headers.set('ETag', object.httpEtag);
+    headers.set('Cache-Control', 'public, max-age=604800, immutable');
+    return new Response(null, { status: 200, headers });
+  }
+
+  const requestedRange = request.headers.get('range');
+  const object = await env.MEDIA.get(key, requestedRange ? { range: request.headers } : undefined);
+  if (!object) return fail(404, 'media_not_ready', 'This video has not been cached for download yet');
+  const headers = new Headers(CORS);
+  object.writeHttpMetadata(headers);
+  headers.set('ETag', object.httpEtag);
+  headers.set('Accept-Ranges', 'bytes');
+  headers.set('Cache-Control', 'public, max-age=604800, immutable');
+  let status = 200;
+  if (requestedRange && object.range && 'offset' in object.range && 'length' in object.range) {
+    const start = object.range.offset;
+    const end = start + object.range.length - 1;
+    headers.set('Content-Range', `bytes ${start}-${end}/${object.size}`);
+    headers.set('Content-Length', String(object.range.length));
+    status = 206;
+  } else {
+    headers.set('Content-Length', String(object.size));
+  }
+  if (url.searchParams.get('download') === '1') {
+    const requested = String(url.searchParams.get('filename') ?? `tiktok-${id}.mp4`);
+    const filename = requested.replace(/[^a-zA-Z0-9._-]+/g, '-').slice(0, 100) || `tiktok-${id}.mp4`;
+    headers.set('Content-Disposition', `attachment; filename="${filename.endsWith('.mp4') ? filename : `${filename}.mp4`}"`);
+  }
+  return new Response(object.body, { status, headers });
+}
+
 async function proxyVideo(request, url) {
   let target;
   try { target = new URL(String(url.searchParams.get('src') ?? '')); }
@@ -723,8 +846,9 @@ async function handleApi(request, env, url, ctx) {
       persistentProfile: false,
       backendConfigured: Boolean(env.BACKEND_URL),
       browserRendering: Boolean(env.MYBROWSER),
+      mediaStorage: Boolean(env.MEDIA),
       datasetBase: datasetBase(env) || null,
-      nativeRoutes: ['/api/health', '/api/fetch', '/api/video', ...(env.MYBROWSER ? ['/api/fetch-tiktok'] : [])],
+      nativeRoutes: ['/api/health', '/api/fetch', '/api/video', '/api/media/:id', ...(env.MYBROWSER ? ['/api/fetch-tiktok'] : [])],
       proxiedRoutes: [...(env.MYBROWSER ? [] : ['/api/fetch-tiktok']), '/api/fetch-ads', '/api/progress', '/api/datasets'],
       time: new Date().toISOString(),
     });
@@ -748,6 +872,7 @@ async function handleApi(request, env, url, ctx) {
     }
   }
 
+  if (path.startsWith('/api/media/')) return serveMedia(request, env, url);
   if (path === '/api/video') return proxyVideo(request, url);
 
   if (path === '/api/progress' && !env.BACKEND_URL) {
@@ -1004,7 +1129,15 @@ export default {
 
     if (url.pathname.startsWith('/api/')) {
       if (request.method === 'OPTIONS') return new Response(null, { status: 204, headers: CORS });
-      if (request.method !== 'GET') return fail(405, 'method_not_allowed', 'Only GET is supported');
+      if (url.pathname.startsWith('/api/media-upload/')) {
+        if (request.method !== 'PUT') return fail(405, 'method_not_allowed', 'Only PUT is supported for media uploads');
+        try { return await uploadMedia(request, env, url); }
+        catch (error) { return fail(500, 'media_upload_failed', error instanceof Error ? error.message : 'Media upload failed'); }
+      }
+      const mediaRead = url.pathname.startsWith('/api/media/');
+      if (request.method !== 'GET' && !(mediaRead && request.method === 'HEAD')) {
+        return fail(405, 'method_not_allowed', 'Only GET is supported');
+      }
       try {
         return await handleApi(request, env, url, ctx);
       } catch (error) {
