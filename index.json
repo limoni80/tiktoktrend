@@ -1,9 +1,64 @@
 {
-  "generatedAt": "2026-08-31T15:22:34.896Z",
-  "startedAt": "2026-08-31T15:21:33.097Z",
+  "generatedAt": "2026-08-31T15:24:32.541Z",
+  "startedAt": "2026-08-31T15:23:28.596Z",
   "repo": "limoni80/tiktoktrend",
-  "runUrl": "https://github.com/limoni80/tiktoktrend/actions/runs/33407924288",
+  "runUrl": "https://github.com/limoni80/tiktoktrend/actions/runs/33408115855",
   "entries": [
+    {
+      "kind": "search",
+      "file": "search/ai-tools.json",
+      "keyword": "ai tools",
+      "slug": "ai-tools",
+      "status": "ok",
+      "count": 115,
+      "emptyStreak": 0,
+      "updatedAt": "2026-08-31T15:24:10.137Z",
+      "lastSuccessAt": "2026-08-31T15:24:10.137Z"
+    },
+    {
+      "kind": "search",
+      "file": "search/trump.json",
+      "keyword": "trump",
+      "slug": "trump",
+      "status": "ok",
+      "count": 120,
+      "emptyStreak": 0,
+      "updatedAt": "2026-08-31T15:24:09.249Z",
+      "lastSuccessAt": "2026-08-31T15:24:09.249Z"
+    },
+    {
+      "kind": "search",
+      "file": "search/skincare.json",
+      "keyword": "skincare",
+      "slug": "skincare",
+      "status": "ok",
+      "count": 120,
+      "emptyStreak": 0,
+      "updatedAt": "2026-08-31T15:24:09.166Z",
+      "lastSuccessAt": "2026-08-31T15:24:09.166Z"
+    },
+    {
+      "kind": "search",
+      "file": "search/morocco.json",
+      "keyword": "morocco",
+      "slug": "morocco",
+      "status": "ok",
+      "count": 120,
+      "emptyStreak": 0,
+      "updatedAt": "2026-08-31T15:24:07.565Z",
+      "lastSuccessAt": "2026-08-31T15:24:07.565Z"
+    },
+    {
+      "kind": "search",
+      "file": "search/dropshipping.json",
+      "keyword": "dropshipping",
+      "slug": "dropshipping",
+      "status": "ok",
+      "count": 120,
+      "emptyStreak": 0,
+      "updatedAt": "2026-08-31T15:24:06.077Z",
+      "lastSuccessAt": "2026-08-31T15:24:06.077Z"
+    },
     {
       "kind": "search",
       "file": "search/volcano-cake.json",
@@ -36,61 +91,6 @@
       "emptyStreak": 1,
       "updatedAt": "2026-08-31T15:20:58.505Z",
       "lastSuccessAt": null
-    },
-    {
-      "kind": "search",
-      "file": "search/skincare.json",
-      "keyword": "skincare",
-      "slug": "skincare",
-      "status": "ok",
-      "count": 120,
-      "emptyStreak": 0,
-      "updatedAt": "2026-08-31T07:35:28.972Z",
-      "lastSuccessAt": "2026-08-31T07:35:28.972Z"
-    },
-    {
-      "kind": "search",
-      "file": "search/trump.json",
-      "keyword": "trump",
-      "slug": "trump",
-      "status": "ok",
-      "count": 120,
-      "emptyStreak": 0,
-      "updatedAt": "2026-08-31T07:35:27.174Z",
-      "lastSuccessAt": "2026-08-31T07:35:27.174Z"
-    },
-    {
-      "kind": "search",
-      "file": "search/ai-tools.json",
-      "keyword": "ai tools",
-      "slug": "ai-tools",
-      "status": "ok",
-      "count": 120,
-      "emptyStreak": 0,
-      "updatedAt": "2026-08-31T07:35:18.090Z",
-      "lastSuccessAt": "2026-08-31T07:35:18.090Z"
-    },
-    {
-      "kind": "search",
-      "file": "search/dropshipping.json",
-      "keyword": "dropshipping",
-      "slug": "dropshipping",
-      "status": "ok",
-      "count": 120,
-      "emptyStreak": 0,
-      "updatedAt": "2026-08-31T07:35:16.897Z",
-      "lastSuccessAt": "2026-08-31T07:35:16.897Z"
-    },
-    {
-      "kind": "search",
-      "file": "search/morocco.json",
-      "keyword": "morocco",
-      "slug": "morocco",
-      "status": "ok",
-      "count": 120,
-      "emptyStreak": 0,
-      "updatedAt": "2026-08-31T07:35:16.467Z",
-      "lastSuccessAt": "2026-08-31T07:35:16.467Z"
     },
     {
       "kind": "search",
@@ -522,6 +522,41 @@
   ],
   "keywords": [
     {
+      "keyword": "ai tools",
+      "slug": "ai-tools",
+      "status": "ok",
+      "count": 115,
+      "updatedAt": "2026-08-31T15:24:10.137Z"
+    },
+    {
+      "keyword": "trump",
+      "slug": "trump",
+      "status": "ok",
+      "count": 120,
+      "updatedAt": "2026-08-31T15:24:09.249Z"
+    },
+    {
+      "keyword": "skincare",
+      "slug": "skincare",
+      "status": "ok",
+      "count": 120,
+      "updatedAt": "2026-08-31T15:24:09.166Z"
+    },
+    {
+      "keyword": "morocco",
+      "slug": "morocco",
+      "status": "ok",
+      "count": 120,
+      "updatedAt": "2026-08-31T15:24:07.565Z"
+    },
+    {
+      "keyword": "dropshipping",
+      "slug": "dropshipping",
+      "status": "ok",
+      "count": 120,
+      "updatedAt": "2026-08-31T15:24:06.077Z"
+    },
+    {
       "keyword": "volcano cake",
       "slug": "volcano-cake",
       "status": "empty",
@@ -544,41 +579,6 @@
       "count": 0,
       "updatedAt": "2026-08-31T15:20:58.505Z",
       "emptyStreak": 1
-    },
-    {
-      "keyword": "skincare",
-      "slug": "skincare",
-      "status": "ok",
-      "count": 120,
-      "updatedAt": "2026-08-31T07:35:28.972Z"
-    },
-    {
-      "keyword": "trump",
-      "slug": "trump",
-      "status": "ok",
-      "count": 120,
-      "updatedAt": "2026-08-31T07:35:27.174Z"
-    },
-    {
-      "keyword": "ai tools",
-      "slug": "ai-tools",
-      "status": "ok",
-      "count": 120,
-      "updatedAt": "2026-08-31T07:35:18.090Z"
-    },
-    {
-      "keyword": "dropshipping",
-      "slug": "dropshipping",
-      "status": "ok",
-      "count": 120,
-      "updatedAt": "2026-08-31T07:35:16.897Z"
-    },
-    {
-      "keyword": "morocco",
-      "slug": "morocco",
-      "status": "ok",
-      "count": 120,
-      "updatedAt": "2026-08-31T07:35:16.467Z"
     },
     {
       "keyword": "Crochets",
