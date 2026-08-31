@@ -259,6 +259,21 @@ async function fetchMediaBytes(context, video, source) {
   if (bytes.byteLength < 1_024 || bytes.byteLength > MEDIA_MAX_BYTES) {
     throw new Error(`unexpected video size ${bytes.byteLength} bytes`);
   }
+
+  // Content-Type lies: an expired signed URL answers 200 text-with-video-type
+  // often enough that only the bytes themselves can be trusted. MP4/MOV puts
+  // "ftyp" at offset 4; WebM starts 1A 45 DF A3. Anything else — usually
+  // TikTok's HTML error page — must never reach R2, because from there it
+  // would be served as a .mp4 download for a week.
+  const head = bytes.subarray(0, 16);
+  const isVideo = (head.length >= 12 && head[4] === 0x66 && head[5] === 0x74 && head[6] === 0x79 && head[7] === 0x70)
+    || (head.length >= 4 && head[0] === 0x1a && head[1] === 0x45 && head[2] === 0xdf && head[3] === 0xa3)
+    || (head.length >= 3 && head[0] === 0x46 && head[1] === 0x4c && head[2] === 0x56)
+    || (head.length >= 1 && head[0] === 0x47);
+  if (!isVideo) {
+    const preview = head.toString('utf8').replace(/\s+/g, ' ').slice(0, 40);
+    throw new Error(`downloaded bytes are not a video container (starts with: ${preview || 'unknown bytes'})`);
+  }
   return { bytes, contentType: contentType.split(';')[0] || 'video/mp4' };
 }
 

@@ -475,6 +475,57 @@ async function verifyGithubOidc(request, env) {
 
 const mediaObjectKey = (id) => `videos/${id}.mp4`;
 
+/**
+ * Content-Type lies. When a signed TikTok URL expires, the CDN answers
+ * `200 OK` with an HTML error page — and anything that trusts the header
+ * happily saves that page as "video.mp4". That is exactly the bug users see
+ * as "the download is an HTML file". So every path that stores or serves
+ * media validates the FIRST BYTES against real container signatures:
+ *
+ *   MP4/MOV  ....ftyp   (offset 4)      WebM/MKV  1A 45 DF A3
+ *   FLV      46 4C 56                   MPEG-TS   47 at offset 0
+ */
+const looksLikeMediaHead = (head) => {
+  if (head.length >= 12 && head[4] === 0x66 && head[5] === 0x74 && head[6] === 0x79 && head[7] === 0x70) return true;
+  if (head.length >= 4 && head[0] === 0x1a && head[1] === 0x45 && head[2] === 0xdf && head[3] === 0xa3) return true;
+  if (head.length >= 3 && head[0] === 0x46 && head[1] === 0x4c && head[2] === 0x56) return true;
+  if (head.length >= 1 && head[0] === 0x47) return true;
+  return false;
+};
+
+const describeHead = (head) => {
+  const text = new TextDecoder().decode(head.slice(0, 16)).trim();
+  if (/^<!doctype|^<html|^</i.test(text)) return 'an HTML page';
+  if (/^\{|^\[/.test(text)) return 'a JSON document';
+  return `unknown bytes (${[...head.slice(0, 8)].map((b) => b.toString(16).padStart(2, '0')).join(' ')})`;
+};
+
+/** Read at least `min` bytes off a stream reader without losing them. */
+async function readHead(reader, min = 16) {
+  const chunks = [];
+  let total = 0;
+  while (total < min) {
+    const { done, value } = await reader.read();
+    if (done) break;
+    chunks.push(value);
+    total += value.byteLength;
+  }
+  const head = new Uint8Array(total);
+  let offset = 0;
+  for (const chunk of chunks) { head.set(chunk, offset); offset += chunk.byteLength; }
+  return { head, chunks };
+}
+
+/** Re-attach an already-read head to the rest of the stream. */
+const resumeStream = (chunks, reader) => new ReadableStream({
+  start(controller) { for (const chunk of chunks) controller.enqueue(chunk); },
+  async pull(controller) {
+    const { done, value } = await reader.read();
+    if (done) controller.close(); else controller.enqueue(value);
+  },
+  cancel(reason) { return reader.cancel(reason); },
+});
+
 async function uploadMedia(request, env, url) {
   if (!env.MEDIA) return fail(503, 'media_storage_unavailable', 'R2 media storage is not configured');
   const id = decodeURIComponent(url.pathname.slice('/api/media-upload/'.length));
@@ -488,10 +539,40 @@ async function uploadMedia(request, env, url) {
   if (!Number.isFinite(contentLength) || contentLength < 1_024 || contentLength > 95 * 1024 * 1024) {
     return fail(413, 'media_size_invalid', 'Video must be between 1 KB and 95 MB');
   }
-  await env.MEDIA.put(mediaObjectKey(id), request.body, {
+
+  // The Content-Type header is asserted by the uploader; the bytes are not.
+  // Sniff the first bytes so an HTML error page can never be stored as an MP4
+  // — once a bad object is in R2 it gets served for a week with a video
+  // content type, which is how "the download is an HTML file" happens.
+  const reader = request.body.getReader();
+  const { head, chunks } = await readHead(reader);
+  if (!looksLikeMediaHead(head)) {
+    await reader.cancel().catch(() => {});
+    return fail(415, 'not_video_bytes', `The uploaded body is ${describeHead(head)}, not a video file. Refusing to store it.`);
+  }
+
+  // FixedLengthStream gives the re-assembled stream a known length, which R2
+  // needs, and doubles as an integrity check: a truncated upload fails the put
+  // instead of storing half a file.
+  const { readable, writable } = new FixedLengthStream(contentLength);
+  const putPromise = env.MEDIA.put(mediaObjectKey(id), readable, {
     httpMetadata: { contentType, cacheControl: 'public, max-age=604800' },
-    customMetadata: { source: 'tiktok-download-addr', uploadedAt: new Date().toISOString() },
+    customMetadata: { source: 'tiktok-download-addr', uploadedAt: new Date().toISOString(), validated: 'magic-bytes' },
   });
+  try {
+    const writer = writable.getWriter();
+    for (const chunk of chunks) await writer.write(chunk);
+    for (;;) {
+      const { done, value } = await reader.read();
+      if (done) break;
+      await writer.write(value);
+    }
+    await writer.close();
+    await putPromise;
+  } catch (error) {
+    await env.MEDIA.delete(mediaObjectKey(id)).catch(() => {});
+    return fail(400, 'media_upload_incomplete', `Upload did not complete cleanly: ${String(error?.message ?? error).slice(0, 160)}`);
+  }
   const publicUrl = new URL(`/api/media/${id}`, request.url).toString();
   return json({ ok: true, id, bytes: contentLength, downloadUrl: publicUrl }, 201);
 }
@@ -513,6 +594,19 @@ async function serveMedia(request, env, url) {
   }
 
   const requestedRange = request.headers.get('range');
+
+  // Objects uploaded before byte validation existed can hold an HTML error
+  // page. A 16-byte range read costs almost nothing, catches them all, and
+  // deletes them so the next collection run re-caches the real file.
+  const probe = await env.MEDIA.get(key, { range: { offset: 0, length: 16 } });
+  if (!probe) return fail(404, 'media_not_ready', 'This video has not been cached for download yet');
+  const probeHead = new Uint8Array(await probe.arrayBuffer());
+  if (!looksLikeMediaHead(probeHead)) {
+    await env.MEDIA.delete(key).catch(() => {});
+    return fail(404, 'media_corrupt',
+      `The stored file for this video was ${describeHead(probeHead)}, not a video — an old upload saved TikTok's error page. It has been removed; the next collection run will re-cache the real file.`);
+  }
+
   const object = await env.MEDIA.get(key, requestedRange ? { range: request.headers } : undefined);
   if (!object) return fail(404, 'media_not_ready', 'This video has not been cached for download yet');
   const headers = new Headers(CORS);
@@ -564,6 +658,28 @@ async function proxyVideo(request, url) {
     return fail(502, 'video_source_unavailable',
       'TikTok is not permitting this video file to be delivered right now. The signed source may have expired or may reject server delivery; open the video on TikTok and try a newer result.');
   }
+
+  // An expired signed URL often answers 200 with an HTML page. Refuse by
+  // declared type first, then by the actual first bytes whenever the response
+  // starts at byte zero — never stream a web page under a video name.
+  const upstreamType = (upstream.headers.get('content-type') ?? '').toLowerCase();
+  if (/text\/html|application\/json|text\/plain/.test(upstreamType)) {
+    return fail(502, 'video_source_invalid',
+      'TikTok answered with a web page instead of video bytes — this signed URL has expired. Re-run the search to get a fresh one.');
+  }
+  let body = upstream.body;
+  const startsAtZero = !range || /^bytes=\s*0-/.test(range);
+  if (body && startsAtZero) {
+    const reader = body.getReader();
+    const { head, chunks } = await readHead(reader);
+    if (!looksLikeMediaHead(head)) {
+      await reader.cancel().catch(() => {});
+      return fail(502, 'video_source_invalid',
+        `TikTok answered with ${describeHead(head)} instead of video bytes — this signed URL has expired. Re-run the search to get a fresh one.`);
+    }
+    body = resumeStream(chunks, reader);
+  }
+
   const out = new Headers(CORS);
   for (const name of ['content-type', 'content-range', 'accept-ranges', 'content-length']) {
     const value = upstream.headers.get(name);
@@ -576,7 +692,7 @@ async function proxyVideo(request, url) {
     const filename = requested.replace(/[^a-zA-Z0-9._-]+/g, '-').slice(0, 100) || 'tiktok-video.mp4';
     out.set('Content-Disposition', `attachment; filename="${filename.endsWith('.mp4') ? filename : `${filename}.mp4`}"`);
   }
-  return new Response(upstream.body, { status: upstream.status, headers: out });
+  return new Response(body, { status: upstream.status, headers: out });
 }
 
 /** Routes that need Playwright live on the Node backend, if one is configured. */

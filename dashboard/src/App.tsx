@@ -928,7 +928,7 @@ function VideoCard({ video, saved, onSave, onDownloadError }: { video: EnrichedV
       {playing && playable
         ? <video src={api.videoStreamUrl(video.videoFileUrl!)} poster={video.thumbnailUrl ?? undefined} controls autoPlay playsInline onError={() => { setFailed(true); setPlaying(false); }} />
         : <>
-            {video.thumbnailUrl ? <img src={video.thumbnailUrl} alt="" loading="lazy" /> : <div className="no-media"><Play size={22} /></div>}
+            {video.thumbnailUrl ? <img src={video.thumbnailUrl} alt="" loading="lazy" decoding="async" /> : <div className="no-media"><Play size={22} /></div>}
             {playable && <span className="play"><Play size={20} fill="currentColor" /></span>}
           </>}
       {isAd ? <span className="badge ad">Ad</span> : <span className={`badge score s${Math.min(4, Math.floor(video.winningScore / 25))}`}>{video.winningScore}</span>}
@@ -980,7 +980,7 @@ function ResultTable({ videos, saved, onSave, onDownloadError }: { videos: Enric
         <tr key={video.id}>
           <td>
             <div className="cell-video">
-              {video.thumbnailUrl && <img src={video.thumbnailUrl} alt="" loading="lazy" />}
+              {video.thumbnailUrl && <img src={video.thumbnailUrl} alt="" loading="lazy" decoding="async" />}
               <a href={video.url} target="_blank" rel="noreferrer">{video.caption || 'No caption'}</a>
             </div>
           </td>
