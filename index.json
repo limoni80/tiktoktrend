@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-08-31T16:24:08.726Z",
-  "startedAt": "2026-08-31T16:23:32.301Z",
+  "generatedAt": "2026-08-31T16:28:05.896Z",
+  "startedAt": "2026-08-31T16:27:28.466Z",
   "repo": "limoni80/tiktoktrend",
-  "runUrl": "https://github.com/limoni80/tiktoktrend/actions/runs/33413778681",
+  "runUrl": "https://github.com/limoni80/tiktoktrend/actions/runs/33414149031",
   "entries": [
     {
       "kind": "search",
@@ -108,9 +108,8 @@
       "file": "search/morocco.json",
       "keyword": "morocco",
       "slug": "morocco",
-      "status": "ok",
+      "status": "stale",
       "count": 120,
-      "emptyStreak": 0,
       "updatedAt": "2026-08-31T15:24:07.565Z",
       "lastSuccessAt": "2026-08-31T15:24:07.565Z"
     },
@@ -658,7 +657,7 @@
     {
       "keyword": "morocco",
       "slug": "morocco",
-      "status": "ok",
+      "status": "stale",
       "count": 120,
       "updatedAt": "2026-08-31T15:24:07.565Z"
     },

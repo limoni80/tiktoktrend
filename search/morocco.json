@@ -5397,5 +5397,43 @@
     "captchaWall": false,
     "bodySnippet": "TikTok Search For You Explore Following Shop Short dramas LIVE Upload Profile More Log in Company Program Terms & Policies © 2026 TikTok #morocco Kyla | Travel How many nights you really need in Morocco 🇲🇦 About Morocco 🇲🇦 This is Morocco 🇲🇦✨ lillydeborah.film Morocco is so much more than the "
   },
-  "emptyStreak": 0
+  "emptyStreak": 0,
+  "stale": true,
+  "staleSince": "2026-08-31T16:27:28.466Z",
+  "lastAttemptAt": "2026-08-31T16:27:28.466Z",
+  "lastAttemptDebug": {
+    "keyword": "morocco",
+    "want": 60,
+    "strategies": [
+      {
+        "name": "search",
+        "url": "https://www.tiktok.com/search?q=morocco",
+        "finalUrl": "https://www.tiktok.com/search?q=morocco",
+        "title": "TikTok - Make Your Day",
+        "scrollRounds": 6,
+        "matchedAfter": 0,
+        "error": null
+      },
+      {
+        "name": "search-video-tab",
+        "url": "https://www.tiktok.com/search/video?q=morocco",
+        "finalUrl": "https://www.tiktok.com/search/video?q=morocco",
+        "title": "TikTok - Make Your Day",
+        "scrollRounds": 6,
+        "matchedAfter": 0,
+        "error": null
+      }
+    ],
+    "apiHits": {
+      "/api/recommend/item_list/": {
+        "calls": 2,
+        "items": 3,
+        "source": "feed"
+      }
+    },
+    "fromSearchEndpoints": 0,
+    "loginWall": true,
+    "captchaWall": false,
+    "bodySnippet": "TikTok morocco For You Shop Explore Following Short dramas LIVE Upload Profile More Log in Company Program Terms & Policies © 2026 TikTok Top Users Videos LIVE Photo Log in"
+  }
 }
