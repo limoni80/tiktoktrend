@@ -4,10 +4,10 @@
   "hasMore": false,
   "source": "TikTok.com search · “bamboo satellite garden” · collected by GitHub Actions",
   "keyword": "bamboo satellite garden",
-  "fetchedAt": "2026-08-31T15:20:58.505Z",
+  "fetchedAt": "2026-08-31T21:06:52.544Z",
   "debug": {
     "keyword": "bamboo satellite garden",
-    "want": 60,
+    "want": 120,
     "strategies": [
       {
         "name": "search",
@@ -26,6 +26,15 @@
         "scrollRounds": 6,
         "matchedAfter": 0,
         "error": null
+      },
+      {
+        "name": "hashtag",
+        "url": "https://www.tiktok.com/tag/bamboosatellitegarden",
+        "finalUrl": "https://www.tiktok.com/tag/bamboosatellitegarden",
+        "title": "Couldn’t find this hashtag. Visit TikTok to discover more trending creators, hashtags, and sounds.",
+        "scrollRounds": 6,
+        "matchedAfter": 0,
+        "error": null
       }
     ],
     "apiHits": {
@@ -38,7 +47,7 @@
     "fromSearchEndpoints": 0,
     "loginWall": true,
     "captchaWall": false,
-    "bodySnippet": "TikTok bamboo satellite garden For You Shop Explore Following Short dramas LIVE Upload Profile More Log in Company Program Terms & Policies © 2026 TikTok Top Users Videos LIVE Photo Log in"
+    "bodySnippet": "TikTok Search For You Explore Following Shop Short dramas LIVE Upload Profile More Log in Company Program Terms & Policies © 2026 TikTok Couldn't find this hashtag Looking for videos? Try browsing our trending creators, hashtags, and sounds. Log in"
   },
-  "emptyStreak": 1
+  "emptyStreak": 2
 }
