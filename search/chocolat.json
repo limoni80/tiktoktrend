@@ -1,0 +1,44 @@
+{
+  "videos": [],
+  "scanned": 1,
+  "hasMore": false,
+  "source": "TikTok.com search · “chocolat” · collected by GitHub Actions",
+  "keyword": "chocolat",
+  "fetchedAt": "2026-08-31T20:52:39.514Z",
+  "debug": {
+    "keyword": "chocolat",
+    "want": 60,
+    "strategies": [
+      {
+        "name": "search",
+        "url": "https://www.tiktok.com/search?q=chocolat",
+        "finalUrl": "https://www.tiktok.com/search?q=chocolat",
+        "title": "TikTok - Make Your Day",
+        "scrollRounds": 6,
+        "matchedAfter": 0,
+        "error": null
+      },
+      {
+        "name": "search-video-tab",
+        "url": "https://www.tiktok.com/search/video?q=chocolat",
+        "finalUrl": "https://www.tiktok.com/search/video?q=chocolat",
+        "title": "TikTok - Make Your Day",
+        "scrollRounds": 6,
+        "matchedAfter": 0,
+        "error": null
+      }
+    ],
+    "apiHits": {
+      "/api/recommend/item_list/": {
+        "calls": 1,
+        "items": 1,
+        "source": "feed"
+      }
+    },
+    "fromSearchEndpoints": 0,
+    "loginWall": true,
+    "captchaWall": false,
+    "bodySnippet": "TikTok chocolat For You Explore Following Shop Short dramas LIVE Upload Profile More Log in Company Program Terms & Policies © 2026 TikTok Top Users Videos LIVE Photo Log in"
+  },
+  "emptyStreak": 1
+}
