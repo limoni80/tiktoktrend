@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState, type MouseEvent } from 'react';
 import {
   BarChart3, Bookmark, Bug, Clapperboard, Clock3, Copy, Download, Eye, Flame, Grid2X2, Hash, Heart, Import,
   LayoutDashboard, Megaphone, Menu, MessageCircle, Moon, Music2, Play, RefreshCw, Search, Share2, Sun,
@@ -781,8 +781,8 @@ function App() {
                 </div>
               : <>
                   {view === 'cards'
-                    ? <div className="grid">{visible.map((video) => <VideoCard key={video.id} video={video} saved={watchlist.has(video.id)} onSave={() => toggleWatch(video.id)} />)}</div>
-                    : <ResultTable videos={visible} saved={watchlist} onSave={toggleWatch} />}
+                    ? <div className="grid">{visible.map((video) => <VideoCard key={video.id} video={video} saved={watchlist.has(video.id)} onSave={() => toggleWatch(video.id)} onDownloadError={setError} />)}</div>
+                    : <ResultTable videos={visible} saved={watchlist} onSave={toggleWatch} onDownloadError={setError} />}
 
                   {feedType === 'videos' && <div className="load-zone" ref={sentinelRef}>
                     {loadingMore
@@ -876,7 +876,47 @@ function App() {
   </div>;
 }
 
-function VideoCard({ video, saved, onSave }: { video: EnrichedVideo; saved: boolean; onSave: () => void }) {
+function DownloadVideoLink({ source, id, className, onProblem }: { source: string; id: string; className: string; onProblem: (message: string) => void }) {
+  const [checking, setChecking] = useState(false);
+  const href = api.videoDownloadUrl(source, id);
+
+  const startDownload = async (event: MouseEvent<HTMLAnchorElement>) => {
+    event.preventDefault();
+    event.stopPropagation();
+    if (checking) return;
+    setChecking(true);
+    try {
+      // Test a single byte before navigating. This prevents browsers from
+      // saving an error page as a fake .mp4 when TikTok denies a CDN source.
+      const probe = await fetch(href, { headers: { range: 'bytes=0-0' } });
+      if (!probe.ok) {
+        let message = 'TikTok is not permitting this video file to be downloaded right now. Try a newer result or open it on TikTok.';
+        if ((probe.headers.get('content-type') ?? '').includes('application/json')) {
+          const payload = await probe.json().catch(() => null) as { error?: { message?: string } } | null;
+          message = payload?.error?.message ?? message;
+        }
+        await probe.body?.cancel();
+        throw new Error(message);
+      }
+      const contentType = probe.headers.get('content-type') ?? '';
+      await probe.body?.cancel();
+      if (!contentType.startsWith('video/')) throw new Error('The server did not return a video file, so nothing was downloaded.');
+      // The full navigation keeps the download streaming instead of buffering
+      // a potentially large video in the browser's JavaScript heap.
+      window.location.assign(href);
+    } catch (error) {
+      onProblem(error instanceof Error ? error.message : 'Could not verify this TikTok video download.');
+    } finally {
+      setChecking(false);
+    }
+  };
+
+  return <a className={className} href={href} onClick={(event) => void startDownload(event)}
+    title={checking ? 'Checking video availability…' : "Download TikTok's public source file"}
+    aria-label="Download video" aria-busy={checking}><Download size={15} /></a>;
+}
+
+function VideoCard({ video, saved, onSave, onDownloadError }: { video: EnrichedVideo; saved: boolean; onSave: () => void; onDownloadError: (message: string) => void }) {
   const isAd = video.kind === 'ad';
   const [playing, setPlaying] = useState(false);
   const [failed, setFailed] = useState(false);
@@ -894,7 +934,7 @@ function VideoCard({ video, saved, onSave }: { video: EnrichedVideo; saved: bool
       {isAd ? <span className="badge ad">Ad</span> : <span className={`badge score s${Math.min(4, Math.floor(video.winningScore / 25))}`}>{video.winningScore}</span>}
       {video.durationSeconds != null && <span className="badge dur">{video.durationSeconds}s</span>}
       <button className={saved ? 'save on' : 'save'} onClick={(event) => { event.stopPropagation(); onSave(); }} aria-label="Save"><Bookmark size={15} fill={saved ? 'currentColor' : 'none'} /></button>
-      {downloadable && <a className="download-media" href={api.videoDownloadUrl(downloadable, video.id)} download={`tiktok-${video.id}.mp4`} onClick={(event) => event.stopPropagation()} title="Download TikTok's public source file" aria-label="Download video"><Download size={15} /></a>}
+      {downloadable && <DownloadVideoLink className="download-media" source={downloadable} id={video.id} onProblem={onDownloadError} />}
     </div>
 
     <div className="card-body">
@@ -930,7 +970,7 @@ function VideoCard({ video, saved, onSave }: { video: EnrichedVideo; saved: bool
   </article>;
 }
 
-function ResultTable({ videos, saved, onSave }: { videos: EnrichedVideo[]; saved: Set<string>; onSave: (id: string) => void }) {
+function ResultTable({ videos, saved, onSave, onDownloadError }: { videos: EnrichedVideo[]; saved: Set<string>; onSave: (id: string) => void; onDownloadError: (message: string) => void }) {
   return <div className="table-wrap">
     <table>
       <thead><tr>
@@ -955,7 +995,7 @@ function ResultTable({ videos, saved, onSave }: { videos: EnrichedVideo[]; saved
           <td>{video.kind === 'ad' ? <span className="pill ad">Ad</span> : <span className="pill">{video.winningScore}</span>}</td>
           <td className="table-actions">
             {video.downloadFileUrl || video.videoFileUrl
-              ? <a className="icon-button" href={api.videoDownloadUrl(video.downloadFileUrl ?? video.videoFileUrl!, video.id)} download={`tiktok-${video.id}.mp4`} title="Download TikTok's public source file" aria-label="Download video"><Download size={15} /></a>
+              ? <DownloadVideoLink className="icon-button" source={video.downloadFileUrl ?? video.videoFileUrl!} id={video.id} onProblem={onDownloadError} />
               : null}
             <button className="icon-button" onClick={() => onSave(video.id)} aria-label="Save"><Bookmark size={15} fill={saved.has(video.id) ? 'currentColor' : 'none'} /></button>
           </td>

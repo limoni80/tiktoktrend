@@ -434,6 +434,13 @@ async function proxyVideo(request, url) {
     headers,
     ...(range ? {} : { cf: { cacheEverything: true, cacheTtl: 1_800 } }),
   });
+  // Do not let an upstream CDN denial masquerade as a downloaded MP4. A
+  // browser follows the attachment link even for an error response, so it
+  // would otherwise save a tiny, invalid file under a .mp4 extension.
+  if (!upstream.ok) {
+    return fail(502, 'video_source_unavailable',
+      'TikTok is not permitting this video file to be delivered right now. The signed source may have expired or may reject server delivery; open the video on TikTok and try a newer result.');
+  }
   const out = new Headers(CORS);
   for (const name of ['content-type', 'content-range', 'accept-ranges', 'content-length']) {
     const value = upstream.headers.get(name);
