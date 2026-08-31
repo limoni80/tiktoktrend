@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-08-31T16:36:31.895Z",
-  "startedAt": "2026-08-31T16:35:55.186Z",
+  "generatedAt": "2026-08-31T20:50:32.165Z",
+  "startedAt": "2026-08-31T20:48:17.991Z",
   "repo": "limoni80/tiktoktrend",
-  "runUrl": "https://github.com/limoni80/tiktoktrend/actions/runs/33414950176",
+  "runUrl": "https://github.com/limoni80/tiktoktrend/actions/runs/33437968021",
   "entries": [
     {
       "kind": "search",
@@ -86,9 +86,8 @@
       "file": "search/ai-tools.json",
       "keyword": "ai tools",
       "slug": "ai-tools",
-      "status": "ok",
+      "status": "stale",
       "count": 115,
-      "emptyStreak": 0,
       "updatedAt": "2026-08-31T15:24:10.137Z",
       "lastSuccessAt": "2026-08-31T15:24:10.137Z"
     },
@@ -654,7 +653,7 @@
     {
       "keyword": "ai tools",
       "slug": "ai-tools",
-      "status": "ok",
+      "status": "stale",
       "count": 115,
       "updatedAt": "2026-08-31T15:24:10.137Z"
     },
