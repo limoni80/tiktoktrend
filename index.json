@@ -1,9 +1,20 @@
 {
-  "generatedAt": "2026-08-31T16:36:01.151Z",
-  "startedAt": "2026-08-31T16:34:14.539Z",
+  "generatedAt": "2026-08-31T16:36:31.895Z",
+  "startedAt": "2026-08-31T16:35:55.186Z",
   "repo": "limoni80/tiktoktrend",
-  "runUrl": "https://github.com/limoni80/tiktoktrend/actions/runs/33414795615",
+  "runUrl": "https://github.com/limoni80/tiktoktrend/actions/runs/33414950176",
   "entries": [
+    {
+      "kind": "search",
+      "file": "search/dogs.json",
+      "keyword": "dogs",
+      "slug": "dogs",
+      "status": "empty",
+      "count": 0,
+      "emptyStreak": 1,
+      "updatedAt": "2026-08-31T16:36:13.737Z",
+      "lastSuccessAt": null
+    },
     {
       "kind": "search",
       "file": "search/nba.json",
@@ -584,6 +595,14 @@
     }
   ],
   "keywords": [
+    {
+      "keyword": "dogs",
+      "slug": "dogs",
+      "status": "empty",
+      "count": 0,
+      "updatedAt": "2026-08-31T16:36:13.737Z",
+      "emptyStreak": 1
+    },
     {
       "keyword": "nba",
       "slug": "nba",

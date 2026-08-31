@@ -1,0 +1,44 @@
+{
+  "videos": [],
+  "scanned": 1,
+  "hasMore": false,
+  "source": "TikTok.com search · “dogs” · collected by GitHub Actions",
+  "keyword": "dogs",
+  "fetchedAt": "2026-08-31T16:36:13.737Z",
+  "debug": {
+    "keyword": "dogs",
+    "want": 60,
+    "strategies": [
+      {
+        "name": "search",
+        "url": "https://www.tiktok.com/search?q=dogs",
+        "finalUrl": "https://www.tiktok.com/search?q=dogs",
+        "title": "TikTok - Make Your Day",
+        "scrollRounds": 6,
+        "matchedAfter": 0,
+        "error": null
+      },
+      {
+        "name": "search-video-tab",
+        "url": "https://www.tiktok.com/search/video?q=dogs",
+        "finalUrl": "https://www.tiktok.com/search/video?q=dogs",
+        "title": "TikTok - Make Your Day",
+        "scrollRounds": 6,
+        "matchedAfter": 0,
+        "error": null
+      }
+    ],
+    "apiHits": {
+      "/api/recommend/item_list/": {
+        "calls": 2,
+        "items": 1,
+        "source": "feed"
+      }
+    },
+    "fromSearchEndpoints": 0,
+    "loginWall": true,
+    "captchaWall": false,
+    "bodySnippet": "TikTok dogs For You Shop Explore Following Short dramas LIVE Upload Profile More Log in Company Program Terms & Policies © 2026 TikTok Top Users Videos LIVE Photo Log in"
+  },
+  "emptyStreak": 1
+}
