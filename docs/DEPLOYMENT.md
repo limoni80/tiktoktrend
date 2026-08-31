@@ -79,15 +79,17 @@ One-time setup:
 
 1. GitHub → **Settings → Developer settings → Personal access tokens →
    Fine-grained tokens → Generate new token**. Repository access: only
-   `limoni80/tiktoktrend`. Permissions: **Actions → Read and write**. Nothing
-   else.
+   `limoni80/tiktoktrend`. Permissions: **Actions → Read and write** and
+   **Contents → Read-only**. Contents read is required when the repository is
+   private: the Worker reads the published `data` branch through GitHub's
+   authenticated Contents API instead of an anonymous raw URL.
 2. Store it as a Worker **secret** (never a var, never committed):
    ```bash
    npx wrangler secret put GITHUB_TOKEN
    ```
    Paste the token at the prompt. It is write-only from then on.
-3. `wrangler.jsonc` already sets `GITHUB_REPO`, `GITHUB_WORKFLOW_FILE` and
-   `GITHUB_REF`. Redeploy: `npx wrangler deploy`.
+3. `wrangler.jsonc` already sets `GITHUB_REPO`, `GITHUB_WORKFLOW_FILE`,
+   `GITHUB_REF` and `DATA_BRANCH`. Redeploy: `npx wrangler deploy`.
 
 Without the secret, an unknown keyword returns a clear message asking for it to
 be added to `data/keywords.json` instead — nothing breaks, it just is not

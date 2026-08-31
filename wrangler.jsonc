@@ -31,7 +31,10 @@
     // and published on the `data` branch. Serving these needs no browser at
     // all, which is what makes repeated searches unlimited. Set to "" to
     // disable and always use the live browser.
+    // Public repos use this anonymous URL. Private repos use the authenticated
+    // GitHub Contents API with GITHUB_TOKEN instead.
     "DATA_BASE_URL": "https://raw.githubusercontent.com/limoni80/tiktoktrend/data",
+    "DATA_BRANCH": "data",
     // On-demand collection: when a searched keyword has no dataset yet, the
     // Worker asks GitHub Actions to collect it (a runner has a real Chromium
     // and an IP TikTok answers; public-repo minutes are free).

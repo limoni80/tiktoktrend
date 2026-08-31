@@ -88,7 +88,8 @@ has no dataset, the Worker fires `workflow_dispatch` on
 `{ queued: true, etaSeconds }`, and the dashboard retries by itself. Requires
 `GITHUB_REPO` (var) and `GITHUB_TOKEN` (**secret only** —
 `npx wrangler secret put GITHUB_TOKEN`, fine-grained PAT, this repo,
-*Actions: read and write*). A 2-minute per-keyword cooldown stops repeat
+*Actions: read and write* and *Contents: read* when the repository is private).
+A 2-minute per-keyword cooldown stops repeat
 dispatches.
 
 Step 1 always probes the deterministic exact slug. Approximate matches may be

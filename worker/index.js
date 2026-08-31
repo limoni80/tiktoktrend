@@ -480,19 +480,19 @@ async function proxyBackend(request, url, env) {
  * quota at all, which is what makes repeat searches unlimited.
  */
 const datasetBase = (env) => String(env.DATA_BASE_URL ?? '').replace(/\/+$/, '');
+const datasetBranch = (env) => String(env.DATA_BRANCH ?? 'data').trim() || 'data';
 const slugify = (value) => value.toLowerCase().trim().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '') || 'keyword';
 
 async function fetchDataset(env, path) {
   const base = datasetBase(env);
   if (!base) return null;
-  try {
-    const source = new URL(`${base}/${path}`);
-    source.searchParams.set('v', String(Math.floor(Date.now() / DATASET_ORIGIN_BUCKET_MS)));
-    const response = await fetch(source, {
-      headers: { accept: 'application/json', 'user-agent': 'tiktoktrend-worker' },
-      cf: { cacheTtl: Math.round(DATASET_ORIGIN_BUCKET_MS / 1_000), cacheEverything: true },
-    });
-    if (!response.ok) return null;
+  const bucket = Math.floor(Date.now() / DATASET_ORIGIN_BUCKET_MS);
+  const repo = String(env.GITHUB_REPO ?? '').trim();
+  const branch = datasetBranch(env);
+  const cache = caches.default;
+  const key = new Request(`https://pulse-dataset.internal/${encodeURIComponent(repo || base)}/${encodeURIComponent(branch)}/${path}?v=${bucket}`);
+
+  const parse = async (response) => {
     const contentType = response.headers.get('content-type') ?? '';
     const text = await response.text();
     if (!contentType.includes('json') && !text.trimStart().startsWith('{')) return null;
@@ -500,8 +500,51 @@ async function fetchDataset(env, path) {
     const fetchedAt = Date.parse(payload?.fetchedAt ?? payload?.generatedAt ?? '');
     return {
       payload,
+      text,
       ageSeconds: Number.isFinite(fetchedAt) ? Math.max(0, Math.round((Date.now() - fetchedAt) / 1000)) : null,
     };
+  };
+
+  try {
+    const cached = await cache.match(key);
+    if (cached) {
+      const parsed = await parse(cached);
+      if (parsed) return parsed;
+    }
+
+    // Private repositories return 404 from raw.githubusercontent.com. Reading
+    // through GitHub's Contents API uses the Worker secret instead, while the
+    // browser continues to receive only the normalized public dataset.
+    let response;
+    if (repo && env.GITHUB_TOKEN) {
+      const source = new URL(`https://api.github.com/repos/${repo}/contents/${path}`);
+      source.searchParams.set('ref', branch);
+      response = await fetch(source, {
+        headers: {
+          authorization: `Bearer ${env.GITHUB_TOKEN}`,
+          accept: 'application/vnd.github.raw+json',
+          'x-github-api-version': '2022-11-28',
+          'user-agent': 'tiktoktrend-worker',
+        },
+      });
+    }
+
+    // Public repositories retain the simple anonymous raw path as a fallback.
+    if (!response?.ok) {
+      const source = new URL(`${base}/${path}`);
+      source.searchParams.set('v', String(bucket));
+      response = await fetch(source, {
+        headers: { accept: 'application/json', 'user-agent': 'tiktoktrend-worker' },
+        cf: { cacheTtl: Math.round(DATASET_ORIGIN_BUCKET_MS / 1_000), cacheEverything: true },
+      });
+    }
+    if (!response.ok) return null;
+    const parsed = await parse(response);
+    if (!parsed) return null;
+    await cache.put(key, new Response(parsed.text, {
+      headers: { 'Content-Type': 'application/json; charset=utf-8', 'Cache-Control': `max-age=${Math.round(DATASET_ORIGIN_BUCKET_MS / 1_000)}` },
+    })).catch(() => {});
+    return { payload: parsed.payload, ageSeconds: parsed.ageSeconds };
   } catch { return null; }
 }
 
