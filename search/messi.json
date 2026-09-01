@@ -5268,5 +5268,52 @@
     "captchaWall": false,
     "bodySnippet": "TikTok Search For You Shop Explore Following Short dramas LIVE Upload Profile More Log in Company Program Terms & Policies © 2026 TikTok #messi absolutemessi Messi announced his retirement from Argentina and International Football…Thanks for everything,Leo.❤️‍🩹🐐🇦🇷 | #messi #retirement #argentina"
   },
-  "emptyStreak": 0
+  "emptyStreak": 0,
+  "stale": true,
+  "staleSince": "2026-09-01T18:46:52.392Z",
+  "lastAttemptAt": "2026-09-01T18:46:52.392Z",
+  "lastAttemptDebug": {
+    "keyword": "messi",
+    "want": 120,
+    "strategies": [
+      {
+        "name": "search",
+        "url": "https://www.tiktok.com/search?q=messi",
+        "finalUrl": "https://www.tiktok.com/search?q=messi",
+        "title": "TikTok - Make Your Day",
+        "scrollRounds": 6,
+        "matchedAfter": 0,
+        "error": null
+      },
+      {
+        "name": "search-video-tab",
+        "url": "https://www.tiktok.com/search/video?q=messi",
+        "finalUrl": "https://www.tiktok.com/search/video?q=messi",
+        "title": "",
+        "scrollRounds": 6,
+        "matchedAfter": 0,
+        "error": null
+      },
+      {
+        "name": "hashtag",
+        "url": "https://www.tiktok.com/tag/messi",
+        "finalUrl": "https://www.tiktok.com/tag/messi",
+        "title": "",
+        "scrollRounds": 6,
+        "matchedAfter": 0,
+        "error": null
+      }
+    ],
+    "apiHits": {
+      "/api/search/general/preview/": {
+        "calls": 2,
+        "items": 0,
+        "source": "search"
+      }
+    },
+    "fromSearchEndpoints": 0,
+    "loginWall": true,
+    "captchaWall": false,
+    "bodySnippet": "TikTok Search For You Explore Following Short dramas LIVE Upload Profile More Log in Company Program Terms & Policies © 2026 TikTok #messi Log in Drag the slider to fit the puzzle Audio 202609020247210671850A68FAF940394D"
+  }
 }
