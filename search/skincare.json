@@ -5334,5 +5334,52 @@
     "captchaWall": false,
     "bodySnippet": "TikTok Search For You Shop Explore Following Short dramas LIVE Upload Profile More Log in Company Program Terms & Policies © 2026 TikTok #skincare From routines to glow ups, discover how the skincare community on TikTok keeps their skin cared for. Jinny | Kbeauty asmr night routine 🌙 for oily combo"
   },
-  "emptyStreak": 0
+  "emptyStreak": 0,
+  "stale": true,
+  "staleSince": "2026-09-01T21:45:08.065Z",
+  "lastAttemptAt": "2026-09-01T21:45:08.065Z",
+  "lastAttemptDebug": {
+    "keyword": "skincare",
+    "want": 120,
+    "strategies": [
+      {
+        "name": "search",
+        "url": "https://www.tiktok.com/search?q=skincare",
+        "finalUrl": "https://www.tiktok.com/search?q=skincare",
+        "title": "",
+        "scrollRounds": 6,
+        "matchedAfter": 0,
+        "error": null
+      },
+      {
+        "name": "search-video-tab",
+        "url": "https://www.tiktok.com/search/video?q=skincare",
+        "finalUrl": "https://www.tiktok.com/search/video?q=skincare",
+        "title": "TikTok - Make Your Day",
+        "scrollRounds": 6,
+        "matchedAfter": 0,
+        "error": null
+      },
+      {
+        "name": "hashtag",
+        "url": "https://www.tiktok.com/tag/skincare",
+        "finalUrl": "https://www.tiktok.com/tag/skincare",
+        "title": "",
+        "scrollRounds": 6,
+        "matchedAfter": 0,
+        "error": null
+      }
+    ],
+    "apiHits": {
+      "/api/search/general/preview/": {
+        "calls": 1,
+        "items": 0,
+        "source": "search"
+      }
+    },
+    "fromSearchEndpoints": 0,
+    "loginWall": true,
+    "captchaWall": false,
+    "bodySnippet": "TikTok Search For You Explore Following Short dramas LIVE Upload Profile More Log in Company Program Terms & Policies © 2026 TikTok #skincare From routines to glow ups, discover how the skincare community on TikTok keeps their skin cared for. Log in Drag the slider to fit the puzzle Audio 2026090205"
+  }
 }
