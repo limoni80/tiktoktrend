@@ -5457,5 +5457,52 @@
     "captchaWall": false,
     "bodySnippet": "TikTok Search For You Explore Following Shop Short dramas LIVE Upload Profile More Log in Company Program Terms & Policies © 2026 TikTok #origamidragon marjorybatz DIY Paper Dragon – Easy Origami for Beginners #diy #origami #fyp #dragon Twisted ChEvil Mini Dragon 🐉 Tutorial #origami #dragons #artsa"
   },
-  "emptyStreak": 0
+  "emptyStreak": 0,
+  "stale": true,
+  "staleSince": "2026-09-02T08:59:22.816Z",
+  "lastAttemptAt": "2026-09-02T08:59:22.816Z",
+  "lastAttemptDebug": {
+    "keyword": "origami dragon",
+    "want": 120,
+    "strategies": [
+      {
+        "name": "search",
+        "url": "https://www.tiktok.com/search?q=origami%20dragon",
+        "finalUrl": "https://www.tiktok.com/search?q=origami%20dragon",
+        "title": "",
+        "scrollRounds": 6,
+        "matchedAfter": 0,
+        "error": null
+      },
+      {
+        "name": "search-video-tab",
+        "url": "https://www.tiktok.com/search/video?q=origami%20dragon",
+        "finalUrl": "https://www.tiktok.com/search/video?q=origami%20dragon",
+        "title": "TikTok - Make Your Day",
+        "scrollRounds": 6,
+        "matchedAfter": 0,
+        "error": null
+      },
+      {
+        "name": "hashtag",
+        "url": "https://www.tiktok.com/tag/origamidragon",
+        "finalUrl": "https://www.tiktok.com/tag/origamidragon",
+        "title": "",
+        "scrollRounds": 6,
+        "matchedAfter": 0,
+        "error": null
+      }
+    ],
+    "apiHits": {
+      "/api/search/general/preview/": {
+        "calls": 1,
+        "items": 0,
+        "source": "search"
+      }
+    },
+    "fromSearchEndpoints": 0,
+    "loginWall": true,
+    "captchaWall": false,
+    "bodySnippet": "TikTok Search For You Explore Following Short dramas LIVE Upload Profile More Log in Company Program Terms & Policies © 2026 TikTok #origamidragon Log in Drag the slider to fit the puzzle Audio 20260902165952F7F8C89B6F4CAB70025F"
+  }
 }
