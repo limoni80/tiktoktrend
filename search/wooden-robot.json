@@ -5545,5 +5545,57 @@
     "captchaWall": false,
     "bodySnippet": "TikTok Search For You Explore Following Shop Short dramas LIVE Upload Profile More Log in Company Program Terms & Policies © 2026 TikTok #woodenrobot sawdustimagery On to the laborious task of numbering, signing and repairing blemishes. I’m very excited to show the work❤️#creativewoodworking #storyt"
   },
-  "emptyStreak": 0
+  "emptyStreak": 0,
+  "stale": true,
+  "staleSince": "2026-09-02T00:03:04.842Z",
+  "lastAttemptAt": "2026-09-02T00:03:04.842Z",
+  "lastAttemptDebug": {
+    "keyword": "wooden robot",
+    "want": 120,
+    "strategies": [
+      {
+        "name": "search",
+        "url": "https://www.tiktok.com/search?q=wooden%20robot",
+        "finalUrl": "https://www.tiktok.com/search?q=wooden%20robot",
+        "title": "TikTok - Make Your Day",
+        "scrollRounds": 6,
+        "matchedAfter": 0,
+        "error": null
+      },
+      {
+        "name": "search-video-tab",
+        "url": "https://www.tiktok.com/search/video?q=wooden%20robot",
+        "finalUrl": "https://www.tiktok.com/search/video?q=wooden%20robot",
+        "title": "TikTok - Make Your Day",
+        "scrollRounds": 6,
+        "matchedAfter": 0,
+        "error": null
+      },
+      {
+        "name": "hashtag",
+        "url": "https://www.tiktok.com/tag/woodenrobot",
+        "finalUrl": "https://www.tiktok.com/tag/woodenrobot",
+        "title": "#woodenrobot | TikTok",
+        "scrollRounds": 6,
+        "matchedAfter": 0,
+        "error": null
+      }
+    ],
+    "apiHits": {
+      "/api/recommend/item_list/": {
+        "calls": 2,
+        "items": 1,
+        "source": "feed"
+      },
+      "/api/challenge/item_list/": {
+        "calls": 1,
+        "items": 0,
+        "source": "search"
+      }
+    },
+    "fromSearchEndpoints": 0,
+    "loginWall": true,
+    "captchaWall": false,
+    "bodySnippet": "TikTok Search For You Shop Explore Following LIVE Upload Profile More Log in Company Program Terms & Policies © 2026 TikTok #woodenrobot Page not available Looking for videos? Try browsing our trending creators, hashtags, and sounds. Log in"
+  }
 }
