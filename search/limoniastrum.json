@@ -1,10 +1,10 @@
 {
   "videos": [],
-  "scanned": 0,
+  "scanned": 1,
   "hasMore": false,
   "source": "TikTok.com search · “limoniastrum” · collected by GitHub Actions",
   "keyword": "limoniastrum",
-  "fetchedAt": "2026-09-02T20:04:49.786Z",
+  "fetchedAt": "2026-09-03T04:59:53.121Z",
   "debug": {
     "keyword": "limoniastrum",
     "want": 120,
@@ -37,11 +37,17 @@
         "error": null
       }
     ],
-    "apiHits": {},
+    "apiHits": {
+      "/api/recommend/item_list/": {
+        "calls": 1,
+        "items": 1,
+        "source": "feed"
+      }
+    },
     "fromSearchEndpoints": 0,
     "loginWall": true,
     "captchaWall": false,
-    "bodySnippet": "TikTok Search For You Explore Following Shop Short dramas LIVE Upload Profile More Log in Company Program Terms & Policies © 2026 TikTok Couldn't find this hashtag Looking for videos? Try browsing our trending creators, hashtags, and sounds. Log in"
+    "bodySnippet": "TikTok Search For You Shop Explore Following LIVE Upload Profile More Log in Company Program Terms & Policies © 2026 TikTok Couldn't find this hashtag Looking for videos? Try browsing our trending creators, hashtags, and sounds. Log in"
   },
-  "emptyStreak": 9
+  "emptyStreak": 10
 }

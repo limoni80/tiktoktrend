@@ -5560,5 +5560,52 @@
     "captchaWall": false,
     "bodySnippet": "TikTok Search For You Explore Following Shop Short dramas LIVE Upload Profile More Log in Company Program Terms & Policies © 2026 TikTok #landscaping Ryan.Okragly Successful $7K day🚀🌳 Landscaper G Only job where your results speak for themselves… #fyp #landscaper #relatable #dayonjobsite #pov C&C "
   },
-  "emptyStreak": 0
+  "emptyStreak": 0,
+  "stale": true,
+  "staleSince": "2026-09-03T05:01:34.331Z",
+  "lastAttemptAt": "2026-09-03T05:01:34.331Z",
+  "lastAttemptDebug": {
+    "keyword": "landscaping",
+    "want": 120,
+    "strategies": [
+      {
+        "name": "search",
+        "url": "https://www.tiktok.com/search?q=landscaping",
+        "finalUrl": "https://www.tiktok.com/search?q=landscaping",
+        "title": "TikTok - Make Your Day",
+        "scrollRounds": 6,
+        "matchedAfter": 0,
+        "error": null
+      },
+      {
+        "name": "search-video-tab",
+        "url": "https://www.tiktok.com/search/video?q=landscaping",
+        "finalUrl": "https://www.tiktok.com/search/video?q=landscaping",
+        "title": "TikTok - Make Your Day",
+        "scrollRounds": 6,
+        "matchedAfter": 0,
+        "error": null
+      },
+      {
+        "name": "hashtag",
+        "url": "https://www.tiktok.com/tag/landscaping",
+        "finalUrl": "https://www.tiktok.com/tag/landscaping",
+        "title": "TikTok - Make Your Day",
+        "scrollRounds": 6,
+        "matchedAfter": 0,
+        "error": null
+      }
+    ],
+    "apiHits": {
+      "/api/search/general/preview/": {
+        "calls": 2,
+        "items": 0,
+        "source": "search"
+      }
+    },
+    "fromSearchEndpoints": 0,
+    "loginWall": true,
+    "captchaWall": false,
+    "bodySnippet": "TikTok Search For You Explore Following Short dramas LIVE Upload Profile More Log in Company Program Terms & Policies © 2026 TikTok #landscaping Log in Drag the slider to fit the puzzle Audio 20260903130201B0D8812384EC6AADC830"
+  }
 }

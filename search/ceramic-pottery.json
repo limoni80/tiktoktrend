@@ -5512,5 +5512,52 @@
     "captchaWall": false,
     "bodySnippet": "TikTok Search For You Explore Following Shop Short dramas LIVE Upload Profile More Log in Company Program Terms & Policies © 2026 TikTok #ceramicpottery Caroline Replying to @naomi when pricing my pieces I consider time spent making/decorating/signing/waxing/glazing/sanding/lustering/firing/invetory"
   },
-  "emptyStreak": 0
+  "emptyStreak": 0,
+  "stale": true,
+  "staleSince": "2026-09-03T05:00:31.443Z",
+  "lastAttemptAt": "2026-09-03T05:00:31.443Z",
+  "lastAttemptDebug": {
+    "keyword": "ceramic pottery",
+    "want": 120,
+    "strategies": [
+      {
+        "name": "search",
+        "url": "https://www.tiktok.com/search?q=ceramic%20pottery",
+        "finalUrl": "https://www.tiktok.com/search?q=ceramic%20pottery",
+        "title": "TikTok - Make Your Day",
+        "scrollRounds": 6,
+        "matchedAfter": 0,
+        "error": null
+      },
+      {
+        "name": "search-video-tab",
+        "url": "https://www.tiktok.com/search/video?q=ceramic%20pottery",
+        "finalUrl": "https://www.tiktok.com/search/video?q=ceramic%20pottery",
+        "title": "",
+        "scrollRounds": 6,
+        "matchedAfter": 0,
+        "error": null
+      },
+      {
+        "name": "hashtag",
+        "url": "https://www.tiktok.com/tag/ceramicpottery",
+        "finalUrl": "https://www.tiktok.com/tag/ceramicpottery",
+        "title": "",
+        "scrollRounds": 6,
+        "matchedAfter": 0,
+        "error": null
+      }
+    ],
+    "apiHits": {
+      "/api/search/general/preview/": {
+        "calls": 2,
+        "items": 0,
+        "source": "search"
+      }
+    },
+    "fromSearchEndpoints": 0,
+    "loginWall": true,
+    "captchaWall": false,
+    "bodySnippet": "TikTok Search For You Explore Following LIVE Upload Profile More Log in Company Program Terms & Policies © 2026 TikTok #ceramicpottery Log in Drag the slider to fit the puzzle Audio 202609031300593F6F97A90EC326B0DFE9"
+  }
 }

@@ -5215,5 +5215,52 @@
     "captchaWall": false,
     "bodySnippet": "TikTok Search For You Shop Explore Following Short dramas LIVE Upload Profile More Log in Company Program Terms & Policies © 2026 TikTok #trump StoryTime #news #breakingnews #us #usa #usnews #fyp #fypシ #fypシ゚ Al Jazeera English US President Donald Trump has threatened further attacks on Iran followi"
   },
-  "emptyStreak": 0
+  "emptyStreak": 0,
+  "stale": true,
+  "staleSince": "2026-09-03T05:01:30.159Z",
+  "lastAttemptAt": "2026-09-03T05:01:30.159Z",
+  "lastAttemptDebug": {
+    "keyword": "trump",
+    "want": 120,
+    "strategies": [
+      {
+        "name": "search",
+        "url": "https://www.tiktok.com/search?q=trump",
+        "finalUrl": "https://www.tiktok.com/search?q=trump",
+        "title": "",
+        "scrollRounds": 6,
+        "matchedAfter": 0,
+        "error": null
+      },
+      {
+        "name": "search-video-tab",
+        "url": "https://www.tiktok.com/search/video?q=trump",
+        "finalUrl": "https://www.tiktok.com/search/video?q=trump",
+        "title": "",
+        "scrollRounds": 6,
+        "matchedAfter": 0,
+        "error": null
+      },
+      {
+        "name": "hashtag",
+        "url": "https://www.tiktok.com/tag/trump",
+        "finalUrl": "https://www.tiktok.com/tag/trump",
+        "title": "TikTok - Make Your Day",
+        "scrollRounds": 6,
+        "matchedAfter": 0,
+        "error": null
+      }
+    ],
+    "apiHits": {
+      "/api/search/general/preview/": {
+        "calls": 2,
+        "items": 0,
+        "source": "search"
+      }
+    },
+    "fromSearchEndpoints": 0,
+    "loginWall": true,
+    "captchaWall": false,
+    "bodySnippet": "TikTok Search For You Explore Following LIVE Upload Profile More Log in Company Program Terms & Policies © 2026 TikTok #trump Log in Drag the slider to fit the puzzle Audio 20260903130159B0D8812384EC6AADC73A"
+  }
 }
