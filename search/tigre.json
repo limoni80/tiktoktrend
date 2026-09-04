@@ -5334,5 +5334,52 @@
     "captchaWall": false,
     "bodySnippet": "TikTok Search For You Shop Explore Following LIVE Upload Profile More Log in Company Program Terms & Policies © 2026 TikTok #tigre pupu asmr dancing Tiger #fyp #dance #funny #cute #animals Big Cat Junket OMG this Tiger look so Cute 🐯🤗 aiworldz Cute tiger dancing tonlos lumaquinos alegres scooby do"
   },
-  "emptyStreak": 0
+  "emptyStreak": 0,
+  "stale": true,
+  "staleSince": "2026-09-04T16:18:38.919Z",
+  "lastAttemptAt": "2026-09-04T16:18:38.919Z",
+  "lastAttemptDebug": {
+    "keyword": "tigre",
+    "want": 120,
+    "strategies": [
+      {
+        "name": "search",
+        "url": "https://www.tiktok.com/search?q=tigre",
+        "finalUrl": "https://www.tiktok.com/search?q=tigre",
+        "title": "TikTok - Make Your Day",
+        "scrollRounds": 6,
+        "matchedAfter": 0,
+        "error": null
+      },
+      {
+        "name": "search-video-tab",
+        "url": "https://www.tiktok.com/search/video?q=tigre",
+        "finalUrl": "https://www.tiktok.com/search/video?q=tigre",
+        "title": "TikTok - Make Your Day",
+        "scrollRounds": 6,
+        "matchedAfter": 0,
+        "error": null
+      },
+      {
+        "name": "hashtag",
+        "url": "https://www.tiktok.com/tag/tigre",
+        "finalUrl": "https://www.tiktok.com/tag/tigre",
+        "title": "",
+        "scrollRounds": 6,
+        "matchedAfter": 0,
+        "error": null
+      }
+    ],
+    "apiHits": {
+      "/api/search/general/preview/": {
+        "calls": 2,
+        "items": 0,
+        "source": "search"
+      }
+    },
+    "fromSearchEndpoints": 0,
+    "loginWall": true,
+    "captchaWall": false,
+    "bodySnippet": "TikTok Search For You Explore Following Short dramas LIVE Upload Profile More Log in Company Program Terms & Policies © 2026 TikTok #tigre Log in Drag the slider to fit the puzzle Audio 202609050019071F5FE1B913F69D86B058"
+  }
 }
