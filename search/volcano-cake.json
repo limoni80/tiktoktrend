@@ -5438,5 +5438,52 @@
     "captchaWall": false,
     "bodySnippet": "TikTok Search For You Shop Explore Following Short dramas LIVE Upload Profile More Log in Company Program Terms & Policies © 2026 TikTok #volcanocake Le Kreamery Le Kreamery Lotus Volcano Cake #fyp #southafricafood #foodie #DecemberTreats #tiktok #southafricantiktok #dessert #desserts #southafrica J"
   },
-  "emptyStreak": 0
+  "emptyStreak": 0,
+  "stale": true,
+  "staleSince": "2026-09-04T23:16:39.661Z",
+  "lastAttemptAt": "2026-09-04T23:16:39.661Z",
+  "lastAttemptDebug": {
+    "keyword": "volcano cake",
+    "want": 120,
+    "strategies": [
+      {
+        "name": "search",
+        "url": "https://www.tiktok.com/search?q=volcano%20cake",
+        "finalUrl": "https://www.tiktok.com/search?q=volcano%20cake",
+        "title": "",
+        "scrollRounds": 6,
+        "matchedAfter": 0,
+        "error": null
+      },
+      {
+        "name": "search-video-tab",
+        "url": "https://www.tiktok.com/search/video?q=volcano%20cake",
+        "finalUrl": "https://www.tiktok.com/search/video?q=volcano%20cake",
+        "title": "",
+        "scrollRounds": 6,
+        "matchedAfter": 0,
+        "error": null
+      },
+      {
+        "name": "hashtag",
+        "url": "https://www.tiktok.com/tag/volcanocake",
+        "finalUrl": "https://www.tiktok.com/tag/volcanocake",
+        "title": "",
+        "scrollRounds": 6,
+        "matchedAfter": 0,
+        "error": null
+      }
+    ],
+    "apiHits": {
+      "/api/search/general/preview/": {
+        "calls": 2,
+        "items": 0,
+        "source": "search"
+      }
+    },
+    "fromSearchEndpoints": 0,
+    "loginWall": true,
+    "captchaWall": false,
+    "bodySnippet": "TikTok Search For You Explore Following Short dramas LIVE Upload Profile More Log in Company Program Terms & Policies © 2026 TikTok #volcanocake Log in Drag the slider to fit the puzzle Audio 20260905071706A0F901C4D1BCB45B718E"
+  }
 }
