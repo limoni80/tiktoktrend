@@ -5519,5 +5519,57 @@
     "captchaWall": false,
     "bodySnippet": "TikTok Search For You Shop Explore Following Short dramas LIVE Upload Profile More Log in Company Program Terms & Policies © 2026 TikTok #miniaturecookingshow MINIATURE CUSINA Kneading real micro dough and rolling a miniature Burrito entirely from scratch inside our tiny kitchen! 🤯🌯🔥 Rochin. Sala"
   },
-  "emptyStreak": 0
+  "emptyStreak": 0,
+  "stale": true,
+  "staleSince": "2026-09-04T19:05:51.148Z",
+  "lastAttemptAt": "2026-09-04T19:05:51.148Z",
+  "lastAttemptDebug": {
+    "keyword": "miniature cooking show",
+    "want": 120,
+    "strategies": [
+      {
+        "name": "search",
+        "url": "https://www.tiktok.com/search?q=miniature%20cooking%20show",
+        "finalUrl": "https://www.tiktok.com/search?q=miniature%20cooking%20show",
+        "title": "TikTok - Make Your Day",
+        "scrollRounds": 6,
+        "matchedAfter": 0,
+        "error": null
+      },
+      {
+        "name": "search-video-tab",
+        "url": "https://www.tiktok.com/search/video?q=miniature%20cooking%20show",
+        "finalUrl": "https://www.tiktok.com/search/video?q=miniature%20cooking%20show",
+        "title": "TikTok - Make Your Day",
+        "scrollRounds": 6,
+        "matchedAfter": 0,
+        "error": null
+      },
+      {
+        "name": "hashtag",
+        "url": "https://www.tiktok.com/tag/miniaturecookingshow",
+        "finalUrl": "https://www.tiktok.com/tag/miniaturecookingshow",
+        "title": "TikTok - Make Your Day",
+        "scrollRounds": 6,
+        "matchedAfter": 0,
+        "error": null
+      }
+    ],
+    "apiHits": {
+      "/api/recommend/item_list/": {
+        "calls": 1,
+        "items": 1,
+        "source": "feed"
+      },
+      "/api/challenge/item_list/": {
+        "calls": 1,
+        "items": 0,
+        "source": "search"
+      }
+    },
+    "fromSearchEndpoints": 0,
+    "loginWall": true,
+    "captchaWall": false,
+    "bodySnippet": "TikTok Search For You Explore Following Shop Short dramas LIVE Upload Profile More Log in Company Program Terms & Policies © 2026 TikTok #miniaturecookingshow No videos with this hashtag yet Looking for videos? Try browsing our trending creators, hashtags, and sounds. Log in"
+  }
 }

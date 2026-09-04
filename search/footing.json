@@ -3966,8 +3966,8 @@
   },
   "emptyStreak": 0,
   "stale": true,
-  "staleSince": "2026-09-04T16:18:52.231Z",
-  "lastAttemptAt": "2026-09-04T16:18:52.231Z",
+  "staleSince": "2026-09-04T19:05:49.691Z",
+  "lastAttemptAt": "2026-09-04T19:05:49.691Z",
   "lastAttemptDebug": {
     "keyword": "Footing",
     "want": 120,
@@ -4001,8 +4001,13 @@
       }
     ],
     "apiHits": {
-      "/api/search/general/preview/": {
-        "calls": 2,
+      "/api/recommend/item_list/": {
+        "calls": 1,
+        "items": 1,
+        "source": "feed"
+      },
+      "/api/challenge/item_list/": {
+        "calls": 1,
         "items": 0,
         "source": "search"
       }
@@ -4010,6 +4015,6 @@
     "fromSearchEndpoints": 0,
     "loginWall": true,
     "captchaWall": false,
-    "bodySnippet": "TikTok Search For You Explore Following Short dramas LIVE Upload Profile More Log in Company Program Terms & Policies © 2026 TikTok #footing Log in Drag the slider to fit the puzzle Audio 202609050019221F5FE1B913F69D86B5B0"
+    "bodySnippet": "TikTok Search For You Explore Following Shop Short dramas LIVE Upload Profile More Log in Company Program Terms & Policies © 2026 TikTok #footing No videos with this hashtag yet Looking for videos? Try browsing our trending creators, hashtags, and sounds. Log in"
   }
 }

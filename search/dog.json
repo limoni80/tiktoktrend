@@ -5462,5 +5462,57 @@
     "captchaWall": false,
     "bodySnippet": "TikTok Search For You Shop Explore Following Short dramas LIVE Upload Profile More Log in Company Program Terms & Policies © 2026 TikTok #dog PawForces Comment “Paw” if you need this for your dog 🐾 #army #dog #k9 #usa #military Funny Animals ❤️😂 Just dogs being dogs 😂😂🥰❤️🐶 follow for more ❤️ c"
   },
-  "emptyStreak": 0
+  "emptyStreak": 0,
+  "stale": true,
+  "staleSince": "2026-09-04T19:05:52.079Z",
+  "lastAttemptAt": "2026-09-04T19:05:52.079Z",
+  "lastAttemptDebug": {
+    "keyword": "dog",
+    "want": 120,
+    "strategies": [
+      {
+        "name": "search",
+        "url": "https://www.tiktok.com/search?q=dog",
+        "finalUrl": "https://www.tiktok.com/search?q=dog",
+        "title": "TikTok - Make Your Day",
+        "scrollRounds": 6,
+        "matchedAfter": 0,
+        "error": null
+      },
+      {
+        "name": "search-video-tab",
+        "url": "https://www.tiktok.com/search/video?q=dog",
+        "finalUrl": "https://www.tiktok.com/search/video?q=dog",
+        "title": "TikTok - Make Your Day",
+        "scrollRounds": 6,
+        "matchedAfter": 0,
+        "error": null
+      },
+      {
+        "name": "hashtag",
+        "url": "https://www.tiktok.com/tag/dog",
+        "finalUrl": "https://www.tiktok.com/tag/dog",
+        "title": "#dog | TikTok",
+        "scrollRounds": 6,
+        "matchedAfter": 0,
+        "error": null
+      }
+    ],
+    "apiHits": {
+      "/api/recommend/item_list/": {
+        "calls": 1,
+        "items": 1,
+        "source": "feed"
+      },
+      "/api/challenge/item_list/": {
+        "calls": 1,
+        "items": 0,
+        "source": "search"
+      }
+    },
+    "fromSearchEndpoints": 0,
+    "loginWall": true,
+    "captchaWall": false,
+    "bodySnippet": "TikTok Search For You Shop Explore Following LIVE Upload Profile More Log in Company Program Terms & Policies © 2026 TikTok #dog Page not available Looking for videos? Try browsing our trending creators, hashtags, and sounds. Log in"
+  }
 }

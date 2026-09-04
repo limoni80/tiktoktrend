@@ -5336,8 +5336,8 @@
   },
   "emptyStreak": 0,
   "stale": true,
-  "staleSince": "2026-09-04T16:18:38.919Z",
-  "lastAttemptAt": "2026-09-04T16:18:38.919Z",
+  "staleSince": "2026-09-04T19:05:49.934Z",
+  "lastAttemptAt": "2026-09-04T19:05:49.934Z",
   "lastAttemptDebug": {
     "keyword": "tigre",
     "want": 120,
@@ -5364,15 +5364,20 @@
         "name": "hashtag",
         "url": "https://www.tiktok.com/tag/tigre",
         "finalUrl": "https://www.tiktok.com/tag/tigre",
-        "title": "",
+        "title": "TikTok - Make Your Day",
         "scrollRounds": 6,
         "matchedAfter": 0,
         "error": null
       }
     ],
     "apiHits": {
-      "/api/search/general/preview/": {
-        "calls": 2,
+      "/api/recommend/item_list/": {
+        "calls": 1,
+        "items": 1,
+        "source": "feed"
+      },
+      "/api/challenge/item_list/": {
+        "calls": 1,
         "items": 0,
         "source": "search"
       }
@@ -5380,6 +5385,6 @@
     "fromSearchEndpoints": 0,
     "loginWall": true,
     "captchaWall": false,
-    "bodySnippet": "TikTok Search For You Explore Following Short dramas LIVE Upload Profile More Log in Company Program Terms & Policies © 2026 TikTok #tigre Log in Drag the slider to fit the puzzle Audio 202609050019071F5FE1B913F69D86B058"
+    "bodySnippet": "TikTok Search For You Explore Following Shop Short dramas LIVE Upload Profile More Log in Company Program Terms & Policies © 2026 TikTok #tigre No videos with this hashtag yet Looking for videos? Try browsing our trending creators, hashtags, and sounds. Log in"
   }
 }

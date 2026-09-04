@@ -5409,5 +5409,57 @@
     "captchaWall": false,
     "bodySnippet": "TikTok Search For You Explore Following Shop Short dramas LIVE Upload Profile More Log in Company Program Terms & Policies © 2026 TikTok #palaestine The Lucky One For a 10 Year Old To Be Self Aware Enough To Know That Her and Other Children are Helpless… These Are Things Children Should Never Have T"
   },
-  "emptyStreak": 0
+  "emptyStreak": 0,
+  "stale": true,
+  "staleSince": "2026-09-04T19:05:49.874Z",
+  "lastAttemptAt": "2026-09-04T19:05:49.874Z",
+  "lastAttemptDebug": {
+    "keyword": "PALAESTINE",
+    "want": 120,
+    "strategies": [
+      {
+        "name": "search",
+        "url": "https://www.tiktok.com/search?q=PALAESTINE",
+        "finalUrl": "https://www.tiktok.com/search?q=PALAESTINE",
+        "title": "TikTok - Make Your Day",
+        "scrollRounds": 6,
+        "matchedAfter": 0,
+        "error": null
+      },
+      {
+        "name": "search-video-tab",
+        "url": "https://www.tiktok.com/search/video?q=PALAESTINE",
+        "finalUrl": "https://www.tiktok.com/search/video?q=PALAESTINE",
+        "title": "TikTok - Make Your Day",
+        "scrollRounds": 6,
+        "matchedAfter": 0,
+        "error": null
+      },
+      {
+        "name": "hashtag",
+        "url": "https://www.tiktok.com/tag/palaestine",
+        "finalUrl": "https://www.tiktok.com/tag/palaestine",
+        "title": "TikTok - Make Your Day",
+        "scrollRounds": 6,
+        "matchedAfter": 0,
+        "error": null
+      }
+    ],
+    "apiHits": {
+      "/api/recommend/item_list/": {
+        "calls": 1,
+        "items": 1,
+        "source": "feed"
+      },
+      "/api/challenge/item_list/": {
+        "calls": 1,
+        "items": 0,
+        "source": "search"
+      }
+    },
+    "fromSearchEndpoints": 0,
+    "loginWall": true,
+    "captchaWall": false,
+    "bodySnippet": "TikTok Search For You Explore Following Shop Short dramas LIVE Upload Profile More Log in Company Program Terms & Policies © 2026 TikTok #palaestine No videos with this hashtag yet Looking for videos? Try browsing our trending creators, hashtags, and sounds. Log in"
+  }
 }
