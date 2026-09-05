@@ -4,7 +4,7 @@
   "hasMore": false,
   "source": "TikTok.com search · “quick chicken lunch” · collected by GitHub Actions",
   "keyword": "quick chicken lunch",
-  "fetchedAt": "2026-09-05T06:17:10.708Z",
+  "fetchedAt": "2026-09-05T13:50:44.111Z",
   "debug": {
     "keyword": "quick chicken lunch",
     "want": 120,
@@ -39,7 +39,7 @@
     ],
     "apiHits": {
       "/api/recommend/item_list/": {
-        "calls": 1,
+        "calls": 2,
         "items": 1,
         "source": "feed"
       }
@@ -49,5 +49,5 @@
     "captchaWall": false,
     "bodySnippet": "TikTok Search For You Explore Following Shop Short dramas LIVE Upload Profile More Log in Company Program Terms & Policies © 2026 TikTok Couldn't find this hashtag Looking for videos? Try browsing our trending creators, hashtags, and sounds. Log in"
   },
-  "emptyStreak": 16
+  "emptyStreak": 17
 }
