@@ -5395,5 +5395,52 @@
     "captchaWall": false,
     "bodySnippet": "TikTok Search For You Explore Following Shop Short dramas LIVE Upload Profile More Log in Company Program Terms & Policies © 2026 TikTok #ronaldo YUMA 🌏 Ronaldo Ronaldo Song 🧐🤨 | #trending #fifaworldcup #100k Footballzone125 Ronaldo🔥⚽️🐐#footballtiktok #soccerplayer #viral #cr7cristianoronaldo #"
   },
-  "emptyStreak": 0
+  "emptyStreak": 0,
+  "stale": true,
+  "staleSince": "2026-09-05T16:47:04.849Z",
+  "lastAttemptAt": "2026-09-05T16:47:04.849Z",
+  "lastAttemptDebug": {
+    "keyword": "ronaldo",
+    "want": 120,
+    "strategies": [
+      {
+        "name": "search",
+        "url": "https://www.tiktok.com/search?q=ronaldo",
+        "finalUrl": "https://www.tiktok.com/search?q=ronaldo",
+        "title": "TikTok - Make Your Day",
+        "scrollRounds": 6,
+        "matchedAfter": 0,
+        "error": null
+      },
+      {
+        "name": "search-video-tab",
+        "url": "https://www.tiktok.com/search/video?q=ronaldo",
+        "finalUrl": "https://www.tiktok.com/search/video?q=ronaldo",
+        "title": "TikTok - Make Your Day",
+        "scrollRounds": 6,
+        "matchedAfter": 0,
+        "error": null
+      },
+      {
+        "name": "hashtag",
+        "url": "https://www.tiktok.com/tag/ronaldo",
+        "finalUrl": "https://www.tiktok.com/tag/ronaldo",
+        "title": "TikTok - Make Your Day",
+        "scrollRounds": 6,
+        "matchedAfter": 0,
+        "error": null
+      }
+    ],
+    "apiHits": {
+      "/api/search/general/preview/": {
+        "calls": 2,
+        "items": 0,
+        "source": "search"
+      }
+    },
+    "fromSearchEndpoints": 0,
+    "loginWall": true,
+    "captchaWall": false,
+    "bodySnippet": "TikTok Search For You Explore Following LIVE Upload Profile More Log in Company Program Terms & Policies © 2026 TikTok #ronaldo Log in Drag the slider to fit the puzzle Audio 202609060047357C0FB935B2B70B8830F5"
+  }
 }
