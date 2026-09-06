@@ -5327,5 +5327,52 @@
     "captchaWall": false,
     "bodySnippet": "TikTok Search For You Shop Explore Following LIVE Upload Profile More Log in Company Program Terms & Policies © 2026 TikTok #chickenrecipe platedbyjordan Teriyaki Chicken Bowl nenacreates 💥bang bang chicken 🍗 Dishes Daily Cook Easy Recipes #recipes #EasyRecipe #cooking #DinnerIdeas #yummyfood Esse"
   },
-  "emptyStreak": 0
+  "emptyStreak": 0,
+  "stale": true,
+  "staleSince": "2026-09-06T11:21:04.894Z",
+  "lastAttemptAt": "2026-09-06T11:21:04.894Z",
+  "lastAttemptDebug": {
+    "keyword": "chicken recipe",
+    "want": 120,
+    "strategies": [
+      {
+        "name": "search",
+        "url": "https://www.tiktok.com/search?q=chicken%20recipe",
+        "finalUrl": "https://www.tiktok.com/search?q=chicken%20recipe",
+        "title": "",
+        "scrollRounds": 6,
+        "matchedAfter": 0,
+        "error": null
+      },
+      {
+        "name": "search-video-tab",
+        "url": "https://www.tiktok.com/search/video?q=chicken%20recipe",
+        "finalUrl": "https://www.tiktok.com/search/video?q=chicken%20recipe",
+        "title": "",
+        "scrollRounds": 6,
+        "matchedAfter": 0,
+        "error": null
+      },
+      {
+        "name": "hashtag",
+        "url": "https://www.tiktok.com/tag/chickenrecipe",
+        "finalUrl": "https://www.tiktok.com/tag/chickenrecipe",
+        "title": "",
+        "scrollRounds": 6,
+        "matchedAfter": 0,
+        "error": null
+      }
+    ],
+    "apiHits": {
+      "/api/search/general/preview/": {
+        "calls": 2,
+        "items": 0,
+        "source": "search"
+      }
+    },
+    "fromSearchEndpoints": 0,
+    "loginWall": true,
+    "captchaWall": false,
+    "bodySnippet": "TikTok Search For You Explore Following Short dramas LIVE Upload Profile More Log in Company Program Terms & Policies © 2026 TikTok #chickenrecipe Log in Drag the slider to fit the puzzle Audio 202609061921328AFF2B80316574DB7A61"
+  }
 }
