@@ -1,10 +1,10 @@
 {
   "videos": [],
-  "scanned": 1,
+  "scanned": 15,
   "hasMore": false,
   "source": "TikTok.com search · “mango spacecraft” · collected by GitHub Actions",
   "keyword": "mango spacecraft",
-  "fetchedAt": "2026-09-05T21:08:11.352Z",
+  "fetchedAt": "2026-09-06T06:28:31.426Z",
   "debug": {
     "keyword": "mango spacecraft",
     "want": 120,
@@ -38,16 +38,16 @@
       }
     ],
     "apiHits": {
-      "/api/recommend/item_list/": {
+      "/api/explore/item_list/": {
         "calls": 2,
-        "items": 1,
+        "items": 15,
         "source": "feed"
       }
     },
     "fromSearchEndpoints": 0,
     "loginWall": true,
     "captchaWall": false,
-    "bodySnippet": "TikTok Search For You Explore Following Shop Short dramas LIVE Upload Profile More Log in Company Program Terms & Policies © 2026 TikTok Couldn't find this hashtag Looking for videos? Try browsing our trending creators, hashtags, and sounds. Log in"
+    "bodySnippet": "TikTok Search For You Shop Explore Following LIVE Upload Profile More Log in Company Program Terms & Policies © 2026 TikTok Couldn't find this hashtag Looking for videos? Try browsing our trending creators, hashtags, and sounds. Log in"
   },
-  "emptyStreak": 17
+  "emptyStreak": 18
 }
