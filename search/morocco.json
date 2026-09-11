@@ -5413,5 +5413,52 @@
     "captchaWall": false,
     "bodySnippet": "TikTok Search For You Explore Following Shop Short dramas LIVE Upload Profile More Log in Company Program Terms & Policies © 2026 TikTok #morocco Ayana Iman🥂 7 things to know before you go to Marrakech, Morocco! Don’t finish your itinerary until you watch this. About Morocco 🇲🇦 This is Morocco 🇲"
   },
-  "emptyStreak": 0
+  "emptyStreak": 0,
+  "stale": true,
+  "staleSince": "2026-09-11T09:06:21.637Z",
+  "lastAttemptAt": "2026-09-11T09:06:21.637Z",
+  "lastAttemptDebug": {
+    "keyword": "morocco",
+    "want": 120,
+    "strategies": [
+      {
+        "name": "search",
+        "url": "https://www.tiktok.com/search?q=morocco",
+        "finalUrl": "https://www.tiktok.com/search?q=morocco",
+        "title": "TikTok - Make Your Day",
+        "scrollRounds": 6,
+        "matchedAfter": 0,
+        "error": null
+      },
+      {
+        "name": "search-video-tab",
+        "url": "https://www.tiktok.com/search/video?q=morocco",
+        "finalUrl": "https://www.tiktok.com/search/video?q=morocco",
+        "title": "TikTok - Make Your Day",
+        "scrollRounds": 6,
+        "matchedAfter": 0,
+        "error": null
+      },
+      {
+        "name": "hashtag",
+        "url": "https://www.tiktok.com/tag/morocco",
+        "finalUrl": "https://www.tiktok.com/tag/morocco",
+        "title": "TikTok - Make Your Day",
+        "scrollRounds": 6,
+        "matchedAfter": 0,
+        "error": null
+      }
+    ],
+    "apiHits": {
+      "/api/search/general/preview/": {
+        "calls": 2,
+        "items": 0,
+        "source": "search"
+      }
+    },
+    "fromSearchEndpoints": 0,
+    "loginWall": true,
+    "captchaWall": false,
+    "bodySnippet": "TikTok Search For You Explore Following Short dramas LIVE Upload Profile More Log in Company Program Terms & Policies © 2026 TikTok #morocco Log in Drag the slider to fit the puzzle Audio 2026091117065338533949B335D385AD55"
+  }
 }
