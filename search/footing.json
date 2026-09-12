@@ -4440,5 +4440,57 @@
     "captchaWall": false,
     "bodySnippet": "TikTok Search For You Shop Explore Following Short dramas LIVE Upload Profile More Log in Company Program Terms & Policies © 2026 TikTok #footing DF Talks Construction How a Strip Footing Is Built#construction #CivilEngineering #Foundation #engineering Remington Builders What are footings #footings "
   },
-  "emptyStreak": 0
+  "emptyStreak": 0,
+  "stale": true,
+  "staleSince": "2026-09-12T21:27:54.618Z",
+  "lastAttemptAt": "2026-09-12T21:27:54.618Z",
+  "lastAttemptDebug": {
+    "keyword": "Footing",
+    "want": 120,
+    "strategies": [
+      {
+        "name": "search",
+        "url": "https://www.tiktok.com/search?q=Footing",
+        "finalUrl": "https://www.tiktok.com/search?q=Footing",
+        "title": "TikTok - Make Your Day",
+        "scrollRounds": 6,
+        "matchedAfter": 0,
+        "error": null
+      },
+      {
+        "name": "search-video-tab",
+        "url": "https://www.tiktok.com/search/video?q=Footing",
+        "finalUrl": "https://www.tiktok.com/search/video?q=Footing",
+        "title": "TikTok - Make Your Day",
+        "scrollRounds": 6,
+        "matchedAfter": 0,
+        "error": null
+      },
+      {
+        "name": "hashtag",
+        "url": "https://www.tiktok.com/tag/footing",
+        "finalUrl": "https://www.tiktok.com/tag/footing",
+        "title": "#footing | TikTok",
+        "scrollRounds": 6,
+        "matchedAfter": 0,
+        "error": null
+      }
+    ],
+    "apiHits": {
+      "/api/recommend/item_list/": {
+        "calls": 1,
+        "items": 1,
+        "source": "feed"
+      },
+      "/api/challenge/item_list/": {
+        "calls": 1,
+        "items": 0,
+        "source": "search"
+      }
+    },
+    "fromSearchEndpoints": 0,
+    "loginWall": true,
+    "captchaWall": false,
+    "bodySnippet": "TikTok Search For You Shop Explore Following Short dramas LIVE Upload Profile More Log in Company Program Terms & Policies © 2026 TikTok #footing Page not available Looking for videos? Try browsing our trending creators, hashtags, and sounds. Log in"
+  }
 }
