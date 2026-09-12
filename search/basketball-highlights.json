@@ -5649,5 +5649,52 @@
     "captchaWall": false,
     "bodySnippet": "TikTok Search For You Explore Following Shop Short dramas LIVE Upload Profile More Log in Company Program Terms & Policies © 2026 TikTok #basketballhighlights ғᴇʀᴋs 1 minutes full of bagwork🔥/ Overtime HOLY DUNK 😱 @Makye Richard #basketball #dunk #poster #hoops #highlights ғᴇʀᴋs 1 minutes full of "
   },
-  "emptyStreak": 0
+  "emptyStreak": 0,
+  "stale": true,
+  "staleSince": "2026-09-12T23:15:53.989Z",
+  "lastAttemptAt": "2026-09-12T23:15:53.989Z",
+  "lastAttemptDebug": {
+    "keyword": "basketball highlights",
+    "want": 120,
+    "strategies": [
+      {
+        "name": "search",
+        "url": "https://www.tiktok.com/search?q=basketball%20highlights",
+        "finalUrl": "https://www.tiktok.com/search?q=basketball%20highlights",
+        "title": "TikTok - Make Your Day",
+        "scrollRounds": 6,
+        "matchedAfter": 0,
+        "error": null
+      },
+      {
+        "name": "search-video-tab",
+        "url": "https://www.tiktok.com/search/video?q=basketball%20highlights",
+        "finalUrl": "https://www.tiktok.com/search/video?q=basketball%20highlights",
+        "title": "TikTok - Make Your Day",
+        "scrollRounds": 6,
+        "matchedAfter": 0,
+        "error": null
+      },
+      {
+        "name": "hashtag",
+        "url": "https://www.tiktok.com/tag/basketballhighlights",
+        "finalUrl": "https://www.tiktok.com/tag/basketballhighlights",
+        "title": "TikTok - Make Your Day",
+        "scrollRounds": 6,
+        "matchedAfter": 0,
+        "error": null
+      }
+    ],
+    "apiHits": {
+      "/api/search/general/preview/": {
+        "calls": 2,
+        "items": 0,
+        "source": "search"
+      }
+    },
+    "fromSearchEndpoints": 0,
+    "loginWall": true,
+    "captchaWall": false,
+    "bodySnippet": "TikTok Search For You Explore Following LIVE Upload Profile More Log in Company Program Terms & Policies © 2026 TikTok #basketballhighlights Log in Drag the slider to fit the puzzle Audio 20260913071625BABFC79537E8B276E974"
+  }
 }
