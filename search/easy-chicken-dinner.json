@@ -5447,5 +5447,52 @@
     "captchaWall": false,
     "bodySnippet": "TikTok Search For You Shop Explore Following Short dramas LIVE Upload Profile More Log in Company Program Terms & Policies © 2026 TikTok #easychickendinner ShannaDorey Quick, easy, and delicious!!! Would you try this? #onepotmeals #easyrecipe #weeknightmeals #familymeals #busymom Cookin With Megg 👩"
   },
-  "emptyStreak": 0
+  "emptyStreak": 0,
+  "stale": true,
+  "staleSince": "2026-09-13T21:39:24.505Z",
+  "lastAttemptAt": "2026-09-13T21:39:24.505Z",
+  "lastAttemptDebug": {
+    "keyword": "easy chicken dinner",
+    "want": 120,
+    "strategies": [
+      {
+        "name": "search",
+        "url": "https://www.tiktok.com/search?q=easy%20chicken%20dinner",
+        "finalUrl": "https://www.tiktok.com/search?q=easy%20chicken%20dinner",
+        "title": "TikTok - Make Your Day",
+        "scrollRounds": 6,
+        "matchedAfter": 0,
+        "error": null
+      },
+      {
+        "name": "search-video-tab",
+        "url": "https://www.tiktok.com/search/video?q=easy%20chicken%20dinner",
+        "finalUrl": "https://www.tiktok.com/search/video?q=easy%20chicken%20dinner",
+        "title": "TikTok - Make Your Day",
+        "scrollRounds": 6,
+        "matchedAfter": 0,
+        "error": null
+      },
+      {
+        "name": "hashtag",
+        "url": "https://www.tiktok.com/tag/easychickendinner",
+        "finalUrl": "https://www.tiktok.com/tag/easychickendinner",
+        "title": "TikTok - Make Your Day",
+        "scrollRounds": 6,
+        "matchedAfter": 0,
+        "error": null
+      }
+    ],
+    "apiHits": {
+      "/api/search/general/preview/": {
+        "calls": 2,
+        "items": 0,
+        "source": "search"
+      }
+    },
+    "fromSearchEndpoints": 0,
+    "loginWall": true,
+    "captchaWall": false,
+    "bodySnippet": "TikTok Search For You Explore Following LIVE Upload Profile More Log in Company Program Terms & Policies © 2026 TikTok #easychickendinner Log in Drag the slider to fit the puzzle Audio 20260914053951FB67511EF8767C6D75B1"
+  }
 }
