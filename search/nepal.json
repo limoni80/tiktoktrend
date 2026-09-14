@@ -5362,5 +5362,52 @@
     "captchaWall": false,
     "bodySnippet": "TikTok Search For You Shop Explore Following LIVE Upload Profile More Log in Company Program Terms & Policies © 2026 TikTok #nepal Nepal Flood Nepal Update after flood #nepal #informationvideo #nepalflood #viralvideos #dontunderreviewmyvedio Nepal Flood Nepal Update after flood #nepal #informationvi"
   },
-  "emptyStreak": 0
+  "emptyStreak": 0,
+  "stale": true,
+  "staleSince": "2026-09-14T19:19:12.095Z",
+  "lastAttemptAt": "2026-09-14T19:19:12.095Z",
+  "lastAttemptDebug": {
+    "keyword": "NEPAL",
+    "want": 120,
+    "strategies": [
+      {
+        "name": "search",
+        "url": "https://www.tiktok.com/search?q=NEPAL",
+        "finalUrl": "https://www.tiktok.com/search?q=NEPAL",
+        "title": "TikTok - Make Your Day",
+        "scrollRounds": 6,
+        "matchedAfter": 0,
+        "error": null
+      },
+      {
+        "name": "search-video-tab",
+        "url": "https://www.tiktok.com/search/video?q=NEPAL",
+        "finalUrl": "https://www.tiktok.com/search/video?q=NEPAL",
+        "title": "TikTok - Make Your Day",
+        "scrollRounds": 6,
+        "matchedAfter": 0,
+        "error": null
+      },
+      {
+        "name": "hashtag",
+        "url": "https://www.tiktok.com/tag/nepal",
+        "finalUrl": "https://www.tiktok.com/tag/nepal",
+        "title": "# | TikTok",
+        "scrollRounds": 6,
+        "matchedAfter": 0,
+        "error": null
+      }
+    ],
+    "apiHits": {
+      "/api/recommend/item_list/": {
+        "calls": 1,
+        "items": 1,
+        "source": "feed"
+      }
+    },
+    "fromSearchEndpoints": 0,
+    "loginWall": true,
+    "captchaWall": false,
+    "bodySnippet": "TikTok Search For You Shop Explore Following LIVE Upload Profile More Log in Company Program Terms & Policies © 2026 TikTok Page not available Looking for videos? Try browsing our trending creators, hashtags, and sounds. Log in"
+  }
 }
