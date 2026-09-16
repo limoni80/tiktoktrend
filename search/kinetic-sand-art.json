@@ -5488,5 +5488,52 @@
     "captchaWall": false,
     "bodySnippet": "TikTok Search For You Shop Explore Following LIVE Upload Profile More Log in Company Program Terms & Policies © 2026 TikTok #kineticsandart Brandy - Home & Cat Finds 🐾 This thing is so cool! #kineticsandart #sandart #oasismini #relaxing #giftidea Grounded Labs Experience the magic of the Oasis Coff"
   },
-  "emptyStreak": 0
+  "emptyStreak": 0,
+  "stale": true,
+  "staleSince": "2026-09-16T09:52:04.343Z",
+  "lastAttemptAt": "2026-09-16T09:52:04.343Z",
+  "lastAttemptDebug": {
+    "keyword": "kinetic sand art",
+    "want": 120,
+    "strategies": [
+      {
+        "name": "search",
+        "url": "https://www.tiktok.com/search?q=kinetic%20sand%20art",
+        "finalUrl": "https://www.tiktok.com/search?q=kinetic%20sand%20art",
+        "title": "TikTok - Make Your Day",
+        "scrollRounds": 6,
+        "matchedAfter": 0,
+        "error": null
+      },
+      {
+        "name": "search-video-tab",
+        "url": "https://www.tiktok.com/search/video?q=kinetic%20sand%20art",
+        "finalUrl": "https://www.tiktok.com/search/video?q=kinetic%20sand%20art",
+        "title": "TikTok - Make Your Day",
+        "scrollRounds": 6,
+        "matchedAfter": 0,
+        "error": null
+      },
+      {
+        "name": "hashtag",
+        "url": "https://www.tiktok.com/tag/kineticsandart",
+        "finalUrl": "https://www.tiktok.com/tag/kineticsandart",
+        "title": "TikTok - Make Your Day",
+        "scrollRounds": 6,
+        "matchedAfter": 0,
+        "error": null
+      }
+    ],
+    "apiHits": {
+      "/api/search/general/preview/": {
+        "calls": 2,
+        "items": 0,
+        "source": "search"
+      }
+    },
+    "fromSearchEndpoints": 0,
+    "loginWall": true,
+    "captchaWall": false,
+    "bodySnippet": "TikTok Search For You Explore Following LIVE Upload Profile More Log in Company Program Terms & Policies © 2026 TikTok #kineticsandart Log in Drag the slider to fit the puzzle Audio 20260916175231BE545E33903B58B0C64B"
+  }
 }
