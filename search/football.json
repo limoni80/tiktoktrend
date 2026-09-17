@@ -5447,5 +5447,52 @@
     "captchaWall": false,
     "bodySnippet": "TikTok Search For You Shop Explore Following LIVE Upload Profile More Log in Company Program Terms & Policies © 2026 TikTok #football From goals to celebrations, join in and watch the best moments! Your football fandom starts on TikTok. House of Highlights 1000 IQ play. 🧠🔥 (@cadillacjerry) #footba"
   },
-  "emptyStreak": 0
+  "emptyStreak": 0,
+  "stale": true,
+  "staleSince": "2026-09-17T19:14:58.753Z",
+  "lastAttemptAt": "2026-09-17T19:14:58.753Z",
+  "lastAttemptDebug": {
+    "keyword": "football",
+    "want": 120,
+    "strategies": [
+      {
+        "name": "search",
+        "url": "https://www.tiktok.com/search?q=football",
+        "finalUrl": "https://www.tiktok.com/search?q=football",
+        "title": "TikTok - Make Your Day",
+        "scrollRounds": 6,
+        "matchedAfter": 0,
+        "error": null
+      },
+      {
+        "name": "search-video-tab",
+        "url": "https://www.tiktok.com/search/video?q=football",
+        "finalUrl": "https://www.tiktok.com/search/video?q=football",
+        "title": "TikTok - Make Your Day",
+        "scrollRounds": 6,
+        "matchedAfter": 0,
+        "error": null
+      },
+      {
+        "name": "hashtag",
+        "url": "https://www.tiktok.com/tag/football",
+        "finalUrl": "https://www.tiktok.com/tag/football",
+        "title": "TikTok - Make Your Day",
+        "scrollRounds": 6,
+        "matchedAfter": 0,
+        "error": null
+      }
+    ],
+    "apiHits": {
+      "/api/search/general/preview/": {
+        "calls": 2,
+        "items": 0,
+        "source": "search"
+      }
+    },
+    "fromSearchEndpoints": 0,
+    "loginWall": true,
+    "captchaWall": false,
+    "bodySnippet": "TikTok Search For You Explore Following LIVE Upload Profile More Log in Company Program Terms & Policies © 2026 TikTok #football From goals to celebrations, join in and watch the best moments! Your football fandom starts on TikTok. Log in Drag the slider to fit the puzzle Audio 2026091803152512D6CC8"
+  }
 }
