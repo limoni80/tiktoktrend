@@ -5500,5 +5500,52 @@
     "captchaWall": false,
     "bodySnippet": "TikTok Search For You Shop Explore Following LIVE Upload Profile More Log in Company Program Terms & Policies © 2026 TikTok #chickenmealprepideas Matt 🍗 Chicken, Broccoli, & Rice Bowls 🥦🍚 Jalalsamfit Creamy Chipotle Chicken & Potatoes🍗🍟🧀 MadelaineRascan If I could get you to make 1 recipe ever"
   },
-  "emptyStreak": 0
+  "emptyStreak": 0,
+  "stale": true,
+  "staleSince": "2026-09-17T00:23:22.795Z",
+  "lastAttemptAt": "2026-09-17T00:23:22.795Z",
+  "lastAttemptDebug": {
+    "keyword": "chicken meal prep ideas",
+    "want": 120,
+    "strategies": [
+      {
+        "name": "search",
+        "url": "https://www.tiktok.com/search?q=chicken%20meal%20prep%20ideas",
+        "finalUrl": "https://www.tiktok.com/search?q=chicken%20meal%20prep%20ideas",
+        "title": "TikTok - Make Your Day",
+        "scrollRounds": 6,
+        "matchedAfter": 0,
+        "error": null
+      },
+      {
+        "name": "search-video-tab",
+        "url": "https://www.tiktok.com/search/video?q=chicken%20meal%20prep%20ideas",
+        "finalUrl": "https://www.tiktok.com/search/video?q=chicken%20meal%20prep%20ideas",
+        "title": "TikTok - Make Your Day",
+        "scrollRounds": 6,
+        "matchedAfter": 0,
+        "error": null
+      },
+      {
+        "name": "hashtag",
+        "url": "https://www.tiktok.com/tag/chickenmealprepideas",
+        "finalUrl": "https://www.tiktok.com/tag/chickenmealprepideas",
+        "title": "# | TikTok",
+        "scrollRounds": 6,
+        "matchedAfter": 0,
+        "error": null
+      }
+    ],
+    "apiHits": {
+      "/api/recommend/item_list/": {
+        "calls": 1,
+        "items": 1,
+        "source": "feed"
+      }
+    },
+    "fromSearchEndpoints": 0,
+    "loginWall": true,
+    "captchaWall": false,
+    "bodySnippet": "TikTok Search For You Shop Explore Following LIVE Upload Profile More Log in Company Program Terms & Policies © 2026 TikTok Something went wrong Sorry about that! Please try again later. Refresh Log in"
+  }
 }
