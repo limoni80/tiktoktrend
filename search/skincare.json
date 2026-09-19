@@ -5326,5 +5326,52 @@
     "captchaWall": false,
     "bodySnippet": "TikTok Search For You Shop Explore Following LIVE Upload Profile More Log in Company Program Terms & Policies © 2026 TikTok #skincare From routines to glow ups, discover how the skincare community on TikTok keeps their skin cared for. FeatherPro 🖐 Don't worry about dull skin anywhere! This niacinam"
   },
-  "emptyStreak": 0
+  "emptyStreak": 0,
+  "stale": true,
+  "staleSince": "2026-09-19T11:28:38.429Z",
+  "lastAttemptAt": "2026-09-19T11:28:38.429Z",
+  "lastAttemptDebug": {
+    "keyword": "skincare",
+    "want": 120,
+    "strategies": [
+      {
+        "name": "search",
+        "url": "https://www.tiktok.com/search?q=skincare",
+        "finalUrl": "https://www.tiktok.com/search?q=skincare",
+        "title": "TikTok - Make Your Day",
+        "scrollRounds": 6,
+        "matchedAfter": 0,
+        "error": null
+      },
+      {
+        "name": "search-video-tab",
+        "url": "https://www.tiktok.com/search/video?q=skincare",
+        "finalUrl": "https://www.tiktok.com/search/video?q=skincare",
+        "title": "TikTok - Make Your Day",
+        "scrollRounds": 6,
+        "matchedAfter": 0,
+        "error": null
+      },
+      {
+        "name": "hashtag",
+        "url": "https://www.tiktok.com/tag/skincare",
+        "finalUrl": "https://www.tiktok.com/tag/skincare",
+        "title": "TikTok - Make Your Day",
+        "scrollRounds": 6,
+        "matchedAfter": 0,
+        "error": null
+      }
+    ],
+    "apiHits": {
+      "/api/search/general/preview/": {
+        "calls": 2,
+        "items": 0,
+        "source": "search"
+      }
+    },
+    "fromSearchEndpoints": 0,
+    "loginWall": true,
+    "captchaWall": false,
+    "bodySnippet": "TikTok Search For You Explore Following LIVE Upload Profile More Log in Company Program Terms & Policies © 2026 TikTok #skincare From routines to glow ups, discover how the skincare community on TikTok keeps their skin cared for. Log in Drag the slider to fit the puzzle Audio 20260919192906342F594AA"
+  }
 }
