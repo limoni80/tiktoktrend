@@ -5406,5 +5406,57 @@
     "captchaWall": false,
     "bodySnippet": "TikTok Search For You Shop Explore Following LIVE Upload Profile More Log in Company Program Terms & Policies © 2026 TikTok #UFC Jump in the Octagon for all things #UFC on TikTok. Official UFC Izzy’s style is just UNMATCHED 🕺💥 #ufc #israeladesanya #walkout #ufc271 Official UFC One of the craziest "
   },
-  "emptyStreak": 0
+  "emptyStreak": 0,
+  "stale": true,
+  "staleSince": "2026-09-19T06:34:47.957Z",
+  "lastAttemptAt": "2026-09-19T06:34:47.957Z",
+  "lastAttemptDebug": {
+    "keyword": "Ufc",
+    "want": 120,
+    "strategies": [
+      {
+        "name": "search",
+        "url": "https://www.tiktok.com/search?q=Ufc",
+        "finalUrl": "https://www.tiktok.com/search?q=Ufc",
+        "title": "TikTok - Make Your Day",
+        "scrollRounds": 6,
+        "matchedAfter": 0,
+        "error": null
+      },
+      {
+        "name": "search-video-tab",
+        "url": "https://www.tiktok.com/search/video?q=Ufc",
+        "finalUrl": "https://www.tiktok.com/search/video?q=Ufc",
+        "title": "TikTok - Make Your Day",
+        "scrollRounds": 6,
+        "matchedAfter": 0,
+        "error": null
+      },
+      {
+        "name": "hashtag",
+        "url": "https://www.tiktok.com/tag/ufc",
+        "finalUrl": "https://www.tiktok.com/tag/ufc",
+        "title": "#UFC | TikTok",
+        "scrollRounds": 6,
+        "matchedAfter": 0,
+        "error": null
+      }
+    ],
+    "apiHits": {
+      "/api/recommend/item_list/": {
+        "calls": 2,
+        "items": 1,
+        "source": "feed"
+      },
+      "/api/challenge/item_list/": {
+        "calls": 1,
+        "items": 0,
+        "source": "search"
+      }
+    },
+    "fromSearchEndpoints": 0,
+    "loginWall": true,
+    "captchaWall": false,
+    "bodySnippet": "TikTok Search For You Shop Explore Following LIVE Upload Profile More Log in Company Program Terms & Policies © 2026 TikTok #UFC Jump in the Octagon for all things #UFC on TikTok. Page not available Looking for videos? Try browsing our trending creators, hashtags, and sounds. Log in"
+  }
 }
