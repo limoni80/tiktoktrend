@@ -5390,5 +5390,57 @@
     "captchaWall": false,
     "bodySnippet": "TikTok Search For You Shop Explore Following LIVE Upload Profile More Log in Company Program Terms & Policies © 2026 TikTok #dropshipping micheldropship How you can start dropshipping and make 10-15k a month #dropshipping #aidropshipping #shopify #ecom #ecommerce kadenecom link in bio to use my supp"
   },
-  "emptyStreak": 0
+  "emptyStreak": 0,
+  "stale": true,
+  "staleSince": "2026-09-19T20:31:44.427Z",
+  "lastAttemptAt": "2026-09-19T20:31:44.427Z",
+  "lastAttemptDebug": {
+    "keyword": "dropshipping",
+    "want": 120,
+    "strategies": [
+      {
+        "name": "search",
+        "url": "https://www.tiktok.com/search?q=dropshipping",
+        "finalUrl": "https://www.tiktok.com/search?q=dropshipping",
+        "title": "TikTok - Make Your Day",
+        "scrollRounds": 6,
+        "matchedAfter": 0,
+        "error": null
+      },
+      {
+        "name": "search-video-tab",
+        "url": "https://www.tiktok.com/search/video?q=dropshipping",
+        "finalUrl": "https://www.tiktok.com/search/video?q=dropshipping",
+        "title": "TikTok - Make Your Day",
+        "scrollRounds": 6,
+        "matchedAfter": 0,
+        "error": null
+      },
+      {
+        "name": "hashtag",
+        "url": "https://www.tiktok.com/tag/dropshipping",
+        "finalUrl": "https://www.tiktok.com/tag/dropshipping",
+        "title": "#dropshipping | TikTok",
+        "scrollRounds": 6,
+        "matchedAfter": 0,
+        "error": null
+      }
+    ],
+    "apiHits": {
+      "/api/recommend/item_list/": {
+        "calls": 1,
+        "items": 1,
+        "source": "feed"
+      },
+      "/api/challenge/item_list/": {
+        "calls": 1,
+        "items": 0,
+        "source": "search"
+      }
+    },
+    "fromSearchEndpoints": 0,
+    "loginWall": true,
+    "captchaWall": false,
+    "bodySnippet": "TikTok Search For You Shop Explore Following LIVE Upload Profile More Log in Company Program Terms & Policies © 2026 TikTok #dropshipping Page not available Looking for videos? Try browsing our trending creators, hashtags, and sounds. Log in"
+  }
 }
