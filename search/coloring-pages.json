@@ -5704,5 +5704,52 @@
     "captchaWall": false,
     "bodySnippet": "TikTok Search For You Shop Explore Following LIVE Upload Profile More Log in Company Program Terms & Policies © 2026 TikTok #coloringpages Kennacolors Color with me! Love how this fall page turned out 🍂 #colorwithme #coloringtutorial #colortok #coloring #coloringbook @cocowyocoloring @Ohuhuart @Gra"
   },
-  "emptyStreak": 0
+  "emptyStreak": 0,
+  "stale": true,
+  "staleSince": "2026-09-19T17:58:21.803Z",
+  "lastAttemptAt": "2026-09-19T17:58:21.803Z",
+  "lastAttemptDebug": {
+    "keyword": "coloring pages",
+    "want": 120,
+    "strategies": [
+      {
+        "name": "search",
+        "url": "https://www.tiktok.com/search?q=coloring%20pages",
+        "finalUrl": "https://www.tiktok.com/search?q=coloring%20pages",
+        "title": "TikTok - Make Your Day",
+        "scrollRounds": 6,
+        "matchedAfter": 0,
+        "error": null
+      },
+      {
+        "name": "search-video-tab",
+        "url": "https://www.tiktok.com/search/video?q=coloring%20pages",
+        "finalUrl": "https://www.tiktok.com/search/video?q=coloring%20pages",
+        "title": "TikTok - Make Your Day",
+        "scrollRounds": 6,
+        "matchedAfter": 0,
+        "error": null
+      },
+      {
+        "name": "hashtag",
+        "url": "https://www.tiktok.com/tag/coloringpages",
+        "finalUrl": "https://www.tiktok.com/tag/coloringpages",
+        "title": "TikTok - Make Your Day",
+        "scrollRounds": 6,
+        "matchedAfter": 0,
+        "error": null
+      }
+    ],
+    "apiHits": {
+      "/api/recommend/item_list/": {
+        "calls": 1,
+        "items": 1,
+        "source": "feed"
+      }
+    },
+    "fromSearchEndpoints": 0,
+    "loginWall": true,
+    "captchaWall": false,
+    "bodySnippet": "TikTok Search For You Shop Explore Following LIVE Upload Profile More Log in Company Program Terms & Policies © 2026 TikTok Log in"
+  }
 }
