@@ -5512,5 +5512,52 @@
     "captchaWall": false,
     "bodySnippet": "TikTok Search For You Shop Explore Following LIVE Upload Profile More Log in Company Program Terms & Policies © 2026 TikTok #volcanocake Cake_Art_Lookbook When🎂 is art! This creative volcano cake was made by @tortomaniazpowolania Shop With Sev I said “let’s do a science experiment” and somehow we e"
   },
-  "emptyStreak": 0
+  "emptyStreak": 0,
+  "stale": true,
+  "staleSince": "2026-09-19T22:27:25.498Z",
+  "lastAttemptAt": "2026-09-19T22:27:25.498Z",
+  "lastAttemptDebug": {
+    "keyword": "volcano cake",
+    "want": 120,
+    "strategies": [
+      {
+        "name": "search",
+        "url": "https://www.tiktok.com/search?q=volcano%20cake",
+        "finalUrl": "https://www.tiktok.com/search?q=volcano%20cake",
+        "title": "TikTok - Make Your Day",
+        "scrollRounds": 6,
+        "matchedAfter": 0,
+        "error": null
+      },
+      {
+        "name": "search-video-tab",
+        "url": "https://www.tiktok.com/search/video?q=volcano%20cake",
+        "finalUrl": "https://www.tiktok.com/search/video?q=volcano%20cake",
+        "title": "TikTok - Make Your Day",
+        "scrollRounds": 6,
+        "matchedAfter": 0,
+        "error": null
+      },
+      {
+        "name": "hashtag",
+        "url": "https://www.tiktok.com/tag/volcanocake",
+        "finalUrl": "https://www.tiktok.com/tag/volcanocake",
+        "title": "TikTok - Make Your Day",
+        "scrollRounds": 6,
+        "matchedAfter": 0,
+        "error": null
+      }
+    ],
+    "apiHits": {
+      "/api/search/general/preview/": {
+        "calls": 2,
+        "items": 0,
+        "source": "search"
+      }
+    },
+    "fromSearchEndpoints": 0,
+    "loginWall": true,
+    "captchaWall": false,
+    "bodySnippet": "TikTok Search For You Explore Following LIVE Upload Profile More Log in Company Program Terms & Policies © 2026 TikTok #volcanocake Log in Drag the slider to fit the puzzle Audio 2026092006275218C3D18CAB7599971492"
+  }
 }
