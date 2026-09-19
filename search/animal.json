@@ -5580,5 +5580,52 @@
     "captchaWall": false,
     "bodySnippet": "TikTok Search For You Shop Explore Following LIVE Upload Profile More Log in Company Program Terms & Policies © 2026 TikTok #animal wowPranKz Chihuahua vs. Husky: The Husky Was NOT Ready for This Chihuahua’s Crazy Plan! 😱 jinajqk33 Bon Bon bỏ nhà ra đi #BabyMonkeyAnimal #bimbimonkey #Animal#MonkeyB"
   },
-  "emptyStreak": 0
+  "emptyStreak": 0,
+  "stale": true,
+  "staleSince": "2026-09-19T14:46:57.610Z",
+  "lastAttemptAt": "2026-09-19T14:46:57.610Z",
+  "lastAttemptDebug": {
+    "keyword": "Animal",
+    "want": 120,
+    "strategies": [
+      {
+        "name": "search",
+        "url": "https://www.tiktok.com/search?q=Animal",
+        "finalUrl": "https://www.tiktok.com/search?q=Animal",
+        "title": "TikTok - Make Your Day",
+        "scrollRounds": 6,
+        "matchedAfter": 0,
+        "error": null
+      },
+      {
+        "name": "search-video-tab",
+        "url": "https://www.tiktok.com/search/video?q=Animal",
+        "finalUrl": "https://www.tiktok.com/search/video?q=Animal",
+        "title": "TikTok - Make Your Day",
+        "scrollRounds": 6,
+        "matchedAfter": 0,
+        "error": null
+      },
+      {
+        "name": "hashtag",
+        "url": "https://www.tiktok.com/tag/animal",
+        "finalUrl": "https://www.tiktok.com/tag/animal",
+        "title": "TikTok - Make Your Day",
+        "scrollRounds": 6,
+        "matchedAfter": 0,
+        "error": null
+      }
+    ],
+    "apiHits": {
+      "/api/search/general/preview/": {
+        "calls": 2,
+        "items": 0,
+        "source": "search"
+      }
+    },
+    "fromSearchEndpoints": 0,
+    "loginWall": true,
+    "captchaWall": false,
+    "bodySnippet": "TikTok Search For You Explore Following LIVE Upload Profile More Log in Company Program Terms & Policies © 2026 TikTok #animal Log in Drag the slider to fit the puzzle Audio 20260919224724AF1AD97727BB4A7D089F"
+  }
 }

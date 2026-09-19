@@ -5483,8 +5483,8 @@
   },
   "emptyStreak": 0,
   "stale": true,
-  "staleSince": "2026-09-19T11:27:30.757Z",
-  "lastAttemptAt": "2026-09-19T11:27:30.757Z",
+  "staleSince": "2026-09-19T14:43:52.453Z",
+  "lastAttemptAt": "2026-09-19T14:43:52.453Z",
   "lastAttemptDebug": {
     "keyword": "CHICKEN",
     "want": 120,
@@ -5518,8 +5518,13 @@
       }
     ],
     "apiHits": {
-      "/api/search/general/preview/": {
+      "/api/recommend/item_list/": {
         "calls": 2,
+        "items": 1,
+        "source": "feed"
+      },
+      "/api/challenge/item_list/": {
+        "calls": 1,
         "items": 0,
         "source": "search"
       }
@@ -5527,6 +5532,6 @@
     "fromSearchEndpoints": 0,
     "loginWall": true,
     "captchaWall": false,
-    "bodySnippet": "TikTok Search For You Explore Following LIVE Upload Profile More Log in Company Program Terms & Policies © 2026 TikTok #chicken Log in Drag the slider to fit the puzzle Audio 2026091919275817553560FADE7E74D016"
+    "bodySnippet": "TikTok Search For You Shop Explore Following LIVE Upload Profile More Log in Company Program Terms & Policies © 2026 TikTok #chicken No videos with this hashtag yet Looking for videos? Try browsing our trending creators, hashtags, and sounds. Log in"
   }
 }
