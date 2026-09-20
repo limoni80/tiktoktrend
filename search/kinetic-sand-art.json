@@ -5627,5 +5627,52 @@
     "captchaWall": false,
     "bodySnippet": "TikTok Search For You Shop Explore Following LIVE Upload Profile More Log in Company Program Terms & Policies © 2026 TikTok #kineticsandart Dida’s Deals Oasis Mini Kinetic Sand Art Zen #tiktokshopbacktoschool #tiktokshopcreatorpicks #kineticsandart Riley Rex If you need me I’m playing with my kineti"
   },
-  "emptyStreak": 0
+  "emptyStreak": 0,
+  "stale": true,
+  "staleSince": "2026-09-20T14:09:42.936Z",
+  "lastAttemptAt": "2026-09-20T14:09:42.936Z",
+  "lastAttemptDebug": {
+    "keyword": "kinetic sand art",
+    "want": 120,
+    "strategies": [
+      {
+        "name": "search",
+        "url": "https://www.tiktok.com/search?q=kinetic%20sand%20art",
+        "finalUrl": "https://www.tiktok.com/search?q=kinetic%20sand%20art",
+        "title": "TikTok - Make Your Day",
+        "scrollRounds": 6,
+        "matchedAfter": 0,
+        "error": null
+      },
+      {
+        "name": "search-video-tab",
+        "url": "https://www.tiktok.com/search/video?q=kinetic%20sand%20art",
+        "finalUrl": "https://www.tiktok.com/search/video?q=kinetic%20sand%20art",
+        "title": "TikTok - Make Your Day",
+        "scrollRounds": 6,
+        "matchedAfter": 0,
+        "error": null
+      },
+      {
+        "name": "hashtag",
+        "url": "https://www.tiktok.com/tag/kineticsandart",
+        "finalUrl": "https://www.tiktok.com/tag/kineticsandart",
+        "title": "TikTok - Make Your Day",
+        "scrollRounds": 6,
+        "matchedAfter": 0,
+        "error": null
+      }
+    ],
+    "apiHits": {
+      "/api/search/general/preview/": {
+        "calls": 2,
+        "items": 0,
+        "source": "search"
+      }
+    },
+    "fromSearchEndpoints": 0,
+    "loginWall": true,
+    "captchaWall": false,
+    "bodySnippet": "TikTok Search For You Explore Following LIVE Upload Profile More Log in Company Program Terms & Policies © 2026 TikTok #kineticsandart Log in Drag the slider to fit the puzzle Audio 20260920221015F2781D8F6EB51EDF775F"
+  }
 }
