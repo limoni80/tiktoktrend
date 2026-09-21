@@ -5533,5 +5533,52 @@
     "captchaWall": false,
     "bodySnippet": "TikTok Search For You Shop Explore Following LIVE Upload Profile More Log in Company Program Terms & Policies © 2026 TikTok #aquariumcleaning Hygger.Aquarium You’d be surprised how much waste builds up in your gravel if you don’t clean it for a while!#petlovers #fishtank #aquarium #cleaner #summervi"
   },
-  "emptyStreak": 0
+  "emptyStreak": 0,
+  "stale": true,
+  "staleSince": "2026-09-21T19:18:16.393Z",
+  "lastAttemptAt": "2026-09-21T19:18:16.393Z",
+  "lastAttemptDebug": {
+    "keyword": "aquarium cleaning",
+    "want": 120,
+    "strategies": [
+      {
+        "name": "search",
+        "url": "https://www.tiktok.com/search?q=aquarium%20cleaning",
+        "finalUrl": "https://www.tiktok.com/search?q=aquarium%20cleaning",
+        "title": "TikTok - Make Your Day",
+        "scrollRounds": 6,
+        "matchedAfter": 0,
+        "error": null
+      },
+      {
+        "name": "search-video-tab",
+        "url": "https://www.tiktok.com/search/video?q=aquarium%20cleaning",
+        "finalUrl": "https://www.tiktok.com/search/video?q=aquarium%20cleaning",
+        "title": "TikTok - Make Your Day",
+        "scrollRounds": 6,
+        "matchedAfter": 0,
+        "error": null
+      },
+      {
+        "name": "hashtag",
+        "url": "https://www.tiktok.com/tag/aquariumcleaning",
+        "finalUrl": "https://www.tiktok.com/tag/aquariumcleaning",
+        "title": "TikTok - Make Your Day",
+        "scrollRounds": 6,
+        "matchedAfter": 0,
+        "error": null
+      }
+    ],
+    "apiHits": {
+      "/api/search/general/preview/": {
+        "calls": 2,
+        "items": 0,
+        "source": "search"
+      }
+    },
+    "fromSearchEndpoints": 0,
+    "loginWall": true,
+    "captchaWall": false,
+    "bodySnippet": "TikTok Search For You Explore Following LIVE Upload Profile More Log in Company Program Terms & Policies © 2026 TikTok #aquariumcleaning Log in Drag the slider to fit the puzzle Audio 20260922031844A52F000D8D11E2425763"
+  }
 }
