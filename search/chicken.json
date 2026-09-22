@@ -5483,8 +5483,8 @@
   },
   "emptyStreak": 0,
   "stale": true,
-  "staleSince": "2026-09-22T01:34:08.794Z",
-  "lastAttemptAt": "2026-09-22T01:34:08.794Z",
+  "staleSince": "2026-09-22T06:45:04.997Z",
+  "lastAttemptAt": "2026-09-22T06:45:04.997Z",
   "lastAttemptDebug": {
     "keyword": "CHICKEN",
     "want": 120,
@@ -5518,9 +5518,9 @@
       }
     ],
     "apiHits": {
-      "/api/recommend/item_list/": {
+      "/api/explore/item_list/": {
         "calls": 1,
-        "items": 1,
+        "items": 8,
         "source": "feed"
       },
       "/api/challenge/item_list/": {
