@@ -6408,5 +6408,57 @@
     "captchaWall": false,
     "bodySnippet": "TikTok Search For You Shop Explore Following LIVE Upload Profile More Log in Company Program Terms & Policies © 2026 TikTok #cat @funnypets1 Funyy cats 😂😂#cat #catsoftiktok #catlover #fyp #viral #fyp #viral #usa🇺🇸 #foryoupage @@funnypets1 lilpawdrama 🐱🐱🐱#cat #cutecat #catsoftiktok #catlover #"
   },
-  "emptyStreak": 0
+  "emptyStreak": 0,
+  "stale": true,
+  "staleSince": "2026-09-22T17:13:45.377Z",
+  "lastAttemptAt": "2026-09-22T17:13:45.377Z",
+  "lastAttemptDebug": {
+    "keyword": "cat",
+    "want": 120,
+    "strategies": [
+      {
+        "name": "search",
+        "url": "https://www.tiktok.com/search?q=cat",
+        "finalUrl": "https://www.tiktok.com/search?q=cat",
+        "title": "TikTok - Make Your Day",
+        "scrollRounds": 6,
+        "matchedAfter": 0,
+        "error": null
+      },
+      {
+        "name": "search-video-tab",
+        "url": "https://www.tiktok.com/search/video?q=cat",
+        "finalUrl": "https://www.tiktok.com/search/video?q=cat",
+        "title": "TikTok - Make Your Day",
+        "scrollRounds": 6,
+        "matchedAfter": 0,
+        "error": null
+      },
+      {
+        "name": "hashtag",
+        "url": "https://www.tiktok.com/tag/cat",
+        "finalUrl": "https://www.tiktok.com/tag/cat",
+        "title": "TikTok - Make Your Day",
+        "scrollRounds": 6,
+        "matchedAfter": 0,
+        "error": null
+      }
+    ],
+    "apiHits": {
+      "/api/recommend/item_list/": {
+        "calls": 1,
+        "items": 1,
+        "source": "feed"
+      },
+      "/api/challenge/item_list/": {
+        "calls": 1,
+        "items": 0,
+        "source": "search"
+      }
+    },
+    "fromSearchEndpoints": 0,
+    "loginWall": true,
+    "captchaWall": false,
+    "bodySnippet": "TikTok Search For You Shop Explore Following LIVE Upload Profile More Log in Company Program Terms & Policies © 2026 TikTok #cat No videos with this hashtag yet Looking for videos? Try browsing our trending creators, hashtags, and sounds. Log in"
+  }
 }
