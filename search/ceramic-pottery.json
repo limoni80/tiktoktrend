@@ -5546,5 +5546,52 @@
     "captchaWall": false,
     "bodySnippet": "TikTok Search For You Shop Explore Following LIVE Upload Profile More Log in Company Program Terms & Policies © 2026 TikTok #ceramicpottery emme zhou Day 13 of functional pottery: the VIRAL BERRY WASHING BOWL!! 🤯🍓🥣 #pottery #ceramics #hobby #berrybowl #functionalart maddieetaylor A small sample o"
   },
-  "emptyStreak": 0
+  "emptyStreak": 0,
+  "stale": true,
+  "staleSince": "2026-09-23T01:43:29.634Z",
+  "lastAttemptAt": "2026-09-23T01:43:29.634Z",
+  "lastAttemptDebug": {
+    "keyword": "ceramic pottery",
+    "want": 120,
+    "strategies": [
+      {
+        "name": "search",
+        "url": "https://www.tiktok.com/search?q=ceramic%20pottery",
+        "finalUrl": "https://www.tiktok.com/search?q=ceramic%20pottery",
+        "title": "TikTok - Make Your Day",
+        "scrollRounds": 6,
+        "matchedAfter": 0,
+        "error": null
+      },
+      {
+        "name": "search-video-tab",
+        "url": "https://www.tiktok.com/search/video?q=ceramic%20pottery",
+        "finalUrl": "https://www.tiktok.com/search/video?q=ceramic%20pottery",
+        "title": "TikTok - Make Your Day",
+        "scrollRounds": 6,
+        "matchedAfter": 0,
+        "error": null
+      },
+      {
+        "name": "hashtag",
+        "url": "https://www.tiktok.com/tag/ceramicpottery",
+        "finalUrl": "https://www.tiktok.com/tag/ceramicpottery",
+        "title": "TikTok - Make Your Day",
+        "scrollRounds": 6,
+        "matchedAfter": 0,
+        "error": null
+      }
+    ],
+    "apiHits": {
+      "/api/challenge/item_list/": {
+        "calls": 1,
+        "items": 0,
+        "source": "search"
+      }
+    },
+    "fromSearchEndpoints": 0,
+    "loginWall": true,
+    "captchaWall": false,
+    "bodySnippet": "TikTok Search For You Shop Explore Following LIVE Upload Profile More Log in Company Program Terms & Policies © 2026 TikTok #ceramicpottery Page not available Looking for videos? Try browsing our trending creators, hashtags, and sounds. Log in"
+  }
 }
