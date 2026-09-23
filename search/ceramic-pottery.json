@@ -5524,5 +5524,57 @@
     "captchaWall": false,
     "bodySnippet": "TikTok Search For You Shop Explore Following LIVE Upload Profile More Log in Company Program Terms & Policies © 2026 TikTok #ceramicpottery Broad Studios Club House TUTORIAL TUESDAY: throwing a dinner plate on the pottery wheel. Do you dread making plates? They are trickier than meets the eye. Espec"
   },
-  "emptyStreak": 0
+  "emptyStreak": 0,
+  "stale": true,
+  "staleSince": "2026-09-23T21:26:28.244Z",
+  "lastAttemptAt": "2026-09-23T21:26:28.244Z",
+  "lastAttemptDebug": {
+    "keyword": "ceramic pottery",
+    "want": 120,
+    "strategies": [
+      {
+        "name": "search",
+        "url": "https://www.tiktok.com/search?q=ceramic%20pottery",
+        "finalUrl": "https://www.tiktok.com/search?q=ceramic%20pottery",
+        "title": "TikTok - Make Your Day",
+        "scrollRounds": 6,
+        "matchedAfter": 0,
+        "error": null
+      },
+      {
+        "name": "search-video-tab",
+        "url": "https://www.tiktok.com/search/video?q=ceramic%20pottery",
+        "finalUrl": "https://www.tiktok.com/search/video?q=ceramic%20pottery",
+        "title": "TikTok - Make Your Day",
+        "scrollRounds": 6,
+        "matchedAfter": 0,
+        "error": null
+      },
+      {
+        "name": "hashtag",
+        "url": "https://www.tiktok.com/tag/ceramicpottery",
+        "finalUrl": "https://www.tiktok.com/tag/ceramicpottery",
+        "title": "#ceramicpottery | TikTok",
+        "scrollRounds": 6,
+        "matchedAfter": 0,
+        "error": null
+      }
+    ],
+    "apiHits": {
+      "/api/recommend/item_list/": {
+        "calls": 1,
+        "items": 1,
+        "source": "feed"
+      },
+      "/api/challenge/item_list/": {
+        "calls": 1,
+        "items": 0,
+        "source": "search"
+      }
+    },
+    "fromSearchEndpoints": 0,
+    "loginWall": true,
+    "captchaWall": false,
+    "bodySnippet": "TikTok Search For You Shop Explore Following Short dramas LIVE Upload Profile More Log in Company Program Terms & Policies © 2026 TikTok #ceramicpottery Page not available Looking for videos? Try browsing our trending creators, hashtags, and sounds. Log in"
+  }
 }
