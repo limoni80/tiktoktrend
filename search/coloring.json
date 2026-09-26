@@ -5554,5 +5554,52 @@
     "captchaWall": false,
     "bodySnippet": "TikTok Search For You Shop Explore Following Short dramas LIVE Upload Profile More Log in Company Program Terms & Policies © 2026 TikTok #coloring juls coloring🧸 color with me in my @cocowyocoloring cozy days book juls coloring🧸 color with me in @cocowyocoloring cozy friends book 🧁🍪 colorwithabb"
   },
-  "emptyStreak": 0
+  "emptyStreak": 0,
+  "stale": true,
+  "staleSince": "2026-09-26T16:44:05.057Z",
+  "lastAttemptAt": "2026-09-26T16:44:05.057Z",
+  "lastAttemptDebug": {
+    "keyword": "coloring",
+    "want": 120,
+    "strategies": [
+      {
+        "name": "search",
+        "url": "https://www.tiktok.com/search?q=coloring",
+        "finalUrl": "https://www.tiktok.com/search?q=coloring",
+        "title": "TikTok - Make Your Day",
+        "scrollRounds": 6,
+        "matchedAfter": 0,
+        "error": null
+      },
+      {
+        "name": "search-video-tab",
+        "url": "https://www.tiktok.com/search/video?q=coloring",
+        "finalUrl": "https://www.tiktok.com/search/video?q=coloring",
+        "title": "TikTok - Make Your Day",
+        "scrollRounds": 6,
+        "matchedAfter": 0,
+        "error": null
+      },
+      {
+        "name": "hashtag",
+        "url": "https://www.tiktok.com/tag/coloring",
+        "finalUrl": "https://www.tiktok.com/tag/coloring",
+        "title": "TikTok - Make Your Day",
+        "scrollRounds": 6,
+        "matchedAfter": 0,
+        "error": null
+      }
+    ],
+    "apiHits": {
+      "/api/search/general/preview/": {
+        "calls": 2,
+        "items": 0,
+        "source": "search"
+      }
+    },
+    "fromSearchEndpoints": 0,
+    "loginWall": true,
+    "captchaWall": false,
+    "bodySnippet": "TikTok Search For You Explore Following LIVE Upload Profile More Log in Company Program Terms & Policies © 2026 TikTok #coloring Log in Drag the slider to fit the puzzle Audio 2026092700443383D0D84C145E25002A54"
+  }
 }
