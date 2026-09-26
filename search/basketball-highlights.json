@@ -5536,5 +5536,57 @@
     "captchaWall": false,
     "bodySnippet": "TikTok Search For You Shop Explore Following Short dramas LIVE Upload Profile More Log in Company Program Terms & Policies © 2026 TikTok #basketballhighlights Cityofizy Jamal Crawford’s Son JJ Crawford Highlights Are Insane 😮‍💨🔥 #fyp #viral #highschoolbasketball #jjcrawford #basketballedits Austi"
   },
-  "emptyStreak": 0
+  "emptyStreak": 0,
+  "stale": true,
+  "staleSince": "2026-09-26T22:42:00.291Z",
+  "lastAttemptAt": "2026-09-26T22:42:00.291Z",
+  "lastAttemptDebug": {
+    "keyword": "basketball highlights",
+    "want": 120,
+    "strategies": [
+      {
+        "name": "search",
+        "url": "https://www.tiktok.com/search?q=basketball%20highlights",
+        "finalUrl": "https://www.tiktok.com/search?q=basketball%20highlights",
+        "title": "TikTok - Make Your Day",
+        "scrollRounds": 6,
+        "matchedAfter": 0,
+        "error": null
+      },
+      {
+        "name": "search-video-tab",
+        "url": "https://www.tiktok.com/search/video?q=basketball%20highlights",
+        "finalUrl": "https://www.tiktok.com/search/video?q=basketball%20highlights",
+        "title": "TikTok - Make Your Day",
+        "scrollRounds": 6,
+        "matchedAfter": 0,
+        "error": null
+      },
+      {
+        "name": "hashtag",
+        "url": "https://www.tiktok.com/tag/basketballhighlights",
+        "finalUrl": "https://www.tiktok.com/tag/basketballhighlights",
+        "title": "#basketballhighlights | TikTok",
+        "scrollRounds": 6,
+        "matchedAfter": 0,
+        "error": null
+      }
+    ],
+    "apiHits": {
+      "/api/recommend/item_list/": {
+        "calls": 1,
+        "items": 1,
+        "source": "feed"
+      },
+      "/api/challenge/item_list/": {
+        "calls": 1,
+        "items": 0,
+        "source": "search"
+      }
+    },
+    "fromSearchEndpoints": 0,
+    "loginWall": true,
+    "captchaWall": false,
+    "bodySnippet": "TikTok Search For You Shop Explore Following Short dramas LIVE Upload Profile More Log in Company Program Terms & Policies © 2026 TikTok #basketballhighlights Something went wrong Sorry about that! Please try again later. Refresh Log in"
+  }
 }
