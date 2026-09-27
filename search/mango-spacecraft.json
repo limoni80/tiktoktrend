@@ -1140,8 +1140,8 @@
   },
   "emptyStreak": 0,
   "stale": true,
-  "staleSince": "2026-09-27T01:19:18.923Z",
-  "lastAttemptAt": "2026-09-27T01:19:18.923Z",
+  "staleSince": "2026-09-27T07:02:53.680Z",
+  "lastAttemptAt": "2026-09-27T07:02:53.680Z",
   "lastAttemptDebug": {
     "keyword": "mango spacecraft",
     "want": 120,
@@ -1175,9 +1175,9 @@
       }
     ],
     "apiHits": {
-      "/api/recommend/item_list/": {
-        "calls": 1,
-        "items": 1,
+      "/api/explore/item_list/": {
+        "calls": 3,
+        "items": 21,
         "source": "feed"
       }
     },
