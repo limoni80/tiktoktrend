@@ -5324,5 +5324,52 @@
     "captchaWall": false,
     "bodySnippet": "TikTok Search For You Shop Explore Following Short dramas LIVE Upload Profile More Log in Company Program Terms & Policies © 2026 TikTok #collagen Dr. Eric Berg DC This is what would happen if you consumed collagen for 2 weeks. How do you make sure to consume enough collagen? Dr. Eric Berg DC Your b"
   },
-  "emptyStreak": 0
+  "emptyStreak": 0,
+  "stale": true,
+  "staleSince": "2026-09-27T23:57:31.222Z",
+  "lastAttemptAt": "2026-09-27T23:57:31.222Z",
+  "lastAttemptDebug": {
+    "keyword": "Collagen",
+    "want": 120,
+    "strategies": [
+      {
+        "name": "search",
+        "url": "https://www.tiktok.com/search?q=Collagen",
+        "finalUrl": "https://www.tiktok.com/search?q=Collagen",
+        "title": "TikTok - Make Your Day",
+        "scrollRounds": 6,
+        "matchedAfter": 0,
+        "error": null
+      },
+      {
+        "name": "search-video-tab",
+        "url": "https://www.tiktok.com/search/video?q=Collagen",
+        "finalUrl": "https://www.tiktok.com/search/video?q=Collagen",
+        "title": "TikTok - Make Your Day",
+        "scrollRounds": 6,
+        "matchedAfter": 0,
+        "error": null
+      },
+      {
+        "name": "hashtag",
+        "url": "https://www.tiktok.com/tag/collagen",
+        "finalUrl": "https://www.tiktok.com/tag/collagen",
+        "title": "TikTok - Make Your Day",
+        "scrollRounds": 6,
+        "matchedAfter": 0,
+        "error": null
+      }
+    ],
+    "apiHits": {
+      "/api/search/general/preview/": {
+        "calls": 2,
+        "items": 0,
+        "source": "search"
+      }
+    },
+    "fromSearchEndpoints": 0,
+    "loginWall": true,
+    "captchaWall": false,
+    "bodySnippet": "TikTok Search For You Explore Following Short dramas LIVE Upload Profile More Log in Company Program Terms & Policies © 2026 TikTok #collagen Log in Drag the slider to fit the puzzle Audio 2026092807575811AA51567AFA1462CA93"
+  }
 }
