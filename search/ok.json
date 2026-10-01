@@ -5201,5 +5201,52 @@
     "captchaWall": false,
     "bodySnippet": "TikTok Search For You Shop Explore Following Short dramas LIVE Upload Profile More Log in Company Program Terms & Policies © 2026 TikTok #ok user6747546532 ok #deep #fyp #viral #fürdich puusheeeeeen ok #mood #ok #instagram geo ok. #foryoupage tii #ok #fyp #viral 𝗙y𝗻q★ esdeekid #lyricsedit #vibes #"
   },
-  "emptyStreak": 0
+  "emptyStreak": 0,
+  "stale": true,
+  "staleSince": "2026-10-01T15:24:08.826Z",
+  "lastAttemptAt": "2026-10-01T15:24:08.826Z",
+  "lastAttemptDebug": {
+    "keyword": "ok",
+    "want": 120,
+    "strategies": [
+      {
+        "name": "search",
+        "url": "https://www.tiktok.com/search?q=ok",
+        "finalUrl": "https://www.tiktok.com/search?q=ok",
+        "title": "TikTok - Make Your Day",
+        "scrollRounds": 6,
+        "matchedAfter": 0,
+        "error": null
+      },
+      {
+        "name": "search-video-tab",
+        "url": "https://www.tiktok.com/search/video?q=ok",
+        "finalUrl": "https://www.tiktok.com/search/video?q=ok",
+        "title": "TikTok - Make Your Day",
+        "scrollRounds": 6,
+        "matchedAfter": 0,
+        "error": null
+      },
+      {
+        "name": "hashtag",
+        "url": "https://www.tiktok.com/tag/ok",
+        "finalUrl": "https://www.tiktok.com/tag/ok",
+        "title": "TikTok - Make Your Day",
+        "scrollRounds": 6,
+        "matchedAfter": 0,
+        "error": null
+      }
+    ],
+    "apiHits": {
+      "/api/search/general/preview/": {
+        "calls": 2,
+        "items": 0,
+        "source": "search"
+      }
+    },
+    "fromSearchEndpoints": 0,
+    "loginWall": true,
+    "captchaWall": false,
+    "bodySnippet": "TikTok Search For You Explore Following LIVE Upload Profile More Log in Company Program Terms & Policies © 2026 TikTok #ok Log in Drag the slider to fit the puzzle Audio 20261001232436C689B187E2F9BEA8156F"
+  }
 }
