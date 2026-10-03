@@ -1,19 +1,19 @@
 {
-  "generatedAt": "2026-10-03T01:15:00.367Z",
-  "startedAt": "2026-10-03T01:11:46.338Z",
+  "generatedAt": "2026-10-03T07:08:09.512Z",
+  "startedAt": "2026-10-03T07:05:37.323Z",
   "repo": "limoni80/tiktoktrend",
-  "runUrl": "https://github.com/limoni80/tiktoktrend/actions/runs/37084905986",
+  "runUrl": "https://github.com/limoni80/tiktoktrend/actions/runs/37105019582",
   "entries": [
     {
       "kind": "search",
-      "file": "search/usa.json",
-      "keyword": "USA",
-      "slug": "usa",
+      "file": "search/basketball-highlights.json",
+      "keyword": "basketball highlights",
+      "slug": "basketball-highlights",
       "status": "ok",
-      "count": 75,
+      "count": 120,
       "emptyStreak": 0,
-      "updatedAt": "2026-10-03T01:14:30.459Z",
-      "lastSuccessAt": "2026-10-03T01:14:30.459Z"
+      "updatedAt": "2026-10-03T07:07:38.062Z",
+      "lastSuccessAt": "2026-10-03T07:07:38.062Z"
     },
     {
       "kind": "search",
@@ -23,52 +23,8 @@
       "status": "ok",
       "count": 120,
       "emptyStreak": 0,
-      "updatedAt": "2026-10-03T01:13:15.943Z",
-      "lastSuccessAt": "2026-10-03T01:13:15.943Z"
-    },
-    {
-      "kind": "search",
-      "file": "search/landscaping.json",
-      "keyword": "landscaping",
-      "slug": "landscaping",
-      "status": "ok",
-      "count": 120,
-      "emptyStreak": 0,
-      "updatedAt": "2026-10-03T01:12:50.996Z",
-      "lastSuccessAt": "2026-10-03T01:12:50.996Z"
-    },
-    {
-      "kind": "search",
-      "file": "search/footing.json",
-      "keyword": "Footing",
-      "slug": "footing",
-      "status": "ok",
-      "count": 97,
-      "emptyStreak": 0,
-      "updatedAt": "2026-10-03T01:12:41.260Z",
-      "lastSuccessAt": "2026-10-03T01:12:41.260Z"
-    },
-    {
-      "kind": "search",
-      "file": "search/ai-tools.json",
-      "keyword": "ai tools",
-      "slug": "ai-tools",
-      "status": "ok",
-      "count": 120,
-      "emptyStreak": 0,
-      "updatedAt": "2026-10-03T01:12:36.338Z",
-      "lastSuccessAt": "2026-10-03T01:12:36.338Z"
-    },
-    {
-      "kind": "search",
-      "file": "search/rigragi.json",
-      "keyword": "RIGRAGI",
-      "slug": "rigragi",
-      "status": "ok",
-      "count": 99,
-      "emptyStreak": 0,
-      "updatedAt": "2026-10-03T01:12:28.150Z",
-      "lastSuccessAt": "2026-10-03T01:12:28.150Z"
+      "updatedAt": "2026-10-03T07:07:25.754Z",
+      "lastSuccessAt": "2026-10-03T07:07:25.754Z"
     },
     {
       "kind": "search",
@@ -78,30 +34,30 @@
       "status": "ok",
       "count": 120,
       "emptyStreak": 0,
-      "updatedAt": "2026-10-03T01:12:24.656Z",
-      "lastSuccessAt": "2026-10-03T01:12:24.656Z"
+      "updatedAt": "2026-10-03T07:07:06.089Z",
+      "lastSuccessAt": "2026-10-03T07:07:06.089Z"
     },
     {
       "kind": "search",
-      "file": "search/easy-chicken-dinner.json",
-      "keyword": "easy chicken dinner",
-      "slug": "easy-chicken-dinner",
+      "file": "search/rigragi.json",
+      "keyword": "RIGRAGI",
+      "slug": "rigragi",
       "status": "ok",
-      "count": 120,
+      "count": 90,
       "emptyStreak": 0,
-      "updatedAt": "2026-10-03T01:12:16.981Z",
-      "lastSuccessAt": "2026-10-03T01:12:16.981Z"
+      "updatedAt": "2026-10-03T07:06:56.090Z",
+      "lastSuccessAt": "2026-10-03T07:06:56.090Z"
     },
     {
       "kind": "search",
-      "file": "search/basketball-highlights.json",
-      "keyword": "basketball highlights",
-      "slug": "basketball-highlights",
+      "file": "search/landscaping.json",
+      "keyword": "landscaping",
+      "slug": "landscaping",
       "status": "ok",
       "count": 120,
       "emptyStreak": 0,
-      "updatedAt": "2026-10-03T01:12:04.192Z",
-      "lastSuccessAt": "2026-10-03T01:12:04.192Z"
+      "updatedAt": "2026-10-03T07:06:42.698Z",
+      "lastSuccessAt": "2026-10-03T07:06:42.698Z"
     },
     {
       "kind": "search",
@@ -111,8 +67,52 @@
       "status": "ok",
       "count": 120,
       "emptyStreak": 0,
-      "updatedAt": "2026-10-03T01:11:50.269Z",
-      "lastSuccessAt": "2026-10-03T01:11:50.269Z"
+      "updatedAt": "2026-10-03T07:06:42.278Z",
+      "lastSuccessAt": "2026-10-03T07:06:42.278Z"
+    },
+    {
+      "kind": "search",
+      "file": "search/footing.json",
+      "keyword": "Footing",
+      "slug": "footing",
+      "status": "ok",
+      "count": 105,
+      "emptyStreak": 0,
+      "updatedAt": "2026-10-03T07:06:37.828Z",
+      "lastSuccessAt": "2026-10-03T07:06:37.828Z"
+    },
+    {
+      "kind": "search",
+      "file": "search/usa.json",
+      "keyword": "USA",
+      "slug": "usa",
+      "status": "ok",
+      "count": 6,
+      "emptyStreak": 0,
+      "updatedAt": "2026-10-03T07:06:36.842Z",
+      "lastSuccessAt": "2026-10-03T07:06:36.842Z"
+    },
+    {
+      "kind": "search",
+      "file": "search/ai-tools.json",
+      "keyword": "ai tools",
+      "slug": "ai-tools",
+      "status": "ok",
+      "count": 120,
+      "emptyStreak": 0,
+      "updatedAt": "2026-10-03T07:06:29.463Z",
+      "lastSuccessAt": "2026-10-03T07:06:29.463Z"
+    },
+    {
+      "kind": "search",
+      "file": "search/easy-chicken-dinner.json",
+      "keyword": "easy chicken dinner",
+      "slug": "easy-chicken-dinner",
+      "status": "ok",
+      "count": 120,
+      "emptyStreak": 0,
+      "updatedAt": "2026-10-03T07:06:20.827Z",
+      "lastSuccessAt": "2026-10-03T07:06:20.827Z"
     },
     {
       "kind": "search",
@@ -122,129 +122,8 @@
       "status": "ok",
       "count": 120,
       "emptyStreak": 0,
-      "updatedAt": "2026-10-03T01:11:44.445Z",
-      "lastSuccessAt": "2026-10-03T01:11:44.445Z"
-    },
-    {
-      "kind": "search",
-      "file": "search/tigre.json",
-      "keyword": "tigre",
-      "slug": "tigre",
-      "status": "ok",
-      "count": 120,
-      "emptyStreak": 0,
-      "updatedAt": "2026-10-03T01:11:37.027Z",
-      "lastSuccessAt": "2026-10-03T01:11:37.027Z"
-    },
-    {
-      "kind": "search",
-      "file": "search/recipes.json",
-      "keyword": "recipes",
-      "slug": "recipes",
-      "status": "ok",
-      "count": 120,
-      "emptyStreak": 0,
-      "updatedAt": "2026-10-03T01:11:36.231Z",
-      "lastSuccessAt": "2026-10-03T01:11:36.231Z"
-    },
-    {
-      "kind": "search",
-      "file": "search/crochets.json",
-      "keyword": "Crochets",
-      "slug": "crochets",
-      "status": "ok",
-      "count": 120,
-      "emptyStreak": 0,
-      "updatedAt": "2026-10-03T01:11:33.592Z",
-      "lastSuccessAt": "2026-10-03T01:11:33.592Z"
-    },
-    {
-      "kind": "search",
-      "file": "search/nba.json",
-      "keyword": "nba",
-      "slug": "nba",
-      "status": "ok",
-      "count": 120,
-      "emptyStreak": 0,
-      "updatedAt": "2026-10-03T01:11:30.903Z",
-      "lastSuccessAt": "2026-10-03T01:11:30.903Z"
-    },
-    {
-      "kind": "search",
-      "file": "search/ronaldo.json",
-      "keyword": "ronaldo",
-      "slug": "ronaldo",
-      "status": "ok",
-      "count": 120,
-      "emptyStreak": 0,
-      "updatedAt": "2026-10-03T01:11:25.648Z",
-      "lastSuccessAt": "2026-10-03T01:11:25.648Z"
-    },
-    {
-      "kind": "search",
-      "file": "search/trump.json",
-      "keyword": "trump",
-      "slug": "trump",
-      "status": "ok",
-      "count": 120,
-      "emptyStreak": 0,
-      "updatedAt": "2026-10-03T01:11:20.018Z",
-      "lastSuccessAt": "2026-10-03T01:11:20.018Z"
-    },
-    {
-      "kind": "search",
-      "file": "search/skincare.json",
-      "keyword": "skincare",
-      "slug": "skincare",
-      "status": "ok",
-      "count": 1,
-      "emptyStreak": 0,
-      "updatedAt": "2026-10-03T01:11:14.122Z",
-      "lastSuccessAt": "2026-10-03T01:11:14.122Z"
-    },
-    {
-      "kind": "search",
-      "file": "search/etsy.json",
-      "keyword": "etsy",
-      "slug": "etsy",
-      "status": "ok",
-      "count": 120,
-      "emptyStreak": 0,
-      "updatedAt": "2026-10-03T01:11:11.417Z",
-      "lastSuccessAt": "2026-10-03T01:11:11.417Z"
-    },
-    {
-      "kind": "search",
-      "file": "search/wooden-robot.json",
-      "keyword": "wooden robot",
-      "slug": "wooden-robot",
-      "status": "ok",
-      "count": 120,
-      "emptyStreak": 0,
-      "updatedAt": "2026-10-03T01:11:08.967Z",
-      "lastSuccessAt": "2026-10-03T01:11:08.967Z"
-    },
-    {
-      "kind": "search",
-      "file": "search/nepal.json",
-      "keyword": "NEPAL",
-      "slug": "nepal",
-      "status": "ok",
-      "count": 120,
-      "emptyStreak": 0,
-      "updatedAt": "2026-10-03T01:11:07.698Z",
-      "lastSuccessAt": "2026-10-03T01:11:07.698Z"
-    },
-    {
-      "kind": "search",
-      "file": "search/chapeau.json",
-      "keyword": "chapeau",
-      "slug": "chapeau",
-      "status": "ok",
-      "count": 120,
-      "emptyStreak": 0,
-      "updatedAt": "2026-10-03T01:11:07.656Z",
-      "lastSuccessAt": "2026-10-03T01:11:07.656Z"
+      "updatedAt": "2026-10-03T07:05:57.142Z",
+      "lastSuccessAt": "2026-10-03T07:05:57.142Z"
     },
     {
       "kind": "search",
@@ -254,19 +133,129 @@
       "status": "ok",
       "count": 120,
       "emptyStreak": 0,
-      "updatedAt": "2026-10-03T01:10:50.718Z",
-      "lastSuccessAt": "2026-10-03T01:10:50.718Z"
+      "updatedAt": "2026-10-03T07:05:56.626Z",
+      "lastSuccessAt": "2026-10-03T07:05:56.626Z"
     },
     {
       "kind": "search",
-      "file": "search/digital.json",
-      "keyword": "digital",
-      "slug": "digital",
+      "file": "search/tigre.json",
+      "keyword": "tigre",
+      "slug": "tigre",
       "status": "ok",
       "count": 120,
       "emptyStreak": 0,
-      "updatedAt": "2026-10-03T01:10:33.017Z",
-      "lastSuccessAt": "2026-10-03T01:10:33.017Z"
+      "updatedAt": "2026-10-03T07:05:56.473Z",
+      "lastSuccessAt": "2026-10-03T07:05:56.473Z"
+    },
+    {
+      "kind": "search",
+      "file": "search/skincare.json",
+      "keyword": "skincare",
+      "slug": "skincare",
+      "status": "ok",
+      "count": 120,
+      "emptyStreak": 0,
+      "updatedAt": "2026-10-03T07:05:51.163Z",
+      "lastSuccessAt": "2026-10-03T07:05:51.163Z"
+    },
+    {
+      "kind": "search",
+      "file": "search/ronaldo.json",
+      "keyword": "ronaldo",
+      "slug": "ronaldo",
+      "status": "ok",
+      "count": 120,
+      "emptyStreak": 0,
+      "updatedAt": "2026-10-03T07:05:50.936Z",
+      "lastSuccessAt": "2026-10-03T07:05:50.936Z"
+    },
+    {
+      "kind": "search",
+      "file": "search/recipes.json",
+      "keyword": "recipes",
+      "slug": "recipes",
+      "status": "ok",
+      "count": 120,
+      "emptyStreak": 0,
+      "updatedAt": "2026-10-03T07:05:42.936Z",
+      "lastSuccessAt": "2026-10-03T07:05:42.936Z"
+    },
+    {
+      "kind": "search",
+      "file": "search/nba.json",
+      "keyword": "nba",
+      "slug": "nba",
+      "status": "ok",
+      "count": 120,
+      "emptyStreak": 0,
+      "updatedAt": "2026-10-03T07:05:38.649Z",
+      "lastSuccessAt": "2026-10-03T07:05:38.649Z"
+    },
+    {
+      "kind": "search",
+      "file": "search/etsy.json",
+      "keyword": "etsy",
+      "slug": "etsy",
+      "status": "ok",
+      "count": 120,
+      "emptyStreak": 0,
+      "updatedAt": "2026-10-03T07:05:36.129Z",
+      "lastSuccessAt": "2026-10-03T07:05:36.129Z"
+    },
+    {
+      "kind": "search",
+      "file": "search/wooden-robot.json",
+      "keyword": "wooden robot",
+      "slug": "wooden-robot",
+      "status": "ok",
+      "count": 120,
+      "emptyStreak": 0,
+      "updatedAt": "2026-10-03T07:05:34.133Z",
+      "lastSuccessAt": "2026-10-03T07:05:34.133Z"
+    },
+    {
+      "kind": "search",
+      "file": "search/nepal.json",
+      "keyword": "NEPAL",
+      "slug": "nepal",
+      "status": "ok",
+      "count": 120,
+      "emptyStreak": 0,
+      "updatedAt": "2026-10-03T07:05:31.595Z",
+      "lastSuccessAt": "2026-10-03T07:05:31.595Z"
+    },
+    {
+      "kind": "search",
+      "file": "search/trump.json",
+      "keyword": "trump",
+      "slug": "trump",
+      "status": "ok",
+      "count": 120,
+      "emptyStreak": 0,
+      "updatedAt": "2026-10-03T07:05:31.570Z",
+      "lastSuccessAt": "2026-10-03T07:05:31.570Z"
+    },
+    {
+      "kind": "search",
+      "file": "search/crochets.json",
+      "keyword": "Crochets",
+      "slug": "crochets",
+      "status": "ok",
+      "count": 120,
+      "emptyStreak": 0,
+      "updatedAt": "2026-10-03T07:05:29.098Z",
+      "lastSuccessAt": "2026-10-03T07:05:29.098Z"
+    },
+    {
+      "kind": "search",
+      "file": "search/chapeau.json",
+      "keyword": "chapeau",
+      "slug": "chapeau",
+      "status": "ok",
+      "count": 120,
+      "emptyStreak": 0,
+      "updatedAt": "2026-10-03T07:05:28.266Z",
+      "lastSuccessAt": "2026-10-03T07:05:28.266Z"
     },
     {
       "kind": "search",
@@ -276,8 +265,30 @@
       "status": "ok",
       "count": 120,
       "emptyStreak": 0,
-      "updatedAt": "2026-10-03T01:10:32.296Z",
-      "lastSuccessAt": "2026-10-03T01:10:32.296Z"
+      "updatedAt": "2026-10-03T07:05:16.945Z",
+      "lastSuccessAt": "2026-10-03T07:05:16.945Z"
+    },
+    {
+      "kind": "search",
+      "file": "search/digital.json",
+      "keyword": "digital",
+      "slug": "digital",
+      "status": "ok",
+      "count": 120,
+      "emptyStreak": 0,
+      "updatedAt": "2026-10-03T07:05:16.698Z",
+      "lastSuccessAt": "2026-10-03T07:05:16.698Z"
+    },
+    {
+      "kind": "search",
+      "file": "search/origami-dragon.json",
+      "keyword": "origami dragon",
+      "slug": "origami-dragon",
+      "status": "ok",
+      "count": 86,
+      "emptyStreak": 0,
+      "updatedAt": "2026-10-03T07:04:59.194Z",
+      "lastSuccessAt": "2026-10-03T07:04:59.194Z"
     },
     {
       "kind": "search",
@@ -287,8 +298,8 @@
       "status": "ok",
       "count": 120,
       "emptyStreak": 0,
-      "updatedAt": "2026-10-03T01:10:31.296Z",
-      "lastSuccessAt": "2026-10-03T01:10:31.296Z"
+      "updatedAt": "2026-10-03T07:04:56.676Z",
+      "lastSuccessAt": "2026-10-03T07:04:56.676Z"
     },
     {
       "kind": "search",
@@ -298,19 +309,8 @@
       "status": "ok",
       "count": 120,
       "emptyStreak": 0,
-      "updatedAt": "2026-10-03T01:10:26.731Z",
-      "lastSuccessAt": "2026-10-03T01:10:26.731Z"
-    },
-    {
-      "kind": "search",
-      "file": "search/palaestine.json",
-      "keyword": "PALAESTINE",
-      "slug": "palaestine",
-      "status": "ok",
-      "count": 120,
-      "emptyStreak": 0,
-      "updatedAt": "2026-10-03T01:10:25.425Z",
-      "lastSuccessAt": "2026-10-03T01:10:25.425Z"
+      "updatedAt": "2026-10-03T07:04:42.241Z",
+      "lastSuccessAt": "2026-10-03T07:04:42.241Z"
     },
     {
       "kind": "search",
@@ -320,74 +320,8 @@
       "status": "ok",
       "count": 120,
       "emptyStreak": 0,
-      "updatedAt": "2026-10-03T01:10:21.078Z",
-      "lastSuccessAt": "2026-10-03T01:10:21.078Z"
-    },
-    {
-      "kind": "search",
-      "file": "search/dogs.json",
-      "keyword": "dogs",
-      "slug": "dogs",
-      "status": "ok",
-      "count": 120,
-      "emptyStreak": 0,
-      "updatedAt": "2026-10-03T01:10:16.595Z",
-      "lastSuccessAt": "2026-10-03T01:10:16.595Z"
-    },
-    {
-      "kind": "search",
-      "file": "search/origami-dragon.json",
-      "keyword": "origami dragon",
-      "slug": "origami-dragon",
-      "status": "ok",
-      "count": 120,
-      "emptyStreak": 0,
-      "updatedAt": "2026-10-03T01:10:14.348Z",
-      "lastSuccessAt": "2026-10-03T01:10:14.348Z"
-    },
-    {
-      "kind": "search",
-      "file": "search/animal.json",
-      "keyword": "Animal",
-      "slug": "animal",
-      "status": "ok",
-      "count": 120,
-      "emptyStreak": 0,
-      "updatedAt": "2026-10-03T01:10:09.806Z",
-      "lastSuccessAt": "2026-10-03T01:10:09.806Z"
-    },
-    {
-      "kind": "search",
-      "file": "search/chicken.json",
-      "keyword": "CHICKEN",
-      "slug": "chicken",
-      "status": "ok",
-      "count": 2,
-      "emptyStreak": 0,
-      "updatedAt": "2026-10-03T01:10:09.092Z",
-      "lastSuccessAt": "2026-10-03T01:10:09.092Z"
-    },
-    {
-      "kind": "search",
-      "file": "search/flower.json",
-      "keyword": "flower",
-      "slug": "flower",
-      "status": "ok",
-      "count": 120,
-      "emptyStreak": 0,
-      "updatedAt": "2026-10-03T01:10:07.209Z",
-      "lastSuccessAt": "2026-10-03T01:10:07.209Z"
-    },
-    {
-      "kind": "search",
-      "file": "search/coloring.json",
-      "keyword": "coloring",
-      "slug": "coloring",
-      "status": "ok",
-      "count": 120,
-      "emptyStreak": 0,
-      "updatedAt": "2026-10-03T01:10:04.769Z",
-      "lastSuccessAt": "2026-10-03T01:10:04.769Z"
+      "updatedAt": "2026-10-03T07:04:36.012Z",
+      "lastSuccessAt": "2026-10-03T07:04:36.012Z"
     },
     {
       "kind": "search",
@@ -397,19 +331,8 @@
       "status": "ok",
       "count": 120,
       "emptyStreak": 0,
-      "updatedAt": "2026-10-03T01:09:58.279Z",
-      "lastSuccessAt": "2026-10-03T01:09:58.279Z"
-    },
-    {
-      "kind": "search",
-      "file": "search/dropshipping.json",
-      "keyword": "dropshipping",
-      "slug": "dropshipping",
-      "status": "ok",
-      "count": 120,
-      "emptyStreak": 0,
-      "updatedAt": "2026-10-03T01:09:56.882Z",
-      "lastSuccessAt": "2026-10-03T01:09:56.882Z"
+      "updatedAt": "2026-10-03T07:04:33.822Z",
+      "lastSuccessAt": "2026-10-03T07:04:33.822Z"
     },
     {
       "kind": "search",
@@ -419,8 +342,85 @@
       "status": "ok",
       "count": 120,
       "emptyStreak": 0,
-      "updatedAt": "2026-10-03T01:09:37.435Z",
-      "lastSuccessAt": "2026-10-03T01:09:37.435Z"
+      "updatedAt": "2026-10-03T07:04:33.369Z",
+      "lastSuccessAt": "2026-10-03T07:04:33.369Z"
+    },
+    {
+      "kind": "search",
+      "file": "search/palaestine.json",
+      "keyword": "PALAESTINE",
+      "slug": "palaestine",
+      "status": "ok",
+      "count": 120,
+      "emptyStreak": 0,
+      "updatedAt": "2026-10-03T07:04:32.851Z",
+      "lastSuccessAt": "2026-10-03T07:04:32.851Z"
+    },
+    {
+      "kind": "search",
+      "file": "search/flower.json",
+      "keyword": "flower",
+      "slug": "flower",
+      "status": "ok",
+      "count": 120,
+      "emptyStreak": 0,
+      "updatedAt": "2026-10-03T07:04:31.797Z",
+      "lastSuccessAt": "2026-10-03T07:04:31.797Z"
+    },
+    {
+      "kind": "search",
+      "file": "search/coloring.json",
+      "keyword": "coloring",
+      "slug": "coloring",
+      "status": "ok",
+      "count": 120,
+      "emptyStreak": 0,
+      "updatedAt": "2026-10-03T07:04:29.325Z",
+      "lastSuccessAt": "2026-10-03T07:04:29.325Z"
+    },
+    {
+      "kind": "search",
+      "file": "search/dropshipping.json",
+      "keyword": "dropshipping",
+      "slug": "dropshipping",
+      "status": "ok",
+      "count": 120,
+      "emptyStreak": 0,
+      "updatedAt": "2026-10-03T07:04:28.448Z",
+      "lastSuccessAt": "2026-10-03T07:04:28.448Z"
+    },
+    {
+      "kind": "search",
+      "file": "search/dogs.json",
+      "keyword": "dogs",
+      "slug": "dogs",
+      "status": "ok",
+      "count": 120,
+      "emptyStreak": 0,
+      "updatedAt": "2026-10-03T07:04:27.476Z",
+      "lastSuccessAt": "2026-10-03T07:04:27.476Z"
+    },
+    {
+      "kind": "search",
+      "file": "search/animal.json",
+      "keyword": "Animal",
+      "slug": "animal",
+      "status": "ok",
+      "count": 120,
+      "emptyStreak": 0,
+      "updatedAt": "2026-10-03T07:04:25.561Z",
+      "lastSuccessAt": "2026-10-03T07:04:25.561Z"
+    },
+    {
+      "kind": "search",
+      "file": "search/chicken.json",
+      "keyword": "CHICKEN",
+      "slug": "chicken",
+      "status": "ok",
+      "count": 1,
+      "emptyStreak": 0,
+      "updatedAt": "2026-10-03T07:04:22.434Z",
+      "lastSuccessAt": "2026-10-03T07:04:22.434Z"
     },
     {
       "kind": "search",
@@ -430,8 +430,8 @@
       "status": "ok",
       "count": 120,
       "emptyStreak": 0,
-      "updatedAt": "2026-10-03T01:09:27.746Z",
-      "lastSuccessAt": "2026-10-03T01:09:27.746Z"
+      "updatedAt": "2026-10-03T07:04:18.074Z",
+      "lastSuccessAt": "2026-10-03T07:04:18.074Z"
     },
     {
       "kind": "search",
@@ -441,63 +441,8 @@
       "status": "ok",
       "count": 120,
       "emptyStreak": 0,
-      "updatedAt": "2026-10-03T01:09:25.769Z",
-      "lastSuccessAt": "2026-10-03T01:09:25.769Z"
-    },
-    {
-      "kind": "search",
-      "file": "search/cat.json",
-      "keyword": "cat",
-      "slug": "cat",
-      "status": "ok",
-      "count": 120,
-      "emptyStreak": 0,
-      "updatedAt": "2026-10-03T01:09:20.688Z",
-      "lastSuccessAt": "2026-10-03T01:09:20.688Z"
-    },
-    {
-      "kind": "search",
-      "file": "search/chocolat.json",
-      "keyword": "chocolat",
-      "slug": "chocolat",
-      "status": "ok",
-      "count": 30,
-      "emptyStreak": 0,
-      "updatedAt": "2026-10-03T01:09:17.479Z",
-      "lastSuccessAt": "2026-10-03T01:09:17.479Z"
-    },
-    {
-      "kind": "search",
-      "file": "search/ali-baba.json",
-      "keyword": "ALI BABA",
-      "slug": "ali-baba",
-      "status": "ok",
-      "count": 120,
-      "emptyStreak": 0,
-      "updatedAt": "2026-10-03T01:09:14.540Z",
-      "lastSuccessAt": "2026-10-03T01:09:14.540Z"
-    },
-    {
-      "kind": "search",
-      "file": "search/miniature-cooking-show.json",
-      "keyword": "miniature cooking show",
-      "slug": "miniature-cooking-show",
-      "status": "ok",
-      "count": 120,
-      "emptyStreak": 0,
-      "updatedAt": "2026-10-03T01:09:06.712Z",
-      "lastSuccessAt": "2026-10-03T01:09:06.712Z"
-    },
-    {
-      "kind": "search",
-      "file": "search/kinetic-sand-art.json",
-      "keyword": "kinetic sand art",
-      "slug": "kinetic-sand-art",
-      "status": "ok",
-      "count": 120,
-      "emptyStreak": 0,
-      "updatedAt": "2026-10-03T01:09:04.547Z",
-      "lastSuccessAt": "2026-10-03T01:09:04.547Z"
+      "updatedAt": "2026-10-03T07:04:13.834Z",
+      "lastSuccessAt": "2026-10-03T07:04:13.834Z"
     },
     {
       "kind": "search",
@@ -507,8 +452,8 @@
       "status": "ok",
       "count": 120,
       "emptyStreak": 0,
-      "updatedAt": "2026-10-03T01:09:04.008Z",
-      "lastSuccessAt": "2026-10-03T01:09:04.008Z"
+      "updatedAt": "2026-10-03T07:03:58.325Z",
+      "lastSuccessAt": "2026-10-03T07:03:58.325Z"
     },
     {
       "kind": "search",
@@ -518,30 +463,19 @@
       "status": "ok",
       "count": 120,
       "emptyStreak": 0,
-      "updatedAt": "2026-10-03T01:09:03.758Z",
-      "lastSuccessAt": "2026-10-03T01:09:03.758Z"
+      "updatedAt": "2026-10-03T07:03:34.272Z",
+      "lastSuccessAt": "2026-10-03T07:03:34.272Z"
     },
     {
       "kind": "search",
-      "file": "search/macbook.json",
-      "keyword": "MACBOOK",
-      "slug": "macbook",
+      "file": "search/ali-baba.json",
+      "keyword": "ALI BABA",
+      "slug": "ali-baba",
       "status": "ok",
       "count": 120,
       "emptyStreak": 0,
-      "updatedAt": "2026-10-03T01:09:02.360Z",
-      "lastSuccessAt": "2026-10-03T01:09:02.360Z"
-    },
-    {
-      "kind": "search",
-      "file": "search/ok.json",
-      "keyword": "ok",
-      "slug": "ok",
-      "status": "ok",
-      "count": 120,
-      "emptyStreak": 0,
-      "updatedAt": "2026-10-03T01:08:59.815Z",
-      "lastSuccessAt": "2026-10-03T01:08:59.815Z"
+      "updatedAt": "2026-10-03T07:03:31.845Z",
+      "lastSuccessAt": "2026-10-03T07:03:31.845Z"
     },
     {
       "kind": "search",
@@ -551,8 +485,96 @@
       "status": "ok",
       "count": 120,
       "emptyStreak": 0,
-      "updatedAt": "2026-10-03T01:08:58.049Z",
-      "lastSuccessAt": "2026-10-03T01:08:58.049Z"
+      "updatedAt": "2026-10-03T07:03:31.736Z",
+      "lastSuccessAt": "2026-10-03T07:03:31.736Z"
+    },
+    {
+      "kind": "search",
+      "file": "search/cat.json",
+      "keyword": "cat",
+      "slug": "cat",
+      "status": "ok",
+      "count": 1,
+      "emptyStreak": 0,
+      "updatedAt": "2026-10-03T07:03:29.421Z",
+      "lastSuccessAt": "2026-10-03T07:03:29.421Z"
+    },
+    {
+      "kind": "search",
+      "file": "search/ok.json",
+      "keyword": "ok",
+      "slug": "ok",
+      "status": "ok",
+      "count": 120,
+      "emptyStreak": 0,
+      "updatedAt": "2026-10-03T07:03:27.516Z",
+      "lastSuccessAt": "2026-10-03T07:03:27.516Z"
+    },
+    {
+      "kind": "search",
+      "file": "search/chocolat.json",
+      "keyword": "chocolat",
+      "slug": "chocolat",
+      "status": "ok",
+      "count": 120,
+      "emptyStreak": 0,
+      "updatedAt": "2026-10-03T07:03:26.856Z",
+      "lastSuccessAt": "2026-10-03T07:03:26.856Z"
+    },
+    {
+      "kind": "search",
+      "file": "search/miniature-cooking-show.json",
+      "keyword": "miniature cooking show",
+      "slug": "miniature-cooking-show",
+      "status": "ok",
+      "count": 120,
+      "emptyStreak": 0,
+      "updatedAt": "2026-10-03T07:03:26.218Z",
+      "lastSuccessAt": "2026-10-03T07:03:26.218Z"
+    },
+    {
+      "kind": "search",
+      "file": "search/bamboo-satellite-garden.json",
+      "keyword": "bamboo satellite garden",
+      "slug": "bamboo-satellite-garden",
+      "status": "empty",
+      "count": 0,
+      "emptyStreak": 93,
+      "updatedAt": "2026-10-03T07:03:25.790Z",
+      "lastSuccessAt": "2026-10-02T22:07:43.526Z"
+    },
+    {
+      "kind": "search",
+      "file": "search/limoniastrum.json",
+      "keyword": "limoniastrum",
+      "slug": "limoniastrum",
+      "status": "empty",
+      "count": 0,
+      "emptyStreak": 94,
+      "updatedAt": "2026-10-03T07:03:24.394Z",
+      "lastSuccessAt": "2026-10-02T22:07:47.109Z"
+    },
+    {
+      "kind": "search",
+      "file": "search/kinetic-sand-art.json",
+      "keyword": "kinetic sand art",
+      "slug": "kinetic-sand-art",
+      "status": "ok",
+      "count": 120,
+      "emptyStreak": 0,
+      "updatedAt": "2026-10-03T07:03:24.226Z",
+      "lastSuccessAt": "2026-10-03T07:03:24.226Z"
+    },
+    {
+      "kind": "search",
+      "file": "search/macbook.json",
+      "keyword": "MACBOOK",
+      "slug": "macbook",
+      "status": "ok",
+      "count": 120,
+      "emptyStreak": 0,
+      "updatedAt": "2026-10-03T07:03:24.175Z",
+      "lastSuccessAt": "2026-10-03T07:03:24.175Z"
     },
     {
       "kind": "search",
@@ -562,19 +584,8 @@
       "status": "ok",
       "count": 4,
       "emptyStreak": 0,
-      "updatedAt": "2026-10-03T01:08:57.993Z",
-      "lastSuccessAt": "2026-10-03T01:08:57.993Z"
-    },
-    {
-      "kind": "search",
-      "file": "search/limoniastrum.json",
-      "keyword": "limoniastrum",
-      "slug": "limoniastrum",
-      "status": "empty",
-      "count": 0,
-      "emptyStreak": 93,
-      "updatedAt": "2026-10-02T22:07:47.109Z",
-      "lastSuccessAt": "2026-10-02T12:25:14.989Z"
+      "updatedAt": "2026-10-03T07:03:22.352Z",
+      "lastSuccessAt": "2026-10-03T07:03:22.352Z"
     },
     {
       "kind": "search",
@@ -583,20 +594,9 @@
       "slug": "quick-chicken-lunch",
       "status": "empty",
       "count": 0,
-      "emptyStreak": 93,
-      "updatedAt": "2026-10-02T22:07:44.345Z",
-      "lastSuccessAt": "2026-10-02T12:25:22.960Z"
-    },
-    {
-      "kind": "search",
-      "file": "search/bamboo-satellite-garden.json",
-      "keyword": "bamboo satellite garden",
-      "slug": "bamboo-satellite-garden",
-      "status": "empty",
-      "count": 0,
-      "emptyStreak": 92,
-      "updatedAt": "2026-10-02T22:07:43.526Z",
-      "lastSuccessAt": "2026-10-02T12:25:13.392Z"
+      "emptyStreak": 94,
+      "updatedAt": "2026-10-03T07:03:17.562Z",
+      "lastSuccessAt": "2026-10-02T22:07:44.345Z"
     },
     {
       "kind": "search",
@@ -620,385 +620,385 @@
   ],
   "keywords": [
     {
-      "keyword": "USA",
-      "slug": "usa",
+      "keyword": "basketball highlights",
+      "slug": "basketball-highlights",
       "status": "ok",
-      "count": 75,
-      "updatedAt": "2026-10-03T01:14:30.459Z"
+      "count": 120,
+      "updatedAt": "2026-10-03T07:07:38.062Z"
     },
     {
       "keyword": "chicken recipe",
       "slug": "chicken-recipe",
       "status": "ok",
       "count": 120,
-      "updatedAt": "2026-10-03T01:13:15.943Z"
-    },
-    {
-      "keyword": "landscaping",
-      "slug": "landscaping",
-      "status": "ok",
-      "count": 120,
-      "updatedAt": "2026-10-03T01:12:50.996Z"
-    },
-    {
-      "keyword": "Footing",
-      "slug": "footing",
-      "status": "ok",
-      "count": 97,
-      "updatedAt": "2026-10-03T01:12:41.260Z"
-    },
-    {
-      "keyword": "ai tools",
-      "slug": "ai-tools",
-      "status": "ok",
-      "count": 120,
-      "updatedAt": "2026-10-03T01:12:36.338Z"
-    },
-    {
-      "keyword": "RIGRAGI",
-      "slug": "rigragi",
-      "status": "ok",
-      "count": 99,
-      "updatedAt": "2026-10-03T01:12:28.150Z"
+      "updatedAt": "2026-10-03T07:07:25.754Z"
     },
     {
       "keyword": "Ufc",
       "slug": "ufc",
       "status": "ok",
       "count": 120,
-      "updatedAt": "2026-10-03T01:12:24.656Z"
+      "updatedAt": "2026-10-03T07:07:06.089Z"
     },
     {
-      "keyword": "easy chicken dinner",
-      "slug": "easy-chicken-dinner",
+      "keyword": "RIGRAGI",
+      "slug": "rigragi",
       "status": "ok",
-      "count": 120,
-      "updatedAt": "2026-10-03T01:12:16.981Z"
+      "count": 90,
+      "updatedAt": "2026-10-03T07:06:56.090Z"
     },
     {
-      "keyword": "basketball highlights",
-      "slug": "basketball-highlights",
+      "keyword": "landscaping",
+      "slug": "landscaping",
       "status": "ok",
       "count": 120,
-      "updatedAt": "2026-10-03T01:12:04.192Z"
+      "updatedAt": "2026-10-03T07:06:42.698Z"
     },
     {
       "keyword": "ALGERIE",
       "slug": "algerie",
       "status": "ok",
       "count": 120,
-      "updatedAt": "2026-10-03T01:11:50.269Z"
+      "updatedAt": "2026-10-03T07:06:42.278Z"
+    },
+    {
+      "keyword": "Footing",
+      "slug": "footing",
+      "status": "ok",
+      "count": 105,
+      "updatedAt": "2026-10-03T07:06:37.828Z"
+    },
+    {
+      "keyword": "USA",
+      "slug": "usa",
+      "status": "ok",
+      "count": 6,
+      "updatedAt": "2026-10-03T07:06:36.842Z"
+    },
+    {
+      "keyword": "ai tools",
+      "slug": "ai-tools",
+      "status": "ok",
+      "count": 120,
+      "updatedAt": "2026-10-03T07:06:29.463Z"
+    },
+    {
+      "keyword": "easy chicken dinner",
+      "slug": "easy-chicken-dinner",
+      "status": "ok",
+      "count": 120,
+      "updatedAt": "2026-10-03T07:06:20.827Z"
     },
     {
       "keyword": "football",
       "slug": "football",
       "status": "ok",
       "count": 120,
-      "updatedAt": "2026-10-03T01:11:44.445Z"
-    },
-    {
-      "keyword": "tigre",
-      "slug": "tigre",
-      "status": "ok",
-      "count": 120,
-      "updatedAt": "2026-10-03T01:11:37.027Z"
-    },
-    {
-      "keyword": "recipes",
-      "slug": "recipes",
-      "status": "ok",
-      "count": 120,
-      "updatedAt": "2026-10-03T01:11:36.231Z"
-    },
-    {
-      "keyword": "Crochets",
-      "slug": "crochets",
-      "status": "ok",
-      "count": 120,
-      "updatedAt": "2026-10-03T01:11:33.592Z"
-    },
-    {
-      "keyword": "nba",
-      "slug": "nba",
-      "status": "ok",
-      "count": 120,
-      "updatedAt": "2026-10-03T01:11:30.903Z"
-    },
-    {
-      "keyword": "ronaldo",
-      "slug": "ronaldo",
-      "status": "ok",
-      "count": 120,
-      "updatedAt": "2026-10-03T01:11:25.648Z"
-    },
-    {
-      "keyword": "trump",
-      "slug": "trump",
-      "status": "ok",
-      "count": 120,
-      "updatedAt": "2026-10-03T01:11:20.018Z"
-    },
-    {
-      "keyword": "skincare",
-      "slug": "skincare",
-      "status": "ok",
-      "count": 1,
-      "updatedAt": "2026-10-03T01:11:14.122Z"
-    },
-    {
-      "keyword": "etsy",
-      "slug": "etsy",
-      "status": "ok",
-      "count": 120,
-      "updatedAt": "2026-10-03T01:11:11.417Z"
-    },
-    {
-      "keyword": "wooden robot",
-      "slug": "wooden-robot",
-      "status": "ok",
-      "count": 120,
-      "updatedAt": "2026-10-03T01:11:08.967Z"
-    },
-    {
-      "keyword": "NEPAL",
-      "slug": "nepal",
-      "status": "ok",
-      "count": 120,
-      "updatedAt": "2026-10-03T01:11:07.698Z"
-    },
-    {
-      "keyword": "chapeau",
-      "slug": "chapeau",
-      "status": "ok",
-      "count": 120,
-      "updatedAt": "2026-10-03T01:11:07.656Z"
+      "updatedAt": "2026-10-03T07:05:57.142Z"
     },
     {
       "keyword": "messi",
       "slug": "messi",
       "status": "ok",
       "count": 120,
-      "updatedAt": "2026-10-03T01:10:50.718Z"
+      "updatedAt": "2026-10-03T07:05:56.626Z"
     },
     {
-      "keyword": "digital",
-      "slug": "digital",
+      "keyword": "tigre",
+      "slug": "tigre",
       "status": "ok",
       "count": 120,
-      "updatedAt": "2026-10-03T01:10:33.017Z"
+      "updatedAt": "2026-10-03T07:05:56.473Z"
+    },
+    {
+      "keyword": "skincare",
+      "slug": "skincare",
+      "status": "ok",
+      "count": 120,
+      "updatedAt": "2026-10-03T07:05:51.163Z"
+    },
+    {
+      "keyword": "ronaldo",
+      "slug": "ronaldo",
+      "status": "ok",
+      "count": 120,
+      "updatedAt": "2026-10-03T07:05:50.936Z"
+    },
+    {
+      "keyword": "recipes",
+      "slug": "recipes",
+      "status": "ok",
+      "count": 120,
+      "updatedAt": "2026-10-03T07:05:42.936Z"
+    },
+    {
+      "keyword": "nba",
+      "slug": "nba",
+      "status": "ok",
+      "count": 120,
+      "updatedAt": "2026-10-03T07:05:38.649Z"
+    },
+    {
+      "keyword": "etsy",
+      "slug": "etsy",
+      "status": "ok",
+      "count": 120,
+      "updatedAt": "2026-10-03T07:05:36.129Z"
+    },
+    {
+      "keyword": "wooden robot",
+      "slug": "wooden-robot",
+      "status": "ok",
+      "count": 120,
+      "updatedAt": "2026-10-03T07:05:34.133Z"
+    },
+    {
+      "keyword": "NEPAL",
+      "slug": "nepal",
+      "status": "ok",
+      "count": 120,
+      "updatedAt": "2026-10-03T07:05:31.595Z"
+    },
+    {
+      "keyword": "trump",
+      "slug": "trump",
+      "status": "ok",
+      "count": 120,
+      "updatedAt": "2026-10-03T07:05:31.570Z"
+    },
+    {
+      "keyword": "Crochets",
+      "slug": "crochets",
+      "status": "ok",
+      "count": 120,
+      "updatedAt": "2026-10-03T07:05:29.098Z"
+    },
+    {
+      "keyword": "chapeau",
+      "slug": "chapeau",
+      "status": "ok",
+      "count": 120,
+      "updatedAt": "2026-10-03T07:05:28.266Z"
     },
     {
       "keyword": "tigers",
       "slug": "tigers",
       "status": "ok",
       "count": 120,
-      "updatedAt": "2026-10-03T01:10:32.296Z"
+      "updatedAt": "2026-10-03T07:05:16.945Z"
+    },
+    {
+      "keyword": "digital",
+      "slug": "digital",
+      "status": "ok",
+      "count": 120,
+      "updatedAt": "2026-10-03T07:05:16.698Z"
+    },
+    {
+      "keyword": "origami dragon",
+      "slug": "origami-dragon",
+      "status": "ok",
+      "count": 86,
+      "updatedAt": "2026-10-03T07:04:59.194Z"
     },
     {
       "keyword": "chicken meal prep ideas",
       "slug": "chicken-meal-prep-ideas",
       "status": "ok",
       "count": 120,
-      "updatedAt": "2026-10-03T01:10:31.296Z"
+      "updatedAt": "2026-10-03T07:04:56.676Z"
     },
     {
       "keyword": "aquarium cleaning",
       "slug": "aquarium-cleaning",
       "status": "ok",
       "count": 120,
-      "updatedAt": "2026-10-03T01:10:26.731Z"
-    },
-    {
-      "keyword": "PALAESTINE",
-      "slug": "palaestine",
-      "status": "ok",
-      "count": 120,
-      "updatedAt": "2026-10-03T01:10:25.425Z"
+      "updatedAt": "2026-10-03T07:04:42.241Z"
     },
     {
       "keyword": "morocco",
       "slug": "morocco",
       "status": "ok",
       "count": 120,
-      "updatedAt": "2026-10-03T01:10:21.078Z"
-    },
-    {
-      "keyword": "dogs",
-      "slug": "dogs",
-      "status": "ok",
-      "count": 120,
-      "updatedAt": "2026-10-03T01:10:16.595Z"
-    },
-    {
-      "keyword": "origami dragon",
-      "slug": "origami-dragon",
-      "status": "ok",
-      "count": 120,
-      "updatedAt": "2026-10-03T01:10:14.348Z"
-    },
-    {
-      "keyword": "Animal",
-      "slug": "animal",
-      "status": "ok",
-      "count": 120,
-      "updatedAt": "2026-10-03T01:10:09.806Z"
-    },
-    {
-      "keyword": "CHICKEN",
-      "slug": "chicken",
-      "status": "ok",
-      "count": 2,
-      "updatedAt": "2026-10-03T01:10:09.092Z"
-    },
-    {
-      "keyword": "flower",
-      "slug": "flower",
-      "status": "ok",
-      "count": 120,
-      "updatedAt": "2026-10-03T01:10:07.209Z"
-    },
-    {
-      "keyword": "coloring",
-      "slug": "coloring",
-      "status": "ok",
-      "count": 120,
-      "updatedAt": "2026-10-03T01:10:04.769Z"
+      "updatedAt": "2026-10-03T07:04:36.012Z"
     },
     {
       "keyword": "digital products",
       "slug": "digital-products",
       "status": "ok",
       "count": 120,
-      "updatedAt": "2026-10-03T01:09:58.279Z"
-    },
-    {
-      "keyword": "dropshipping",
-      "slug": "dropshipping",
-      "status": "ok",
-      "count": 120,
-      "updatedAt": "2026-10-03T01:09:56.882Z"
+      "updatedAt": "2026-10-03T07:04:33.822Z"
     },
     {
       "keyword": "viral recipes",
       "slug": "viral-recipes",
       "status": "ok",
       "count": 120,
-      "updatedAt": "2026-10-03T01:09:37.435Z"
+      "updatedAt": "2026-10-03T07:04:33.369Z"
+    },
+    {
+      "keyword": "PALAESTINE",
+      "slug": "palaestine",
+      "status": "ok",
+      "count": 120,
+      "updatedAt": "2026-10-03T07:04:32.851Z"
+    },
+    {
+      "keyword": "flower",
+      "slug": "flower",
+      "status": "ok",
+      "count": 120,
+      "updatedAt": "2026-10-03T07:04:31.797Z"
+    },
+    {
+      "keyword": "coloring",
+      "slug": "coloring",
+      "status": "ok",
+      "count": 120,
+      "updatedAt": "2026-10-03T07:04:29.325Z"
+    },
+    {
+      "keyword": "dropshipping",
+      "slug": "dropshipping",
+      "status": "ok",
+      "count": 120,
+      "updatedAt": "2026-10-03T07:04:28.448Z"
+    },
+    {
+      "keyword": "dogs",
+      "slug": "dogs",
+      "status": "ok",
+      "count": 120,
+      "updatedAt": "2026-10-03T07:04:27.476Z"
+    },
+    {
+      "keyword": "Animal",
+      "slug": "animal",
+      "status": "ok",
+      "count": 120,
+      "updatedAt": "2026-10-03T07:04:25.561Z"
+    },
+    {
+      "keyword": "CHICKEN",
+      "slug": "chicken",
+      "status": "ok",
+      "count": 1,
+      "updatedAt": "2026-10-03T07:04:22.434Z"
     },
     {
       "keyword": "dog",
       "slug": "dog",
       "status": "ok",
       "count": 120,
-      "updatedAt": "2026-10-03T01:09:27.746Z"
+      "updatedAt": "2026-10-03T07:04:18.074Z"
     },
     {
       "keyword": "ceramic pottery",
       "slug": "ceramic-pottery",
       "status": "ok",
       "count": 120,
-      "updatedAt": "2026-10-03T01:09:25.769Z"
-    },
-    {
-      "keyword": "cat",
-      "slug": "cat",
-      "status": "ok",
-      "count": 120,
-      "updatedAt": "2026-10-03T01:09:20.688Z"
-    },
-    {
-      "keyword": "chocolat",
-      "slug": "chocolat",
-      "status": "ok",
-      "count": 30,
-      "updatedAt": "2026-10-03T01:09:17.479Z"
-    },
-    {
-      "keyword": "ALI BABA",
-      "slug": "ali-baba",
-      "status": "ok",
-      "count": 120,
-      "updatedAt": "2026-10-03T01:09:14.540Z"
-    },
-    {
-      "keyword": "miniature cooking show",
-      "slug": "miniature-cooking-show",
-      "status": "ok",
-      "count": 120,
-      "updatedAt": "2026-10-03T01:09:06.712Z"
-    },
-    {
-      "keyword": "kinetic sand art",
-      "slug": "kinetic-sand-art",
-      "status": "ok",
-      "count": 120,
-      "updatedAt": "2026-10-03T01:09:04.547Z"
+      "updatedAt": "2026-10-03T07:04:13.834Z"
     },
     {
       "keyword": "Collagen",
       "slug": "collagen",
       "status": "ok",
       "count": 120,
-      "updatedAt": "2026-10-03T01:09:04.008Z"
+      "updatedAt": "2026-10-03T07:03:58.325Z"
     },
     {
       "keyword": "volcano cake",
       "slug": "volcano-cake",
       "status": "ok",
       "count": 120,
-      "updatedAt": "2026-10-03T01:09:03.758Z"
+      "updatedAt": "2026-10-03T07:03:34.272Z"
     },
     {
-      "keyword": "MACBOOK",
-      "slug": "macbook",
+      "keyword": "ALI BABA",
+      "slug": "ali-baba",
       "status": "ok",
       "count": 120,
-      "updatedAt": "2026-10-03T01:09:02.360Z"
-    },
-    {
-      "keyword": "ok",
-      "slug": "ok",
-      "status": "ok",
-      "count": 120,
-      "updatedAt": "2026-10-03T01:08:59.815Z"
+      "updatedAt": "2026-10-03T07:03:31.845Z"
     },
     {
       "keyword": "coloring pages",
       "slug": "coloring-pages",
       "status": "ok",
       "count": 120,
-      "updatedAt": "2026-10-03T01:08:58.049Z"
+      "updatedAt": "2026-10-03T07:03:31.736Z"
     },
     {
-      "keyword": "Viral",
-      "slug": "viral",
+      "keyword": "cat",
+      "slug": "cat",
       "status": "ok",
-      "count": 4,
-      "updatedAt": "2026-10-03T01:08:57.993Z"
+      "count": 1,
+      "updatedAt": "2026-10-03T07:03:29.421Z"
     },
     {
-      "keyword": "limoniastrum",
-      "slug": "limoniastrum",
-      "status": "empty",
-      "count": 0,
-      "updatedAt": "2026-10-02T22:07:47.109Z",
-      "emptyStreak": 93
+      "keyword": "ok",
+      "slug": "ok",
+      "status": "ok",
+      "count": 120,
+      "updatedAt": "2026-10-03T07:03:27.516Z"
     },
     {
-      "keyword": "quick chicken lunch",
-      "slug": "quick-chicken-lunch",
-      "status": "empty",
-      "count": 0,
-      "updatedAt": "2026-10-02T22:07:44.345Z",
-      "emptyStreak": 93
+      "keyword": "chocolat",
+      "slug": "chocolat",
+      "status": "ok",
+      "count": 120,
+      "updatedAt": "2026-10-03T07:03:26.856Z"
+    },
+    {
+      "keyword": "miniature cooking show",
+      "slug": "miniature-cooking-show",
+      "status": "ok",
+      "count": 120,
+      "updatedAt": "2026-10-03T07:03:26.218Z"
     },
     {
       "keyword": "bamboo satellite garden",
       "slug": "bamboo-satellite-garden",
       "status": "empty",
       "count": 0,
-      "updatedAt": "2026-10-02T22:07:43.526Z",
-      "emptyStreak": 92
+      "updatedAt": "2026-10-03T07:03:25.790Z",
+      "emptyStreak": 93
+    },
+    {
+      "keyword": "limoniastrum",
+      "slug": "limoniastrum",
+      "status": "empty",
+      "count": 0,
+      "updatedAt": "2026-10-03T07:03:24.394Z",
+      "emptyStreak": 94
+    },
+    {
+      "keyword": "kinetic sand art",
+      "slug": "kinetic-sand-art",
+      "status": "ok",
+      "count": 120,
+      "updatedAt": "2026-10-03T07:03:24.226Z"
+    },
+    {
+      "keyword": "MACBOOK",
+      "slug": "macbook",
+      "status": "ok",
+      "count": 120,
+      "updatedAt": "2026-10-03T07:03:24.175Z"
+    },
+    {
+      "keyword": "Viral",
+      "slug": "viral",
+      "status": "ok",
+      "count": 4,
+      "updatedAt": "2026-10-03T07:03:22.352Z"
+    },
+    {
+      "keyword": "quick chicken lunch",
+      "slug": "quick-chicken-lunch",
+      "status": "empty",
+      "count": 0,
+      "updatedAt": "2026-10-03T07:03:17.562Z",
+      "emptyStreak": 94
     },
     {
       "keyword": "mango spacecraft",
