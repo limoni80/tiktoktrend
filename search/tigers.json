@@ -5434,5 +5434,57 @@
     "captchaWall": false,
     "bodySnippet": "TikTok Search For You Shop Explore Following Short dramas LIVE Upload Profile More Log in Company Program Terms & Policies © 2026 TikTok #tigers Funny523 Big cat #tiger #funnyanimals #animalsofttiktok #felines #animals Tiger Park _ Kathu Phuket Just soaking… let me enjoy this. 🫧🐯 Cute and fun pets"
   },
-  "emptyStreak": 0
+  "emptyStreak": 0,
+  "stale": true,
+  "staleSince": "2026-10-04T21:55:21.701Z",
+  "lastAttemptAt": "2026-10-04T21:55:21.701Z",
+  "lastAttemptDebug": {
+    "keyword": "tigers",
+    "want": 120,
+    "strategies": [
+      {
+        "name": "search",
+        "url": "https://www.tiktok.com/search?q=tigers",
+        "finalUrl": "https://www.tiktok.com/search?q=tigers",
+        "title": "TikTok - Make Your Day",
+        "scrollRounds": 6,
+        "matchedAfter": 0,
+        "error": null
+      },
+      {
+        "name": "search-video-tab",
+        "url": "https://www.tiktok.com/search/video?q=tigers",
+        "finalUrl": "https://www.tiktok.com/search/video?q=tigers",
+        "title": "TikTok - Make Your Day",
+        "scrollRounds": 6,
+        "matchedAfter": 0,
+        "error": null
+      },
+      {
+        "name": "hashtag",
+        "url": "https://www.tiktok.com/tag/tigers",
+        "finalUrl": "https://www.tiktok.com/tag/tigers",
+        "title": "#tigers | TikTok",
+        "scrollRounds": 6,
+        "matchedAfter": 0,
+        "error": null
+      }
+    ],
+    "apiHits": {
+      "/api/recommend/item_list/": {
+        "calls": 2,
+        "items": 1,
+        "source": "feed"
+      },
+      "/api/challenge/item_list/": {
+        "calls": 1,
+        "items": 0,
+        "source": "search"
+      }
+    },
+    "fromSearchEndpoints": 0,
+    "loginWall": true,
+    "captchaWall": false,
+    "bodySnippet": "TikTok Search For You Shop Explore Following Short dramas LIVE Upload Profile More Log in Company Program Terms & Policies © 2026 TikTok #tigers Page not available Looking for videos? Try browsing our trending creators, hashtags, and sounds. Log in"
+  }
 }
