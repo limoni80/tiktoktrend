@@ -5375,5 +5375,52 @@
     "captchaWall": false,
     "bodySnippet": "TikTok Search For You Shop Explore Following Short dramas LIVE Upload Profile More Log in Company Program Terms & Policies © 2026 TikTok #morocco samlaurendellacroce 3 tips I didn’t see when researching for my trip to Marrakech, Morocco 🐪 Thalia | Travel Creator 7 things to add to your Marrakech it"
   },
-  "emptyStreak": 0
+  "emptyStreak": 0,
+  "stale": true,
+  "staleSince": "2026-10-04T18:37:24.914Z",
+  "lastAttemptAt": "2026-10-04T18:37:24.914Z",
+  "lastAttemptDebug": {
+    "keyword": "morocco",
+    "want": 120,
+    "strategies": [
+      {
+        "name": "search",
+        "url": "https://www.tiktok.com/search?q=morocco",
+        "finalUrl": "https://www.tiktok.com/search?q=morocco",
+        "title": "TikTok - Make Your Day",
+        "scrollRounds": 6,
+        "matchedAfter": 0,
+        "error": null
+      },
+      {
+        "name": "search-video-tab",
+        "url": "https://www.tiktok.com/search/video?q=morocco",
+        "finalUrl": "https://www.tiktok.com/search/video?q=morocco",
+        "title": "TikTok - Make Your Day",
+        "scrollRounds": 6,
+        "matchedAfter": 0,
+        "error": null
+      },
+      {
+        "name": "hashtag",
+        "url": "https://www.tiktok.com/tag/morocco",
+        "finalUrl": "https://www.tiktok.com/tag/morocco",
+        "title": "TikTok - Make Your Day",
+        "scrollRounds": 6,
+        "matchedAfter": 0,
+        "error": null
+      }
+    ],
+    "apiHits": {
+      "/api/search/general/preview/": {
+        "calls": 2,
+        "items": 0,
+        "source": "search"
+      }
+    },
+    "fromSearchEndpoints": 0,
+    "loginWall": true,
+    "captchaWall": false,
+    "bodySnippet": "TikTok Search For You Explore Following Short dramas LIVE Upload Profile More Log in Company Program Terms & Policies © 2026 TikTok #morocco Log in Drag the slider to fit the puzzle Audio 20261005023751D201B9AC99E958C0C055"
+  }
 }
