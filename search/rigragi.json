@@ -4709,5 +4709,52 @@
     "captchaWall": false,
     "bodySnippet": "TikTok Search For You Shop Explore Following Short dramas LIVE Upload Profile More Log in Company Program Terms & Policies © 2026 TikTok #rigragi Aïssata In honor of #blacktiktok let’s make an African meal 🥘 #westafricanfood #westafricantiktok #thieb #blackgirltiktok #cookingathometiktok #homecooki"
   },
-  "emptyStreak": 0
+  "emptyStreak": 0,
+  "stale": true,
+  "staleSince": "2026-10-04T08:46:10.242Z",
+  "lastAttemptAt": "2026-10-04T08:46:10.242Z",
+  "lastAttemptDebug": {
+    "keyword": "RIGRAGI",
+    "want": 120,
+    "strategies": [
+      {
+        "name": "search",
+        "url": "https://www.tiktok.com/search?q=RIGRAGI",
+        "finalUrl": "https://www.tiktok.com/search?q=RIGRAGI",
+        "title": "TikTok - Make Your Day",
+        "scrollRounds": 6,
+        "matchedAfter": 0,
+        "error": null
+      },
+      {
+        "name": "search-video-tab",
+        "url": "https://www.tiktok.com/search/video?q=RIGRAGI",
+        "finalUrl": "https://www.tiktok.com/search/video?q=RIGRAGI",
+        "title": "TikTok - Make Your Day",
+        "scrollRounds": 6,
+        "matchedAfter": 0,
+        "error": null
+      },
+      {
+        "name": "hashtag",
+        "url": "https://www.tiktok.com/tag/rigragi",
+        "finalUrl": "https://www.tiktok.com/tag/rigragi",
+        "title": "",
+        "scrollRounds": 6,
+        "matchedAfter": 0,
+        "error": null
+      }
+    ],
+    "apiHits": {
+      "/api/recommend/item_list/": {
+        "calls": 1,
+        "items": 1,
+        "source": "feed"
+      }
+    },
+    "fromSearchEndpoints": 0,
+    "loginWall": true,
+    "captchaWall": false,
+    "bodySnippet": "{\"errno\":150031,\"error_code\":\"function_initialize_failed\",\"error_message\":\"Function initialize failed.\"}"
+  }
 }
