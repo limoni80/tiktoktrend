@@ -5370,5 +5370,52 @@
     "captchaWall": false,
     "bodySnippet": "TikTok Search For You Shop Explore Following Short dramas LIVE Upload Profile More Log in Company Program Terms & Policies © 2026 TikTok #collagen Dr. Eric Berg DC Your body is BEGGING for collagen! Mialicious 🇻🇳💋 @Mariana thank u small 🩷 high protein gut healing snack 😍 Eve’s Wellness Journey "
   },
-  "emptyStreak": 0
+  "emptyStreak": 0,
+  "stale": true,
+  "staleSince": "2026-10-04T14:45:31.020Z",
+  "lastAttemptAt": "2026-10-04T14:45:31.020Z",
+  "lastAttemptDebug": {
+    "keyword": "Collagen",
+    "want": 120,
+    "strategies": [
+      {
+        "name": "search",
+        "url": "https://www.tiktok.com/search?q=Collagen",
+        "finalUrl": "https://www.tiktok.com/search?q=Collagen",
+        "title": "TikTok - Make Your Day",
+        "scrollRounds": 6,
+        "matchedAfter": 0,
+        "error": null
+      },
+      {
+        "name": "search-video-tab",
+        "url": "https://www.tiktok.com/search/video?q=Collagen",
+        "finalUrl": "https://www.tiktok.com/search/video?q=Collagen",
+        "title": "TikTok - Make Your Day",
+        "scrollRounds": 6,
+        "matchedAfter": 0,
+        "error": null
+      },
+      {
+        "name": "hashtag",
+        "url": "https://www.tiktok.com/tag/collagen",
+        "finalUrl": "https://www.tiktok.com/tag/collagen",
+        "title": "TikTok - Make Your Day",
+        "scrollRounds": 6,
+        "matchedAfter": 0,
+        "error": null
+      }
+    ],
+    "apiHits": {
+      "/api/search/general/preview/": {
+        "calls": 2,
+        "items": 0,
+        "source": "search"
+      }
+    },
+    "fromSearchEndpoints": 0,
+    "loginWall": true,
+    "captchaWall": false,
+    "bodySnippet": "TikTok Search For You Explore Following Short dramas LIVE Upload Profile More Log in Company Program Terms & Policies © 2026 TikTok #collagen Log in Drag the slider to fit the puzzle Audio 202610042245581CDC7A62F876C3C771C3"
+  }
 }
