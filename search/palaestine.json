@@ -5276,5 +5276,57 @@
     "captchaWall": false,
     "bodySnippet": "TikTok Search For You Shop Explore Following Short dramas LIVE Upload Profile More Log in Company Program Terms & Policies © 2026 TikTok #palaestine Bisan Owda Today, 6 Palestinians were killed in an Israeli bombing on a public transportation mini bus. Bisan Owda Meet Sana, only 7 months old. hidden"
   },
-  "emptyStreak": 0
+  "emptyStreak": 0,
+  "stale": true,
+  "staleSince": "2026-10-08T00:22:43.655Z",
+  "lastAttemptAt": "2026-10-08T00:22:43.655Z",
+  "lastAttemptDebug": {
+    "keyword": "PALAESTINE",
+    "want": 120,
+    "strategies": [
+      {
+        "name": "search",
+        "url": "https://www.tiktok.com/search?q=PALAESTINE",
+        "finalUrl": "https://www.tiktok.com/search?q=PALAESTINE",
+        "title": "TikTok - Make Your Day",
+        "scrollRounds": 6,
+        "matchedAfter": 0,
+        "error": null
+      },
+      {
+        "name": "search-video-tab",
+        "url": "https://www.tiktok.com/search/video?q=PALAESTINE",
+        "finalUrl": "https://www.tiktok.com/search/video?q=PALAESTINE",
+        "title": "TikTok - Make Your Day",
+        "scrollRounds": 6,
+        "matchedAfter": 0,
+        "error": null
+      },
+      {
+        "name": "hashtag",
+        "url": "https://www.tiktok.com/tag/palaestine",
+        "finalUrl": "https://www.tiktok.com/tag/palaestine",
+        "title": "#palaestine | TikTok",
+        "scrollRounds": 6,
+        "matchedAfter": 0,
+        "error": null
+      }
+    ],
+    "apiHits": {
+      "/api/recommend/item_list/": {
+        "calls": 1,
+        "items": 1,
+        "source": "feed"
+      },
+      "/api/challenge/item_list/": {
+        "calls": 1,
+        "items": 0,
+        "source": "search"
+      }
+    },
+    "fromSearchEndpoints": 0,
+    "loginWall": true,
+    "captchaWall": false,
+    "bodySnippet": "TikTok Search For You Shop Explore Following Short dramas LIVE Upload Profile More Log in Company Program Terms & Policies © 2026 TikTok #palaestine Page not available Looking for videos? Try browsing our trending creators, hashtags, and sounds. Log in"
+  }
 }
