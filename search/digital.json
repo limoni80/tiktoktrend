@@ -5405,5 +5405,52 @@
     "captchaWall": false,
     "bodySnippet": "TikTok Search For You Shop Explore Following Short dramas LIVE Upload Profile More Log in Company Program Terms & Policies © 2026 TikTok #digital ✨ Jackie✨ Digital products If done right and marketing right there is absolutely no limit as to how much you can be making!!!! #sahmlife #momtok #digital "
   },
-  "emptyStreak": 0
+  "emptyStreak": 0,
+  "stale": true,
+  "staleSince": "2026-10-08T13:58:24.008Z",
+  "lastAttemptAt": "2026-10-08T13:58:24.008Z",
+  "lastAttemptDebug": {
+    "keyword": "digital",
+    "want": 120,
+    "strategies": [
+      {
+        "name": "search",
+        "url": "https://www.tiktok.com/search?q=digital",
+        "finalUrl": "https://www.tiktok.com/search?q=digital",
+        "title": "TikTok - Make Your Day",
+        "scrollRounds": 6,
+        "matchedAfter": 0,
+        "error": null
+      },
+      {
+        "name": "search-video-tab",
+        "url": "https://www.tiktok.com/search/video?q=digital",
+        "finalUrl": "https://www.tiktok.com/search/video?q=digital",
+        "title": "TikTok - Make Your Day",
+        "scrollRounds": 6,
+        "matchedAfter": 0,
+        "error": null
+      },
+      {
+        "name": "hashtag",
+        "url": "https://www.tiktok.com/tag/digital",
+        "finalUrl": "https://www.tiktok.com/tag/digital",
+        "title": "TikTok - Make Your Day",
+        "scrollRounds": 6,
+        "matchedAfter": 0,
+        "error": null
+      }
+    ],
+    "apiHits": {
+      "/api/search/general/preview/": {
+        "calls": 2,
+        "items": 0,
+        "source": "search"
+      }
+    },
+    "fromSearchEndpoints": 0,
+    "loginWall": true,
+    "captchaWall": false,
+    "bodySnippet": "TikTok Search For You Explore Following LIVE Upload Profile More Log in Company Program Terms & Policies © 2026 TikTok #digital Log in Drag the slider to fit the puzzle Audio 202610082158524370ED09816C2EC4DEB9"
+  }
 }
