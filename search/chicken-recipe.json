@@ -5405,5 +5405,52 @@
     "captchaWall": false,
     "bodySnippet": "TikTok Search For You Shop Explore Following Short dramas LIVE Upload Profile More Log in Company Program Terms & Policies © 2026 TikTok #chickenrecipe cooking_recipescr #recipes #easyrecipe #cooking #dinnerideas hazaleajone Fit Honey Lime Chicken Bowls✨🍗 🍋‍🟩#healthyrecipe #easymealprep #easydinn"
   },
-  "emptyStreak": 0
+  "emptyStreak": 0,
+  "stale": true,
+  "staleSince": "2026-10-09T06:39:59.544Z",
+  "lastAttemptAt": "2026-10-09T06:39:59.544Z",
+  "lastAttemptDebug": {
+    "keyword": "chicken recipe",
+    "want": 120,
+    "strategies": [
+      {
+        "name": "search",
+        "url": "https://www.tiktok.com/search?q=chicken%20recipe",
+        "finalUrl": "https://www.tiktok.com/search?q=chicken%20recipe",
+        "title": "TikTok - Make Your Day",
+        "scrollRounds": 6,
+        "matchedAfter": 0,
+        "error": null
+      },
+      {
+        "name": "search-video-tab",
+        "url": "https://www.tiktok.com/search/video?q=chicken%20recipe",
+        "finalUrl": "https://www.tiktok.com/search/video?q=chicken%20recipe",
+        "title": "TikTok - Make Your Day",
+        "scrollRounds": 6,
+        "matchedAfter": 0,
+        "error": null
+      },
+      {
+        "name": "hashtag",
+        "url": "https://www.tiktok.com/tag/chickenrecipe",
+        "finalUrl": "https://www.tiktok.com/tag/chickenrecipe",
+        "title": "TikTok - Make Your Day",
+        "scrollRounds": 6,
+        "matchedAfter": 0,
+        "error": null
+      }
+    ],
+    "apiHits": {
+      "/api/search/general/preview/": {
+        "calls": 2,
+        "items": 0,
+        "source": "search"
+      }
+    },
+    "fromSearchEndpoints": 0,
+    "loginWall": true,
+    "captchaWall": false,
+    "bodySnippet": "TikTok Search For You Explore Following LIVE Upload Profile More Log in Company Program Terms & Policies © 2026 TikTok Log in"
+  }
 }
