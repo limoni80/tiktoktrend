@@ -680,5 +680,52 @@
     "captchaWall": false,
     "bodySnippet": "TikTok Search For You Explore Following LIVE Upload Profile More Log in Company Program Terms & Policies © 2026 TikTok Couldn't find this hashtag Looking for videos? Try browsing our trending creators, hashtags, and sounds. Log in"
   },
-  "emptyStreak": 0
+  "emptyStreak": 0,
+  "stale": true,
+  "staleSince": "2026-10-11T02:07:54.559Z",
+  "lastAttemptAt": "2026-10-11T02:07:54.559Z",
+  "lastAttemptDebug": {
+    "keyword": "quick chicken lunch",
+    "want": 120,
+    "strategies": [
+      {
+        "name": "search",
+        "url": "https://www.tiktok.com/search?q=quick%20chicken%20lunch",
+        "finalUrl": "https://www.tiktok.com/search?q=quick%20chicken%20lunch",
+        "title": "TikTok - Make Your Day",
+        "scrollRounds": 6,
+        "matchedAfter": 0,
+        "error": null
+      },
+      {
+        "name": "search-video-tab",
+        "url": "https://www.tiktok.com/search/video?q=quick%20chicken%20lunch",
+        "finalUrl": "https://www.tiktok.com/search/video?q=quick%20chicken%20lunch",
+        "title": "TikTok - Make Your Day",
+        "scrollRounds": 6,
+        "matchedAfter": 0,
+        "error": null
+      },
+      {
+        "name": "hashtag",
+        "url": "https://www.tiktok.com/tag/quickchickenlunch",
+        "finalUrl": "https://www.tiktok.com/tag/quickchickenlunch",
+        "title": "Couldn’t find this hashtag. Visit TikTok to discover more trending creators, hashtags, and sounds.",
+        "scrollRounds": 6,
+        "matchedAfter": 0,
+        "error": null
+      }
+    ],
+    "apiHits": {
+      "/api/recommend/item_list/": {
+        "calls": 2,
+        "items": 1,
+        "source": "feed"
+      }
+    },
+    "fromSearchEndpoints": 0,
+    "loginWall": true,
+    "captchaWall": false,
+    "bodySnippet": "TikTok Search For You Shop Explore Following Short dramas LIVE Upload Profile More Log in Company Program Terms & Policies © 2026 TikTok Couldn't find this hashtag Looking for videos? Try browsing our trending creators, hashtags, and sounds. Log in"
+  }
 }
