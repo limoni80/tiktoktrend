@@ -5452,5 +5452,52 @@
     "captchaWall": false,
     "bodySnippet": "TikTok Search For You Shop Explore Following Short dramas LIVE Upload Profile More Log in Company Program Terms & Policies © 2026 TikTok #recipes Share your favorite #Recipes. alexa_de My favorite way to make birria! #birria #quesabirria #tacosdebirria #cooktok #foodtok #foodtiktok #recipes SaucedUp"
   },
-  "emptyStreak": 0
+  "emptyStreak": 0,
+  "stale": true,
+  "staleSince": "2026-10-11T23:57:05.580Z",
+  "lastAttemptAt": "2026-10-11T23:57:05.580Z",
+  "lastAttemptDebug": {
+    "keyword": "recipes",
+    "want": 120,
+    "strategies": [
+      {
+        "name": "search",
+        "url": "https://www.tiktok.com/search?q=recipes",
+        "finalUrl": "https://www.tiktok.com/search?q=recipes",
+        "title": "TikTok - Make Your Day",
+        "scrollRounds": 6,
+        "matchedAfter": 0,
+        "error": null
+      },
+      {
+        "name": "search-video-tab",
+        "url": "https://www.tiktok.com/search/video?q=recipes",
+        "finalUrl": "https://www.tiktok.com/search/video?q=recipes",
+        "title": "TikTok - Make Your Day",
+        "scrollRounds": 6,
+        "matchedAfter": 0,
+        "error": null
+      },
+      {
+        "name": "hashtag",
+        "url": "https://www.tiktok.com/tag/recipes",
+        "finalUrl": "https://www.tiktok.com/tag/recipes",
+        "title": "TikTok - Make Your Day",
+        "scrollRounds": 6,
+        "matchedAfter": 0,
+        "error": null
+      }
+    ],
+    "apiHits": {
+      "/api/search/general/preview/": {
+        "calls": 2,
+        "items": 0,
+        "source": "search"
+      }
+    },
+    "fromSearchEndpoints": 0,
+    "loginWall": true,
+    "captchaWall": false,
+    "bodySnippet": "TikTok Search For You Explore Following Short dramas LIVE Upload Profile More Log in Company Program Terms & Policies © 2026 TikTok #recipes Share your favorite #Recipes. Log in Drag the slider to fit the puzzle Audio 2026101207573126261696BEB886EE1C20"
+  }
 }
