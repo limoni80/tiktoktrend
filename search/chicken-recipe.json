@@ -5406,5 +5406,52 @@
     "captchaWall": false,
     "bodySnippet": "TikTok Search For You Shop Explore Following Short dramas LIVE Upload Profile More Log in Company Program Terms & Policies © 2026 TikTok #chickenrecipe cooking_recipescr #recipes #easyrecipe #cooking #dinnerideas angelafinnegankz813 How to make Creamy Chicken Pollo en Crema Easy Recipe 😋 hazaleajon"
   },
-  "emptyStreak": 0
+  "emptyStreak": 0,
+  "stale": true,
+  "staleSince": "2026-10-13T18:10:51.858Z",
+  "lastAttemptAt": "2026-10-13T18:10:51.858Z",
+  "lastAttemptDebug": {
+    "keyword": "chicken recipe",
+    "want": 120,
+    "strategies": [
+      {
+        "name": "search",
+        "url": "https://www.tiktok.com/search?q=chicken%20recipe",
+        "finalUrl": "https://www.tiktok.com/search?q=chicken%20recipe",
+        "title": "TikTok - Make Your Day",
+        "scrollRounds": 6,
+        "matchedAfter": 0,
+        "error": null
+      },
+      {
+        "name": "search-video-tab",
+        "url": "https://www.tiktok.com/search/video?q=chicken%20recipe",
+        "finalUrl": "https://www.tiktok.com/search/video?q=chicken%20recipe",
+        "title": "TikTok - Make Your Day",
+        "scrollRounds": 6,
+        "matchedAfter": 0,
+        "error": null
+      },
+      {
+        "name": "hashtag",
+        "url": "https://www.tiktok.com/tag/chickenrecipe",
+        "finalUrl": "https://www.tiktok.com/tag/chickenrecipe",
+        "title": "TikTok - Make Your Day",
+        "scrollRounds": 6,
+        "matchedAfter": 0,
+        "error": null
+      }
+    ],
+    "apiHits": {
+      "/api/search/general/preview/": {
+        "calls": 2,
+        "items": 0,
+        "source": "search"
+      }
+    },
+    "fromSearchEndpoints": 0,
+    "loginWall": true,
+    "captchaWall": false,
+    "bodySnippet": "TikTok Search For You Explore Following Short dramas LIVE Upload Profile More Log in Company Program Terms & Policies © 2026 TikTok #chickenrecipe Log in Drag the slider to fit the puzzle Audio 20261014021121106CF243B63EB9A58931"
+  }
 }
