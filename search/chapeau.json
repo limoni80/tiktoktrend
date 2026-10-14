@@ -5246,5 +5246,52 @@
     "captchaWall": false,
     "bodySnippet": "TikTok Search For You Shop Explore Following Short dramas LIVE Upload Profile More Log in Company Program Terms & Policies © 2026 TikTok #chapeau Nounoush Boutik✨ Chapeau perlé 5k #chapeau #hijabstyle #turban #cotedivoire🇨🇮225😊 Tula A family that prays together stays strong together🤲🥹. Jeremiah"
   },
-  "emptyStreak": 0
+  "emptyStreak": 0,
+  "stale": true,
+  "staleSince": "2026-10-14T18:00:29.391Z",
+  "lastAttemptAt": "2026-10-14T18:00:29.391Z",
+  "lastAttemptDebug": {
+    "keyword": "chapeau",
+    "want": 120,
+    "strategies": [
+      {
+        "name": "search",
+        "url": "https://www.tiktok.com/search?q=chapeau",
+        "finalUrl": "https://www.tiktok.com/search?q=chapeau",
+        "title": "TikTok - Make Your Day",
+        "scrollRounds": 6,
+        "matchedAfter": 0,
+        "error": null
+      },
+      {
+        "name": "search-video-tab",
+        "url": "https://www.tiktok.com/search/video?q=chapeau",
+        "finalUrl": "https://www.tiktok.com/search/video?q=chapeau",
+        "title": "TikTok - Make Your Day",
+        "scrollRounds": 6,
+        "matchedAfter": 0,
+        "error": null
+      },
+      {
+        "name": "hashtag",
+        "url": "https://www.tiktok.com/tag/chapeau",
+        "finalUrl": "https://www.tiktok.com/tag/chapeau",
+        "title": "TikTok - Make Your Day",
+        "scrollRounds": 6,
+        "matchedAfter": 0,
+        "error": null
+      }
+    ],
+    "apiHits": {
+      "/api/search/general/preview/": {
+        "calls": 2,
+        "items": 0,
+        "source": "search"
+      }
+    },
+    "fromSearchEndpoints": 0,
+    "loginWall": true,
+    "captchaWall": false,
+    "bodySnippet": "TikTok Search For You Explore Following Short dramas LIVE Upload Profile More Log in Company Program Terms & Policies © 2026 TikTok #chapeau Log in Drag the slider to fit the puzzle Audio 20261015020058DA9111B25B1DFDFB80C8"
+  }
 }
