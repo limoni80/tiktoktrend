@@ -5596,5 +5596,57 @@
     "captchaWall": false,
     "bodySnippet": "TikTok Search For You Shop Explore Following Short dramas LIVE Upload Profile More Log in Company Program Terms & Policies © 2026 TikTok #viralrecipes alicia_curley I am telling you right now this is the best fall dinner I have ever made…of course in my opinion. This was gone and I usually have some"
   },
-  "emptyStreak": 0
+  "emptyStreak": 0,
+  "stale": true,
+  "staleSince": "2026-10-15T00:06:17.824Z",
+  "lastAttemptAt": "2026-10-15T00:06:17.824Z",
+  "lastAttemptDebug": {
+    "keyword": "viral recipes",
+    "want": 120,
+    "strategies": [
+      {
+        "name": "search",
+        "url": "https://www.tiktok.com/search?q=viral%20recipes",
+        "finalUrl": "https://www.tiktok.com/search?q=viral%20recipes",
+        "title": "TikTok - Make Your Day",
+        "scrollRounds": 6,
+        "matchedAfter": 0,
+        "error": null
+      },
+      {
+        "name": "search-video-tab",
+        "url": "https://www.tiktok.com/search/video?q=viral%20recipes",
+        "finalUrl": "https://www.tiktok.com/search/video?q=viral%20recipes",
+        "title": "TikTok - Make Your Day",
+        "scrollRounds": 6,
+        "matchedAfter": 0,
+        "error": null
+      },
+      {
+        "name": "hashtag",
+        "url": "https://www.tiktok.com/tag/viralrecipes",
+        "finalUrl": "https://www.tiktok.com/tag/viralrecipes",
+        "title": "#viralrecipes | TikTok",
+        "scrollRounds": 6,
+        "matchedAfter": 0,
+        "error": null
+      }
+    ],
+    "apiHits": {
+      "/api/recommend/item_list/": {
+        "calls": 1,
+        "items": 1,
+        "source": "feed"
+      },
+      "/api/challenge/item_list/": {
+        "calls": 1,
+        "items": 0,
+        "source": "search"
+      }
+    },
+    "fromSearchEndpoints": 0,
+    "loginWall": true,
+    "captchaWall": false,
+    "bodySnippet": "TikTok Search For You Shop Explore Following Short dramas LIVE Upload Profile More Log in Company Program Terms & Policies © 2026 TikTok #viralrecipes Page not available Looking for videos? Try browsing our trending creators, hashtags, and sounds. Log in"
+  }
 }
