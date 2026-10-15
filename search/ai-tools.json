@@ -5390,5 +5390,52 @@
     "captchaWall": false,
     "bodySnippet": "TikTok Search For You Shop Explore Following Short dramas LIVE Upload Profile More Log in Company Program Terms & Policies © 2026 TikTok #aitools Taki Wong | AI For Business Click the link in my bio to build out all 4 of these AI systems and much more with step by step guides, courses, and full copy"
   },
-  "emptyStreak": 0
+  "emptyStreak": 0,
+  "stale": true,
+  "staleSince": "2026-10-15T04:30:16.795Z",
+  "lastAttemptAt": "2026-10-15T04:30:16.795Z",
+  "lastAttemptDebug": {
+    "keyword": "ai tools",
+    "want": 120,
+    "strategies": [
+      {
+        "name": "search",
+        "url": "https://www.tiktok.com/search?q=ai%20tools",
+        "finalUrl": "https://www.tiktok.com/search?q=ai%20tools",
+        "title": "TikTok - Make Your Day",
+        "scrollRounds": 6,
+        "matchedAfter": 0,
+        "error": null
+      },
+      {
+        "name": "search-video-tab",
+        "url": "https://www.tiktok.com/search/video?q=ai%20tools",
+        "finalUrl": "https://www.tiktok.com/search/video?q=ai%20tools",
+        "title": "TikTok - Make Your Day",
+        "scrollRounds": 6,
+        "matchedAfter": 0,
+        "error": null
+      },
+      {
+        "name": "hashtag",
+        "url": "https://www.tiktok.com/tag/aitools",
+        "finalUrl": "https://www.tiktok.com/tag/aitools",
+        "title": "TikTok - Make Your Day",
+        "scrollRounds": 6,
+        "matchedAfter": 0,
+        "error": null
+      }
+    ],
+    "apiHits": {
+      "/api/search/general/preview/": {
+        "calls": 2,
+        "items": 0,
+        "source": "search"
+      }
+    },
+    "fromSearchEndpoints": 0,
+    "loginWall": true,
+    "captchaWall": false,
+    "bodySnippet": "TikTok Search For You Explore Following LIVE Upload Profile More Log in Company Program Terms & Policies © 2026 TikTok #aitools Log in Drag the slider to fit the puzzle Audio 2026101512304461C4C7DF4E1D3DFFC2D9"
+  }
 }

@@ -5443,5 +5443,57 @@
     "captchaWall": false,
     "bodySnippet": "TikTok Search For You Shop Explore Following Short dramas LIVE Upload Profile More Log in Company Program Terms & Policies © 2026 TikTok #easychickendinner Saima’s Kitchen Easy chicken tray bake recipe Mallory Chicken and Rice Bake. Recipe in Link🌴 IndiaJ Creamy Cajun Chicken & Rice 🤤🍗 A quick, f"
   },
-  "emptyStreak": 0
+  "emptyStreak": 0,
+  "stale": true,
+  "staleSince": "2026-10-15T04:28:14.177Z",
+  "lastAttemptAt": "2026-10-15T04:28:14.177Z",
+  "lastAttemptDebug": {
+    "keyword": "easy chicken dinner",
+    "want": 120,
+    "strategies": [
+      {
+        "name": "search",
+        "url": "https://www.tiktok.com/search?q=easy%20chicken%20dinner",
+        "finalUrl": "https://www.tiktok.com/search?q=easy%20chicken%20dinner",
+        "title": "TikTok - Make Your Day",
+        "scrollRounds": 6,
+        "matchedAfter": 0,
+        "error": null
+      },
+      {
+        "name": "search-video-tab",
+        "url": "https://www.tiktok.com/search/video?q=easy%20chicken%20dinner",
+        "finalUrl": "https://www.tiktok.com/search/video?q=easy%20chicken%20dinner",
+        "title": "TikTok - Make Your Day",
+        "scrollRounds": 6,
+        "matchedAfter": 0,
+        "error": null
+      },
+      {
+        "name": "hashtag",
+        "url": "https://www.tiktok.com/tag/easychickendinner",
+        "finalUrl": "https://www.tiktok.com/tag/easychickendinner",
+        "title": "#easychickendinner | TikTok",
+        "scrollRounds": 6,
+        "matchedAfter": 0,
+        "error": null
+      }
+    ],
+    "apiHits": {
+      "/api/recommend/item_list/": {
+        "calls": 2,
+        "items": 1,
+        "source": "feed"
+      },
+      "/api/challenge/item_list/": {
+        "calls": 1,
+        "items": 0,
+        "source": "search"
+      }
+    },
+    "fromSearchEndpoints": 0,
+    "loginWall": true,
+    "captchaWall": false,
+    "bodySnippet": "TikTok Search For You Shop Explore Following Short dramas LIVE Upload Profile More Log in Company Program Terms & Policies © 2026 TikTok #easychickendinner Page not available Looking for videos? Try browsing our trending creators, hashtags, and sounds. Log in"
+  }
 }
