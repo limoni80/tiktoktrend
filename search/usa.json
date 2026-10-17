@@ -145,5 +145,52 @@
     "captchaWall": false,
     "bodySnippet": "TikTok Search For You Shop Explore Following Short dramas LIVE Upload Profile More Log in Company Program Terms & Policies © 2026 TikTok #usa Daily Mail Elon Musk has showcased a new Tesla Roadster in a jaw-dropping demonstration, with footage appearing to show the vehicle flipping mid-air and hover"
   },
-  "emptyStreak": 0
+  "emptyStreak": 0,
+  "stale": true,
+  "staleSince": "2026-10-17T04:57:29.118Z",
+  "lastAttemptAt": "2026-10-17T04:57:29.118Z",
+  "lastAttemptDebug": {
+    "keyword": "USA",
+    "want": 120,
+    "strategies": [
+      {
+        "name": "search",
+        "url": "https://www.tiktok.com/search?q=USA",
+        "finalUrl": "https://www.tiktok.com/search?q=USA",
+        "title": "TikTok - Make Your Day",
+        "scrollRounds": 6,
+        "matchedAfter": 0,
+        "error": null
+      },
+      {
+        "name": "search-video-tab",
+        "url": "https://www.tiktok.com/search/video?q=USA",
+        "finalUrl": "https://www.tiktok.com/search/video?q=USA",
+        "title": "TikTok - Make Your Day",
+        "scrollRounds": 6,
+        "matchedAfter": 0,
+        "error": null
+      },
+      {
+        "name": "hashtag",
+        "url": "https://www.tiktok.com/tag/usa",
+        "finalUrl": "https://www.tiktok.com/tag/usa",
+        "title": "TikTok - Make Your Day",
+        "scrollRounds": 6,
+        "matchedAfter": 0,
+        "error": null
+      }
+    ],
+    "apiHits": {
+      "/api/search/general/preview/": {
+        "calls": 2,
+        "items": 0,
+        "source": "search"
+      }
+    },
+    "fromSearchEndpoints": 0,
+    "loginWall": true,
+    "captchaWall": false,
+    "bodySnippet": "TikTok Search For You Explore Following LIVE Upload Profile More Log in Company Program Terms & Policies © 2026 TikTok #usa Log in Drag the slider to fit the puzzle Audio 202610171257555719373DEDE646FBABF3"
+  }
 }
