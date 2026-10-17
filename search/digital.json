@@ -5394,5 +5394,52 @@
     "captchaWall": false,
     "bodySnippet": "TikTok Search For You Shop Explore Following Short dramas LIVE Upload Profile More Log in Company Program Terms & Policies © 2026 TikTok #digital 𝐆 𝐄 𝐍 𝐄 𝐒 𝐈 𝐒 🎀🫧 How to set up digital camera from nosela 🎀🩷 #pink #summervibes☀️ #digitalcamera #pinkfinds #fypppppppppppppppppppppppppppppp \ud83c"
   },
-  "emptyStreak": 0
+  "emptyStreak": 0,
+  "stale": true,
+  "staleSince": "2026-10-17T09:13:25.614Z",
+  "lastAttemptAt": "2026-10-17T09:13:25.614Z",
+  "lastAttemptDebug": {
+    "keyword": "digital",
+    "want": 120,
+    "strategies": [
+      {
+        "name": "search",
+        "url": "https://www.tiktok.com/search?q=digital",
+        "finalUrl": "https://www.tiktok.com/search?q=digital",
+        "title": "TikTok - Make Your Day",
+        "scrollRounds": 6,
+        "matchedAfter": 0,
+        "error": null
+      },
+      {
+        "name": "search-video-tab",
+        "url": "https://www.tiktok.com/search/video?q=digital",
+        "finalUrl": "https://www.tiktok.com/search/video?q=digital",
+        "title": "TikTok - Make Your Day",
+        "scrollRounds": 6,
+        "matchedAfter": 0,
+        "error": null
+      },
+      {
+        "name": "hashtag",
+        "url": "https://www.tiktok.com/tag/digital",
+        "finalUrl": "https://www.tiktok.com/tag/digital",
+        "title": "TikTok - Make Your Day",
+        "scrollRounds": 6,
+        "matchedAfter": 0,
+        "error": null
+      }
+    ],
+    "apiHits": {
+      "/api/search/general/preview/": {
+        "calls": 2,
+        "items": 0,
+        "source": "search"
+      }
+    },
+    "fromSearchEndpoints": 0,
+    "loginWall": true,
+    "captchaWall": false,
+    "bodySnippet": "TikTok Search For You Explore Following Short dramas LIVE Upload Profile More Log in Company Program Terms & Policies © 2026 TikTok #digital Log in Drag the slider to fit the puzzle Audio 20261017171353797543070130605B980A"
+  }
 }
