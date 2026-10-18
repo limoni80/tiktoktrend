@@ -682,8 +682,8 @@
   },
   "emptyStreak": 0,
   "stale": true,
-  "staleSince": "2026-10-18T09:01:24.346Z",
-  "lastAttemptAt": "2026-10-18T09:01:24.346Z",
+  "staleSince": "2026-10-18T13:10:26.068Z",
+  "lastAttemptAt": "2026-10-18T13:10:26.068Z",
   "lastAttemptDebug": {
     "keyword": "quick chicken lunch",
     "want": 120,
@@ -718,7 +718,7 @@
     ],
     "apiHits": {
       "/api/recommend/item_list/": {
-        "calls": 2,
+        "calls": 1,
         "items": 1,
         "source": "feed"
       }

@@ -5540,5 +5540,57 @@
     "captchaWall": false,
     "bodySnippet": "TikTok Search For You Shop Explore Following Short dramas LIVE Upload Profile More Log in Company Program Terms & Policies © 2026 TikTok #animal pawotter0 hellohello #babyotter #otter #otters #cuteanimals #animalsoftiktok#cute #baby #fyp #fypシ #fypシ゚viral #fpy #viralvideo#trending#otterlover Encore "
   },
-  "emptyStreak": 0
+  "emptyStreak": 0,
+  "stale": true,
+  "staleSince": "2026-10-18T13:10:25.040Z",
+  "lastAttemptAt": "2026-10-18T13:10:25.040Z",
+  "lastAttemptDebug": {
+    "keyword": "Animal",
+    "want": 120,
+    "strategies": [
+      {
+        "name": "search",
+        "url": "https://www.tiktok.com/search?q=Animal",
+        "finalUrl": "https://www.tiktok.com/search?q=Animal",
+        "title": "TikTok - Make Your Day",
+        "scrollRounds": 6,
+        "matchedAfter": 0,
+        "error": null
+      },
+      {
+        "name": "search-video-tab",
+        "url": "https://www.tiktok.com/search/video?q=Animal",
+        "finalUrl": "https://www.tiktok.com/search/video?q=Animal",
+        "title": "TikTok - Make Your Day",
+        "scrollRounds": 6,
+        "matchedAfter": 0,
+        "error": null
+      },
+      {
+        "name": "hashtag",
+        "url": "https://www.tiktok.com/tag/animal",
+        "finalUrl": "https://www.tiktok.com/tag/animal",
+        "title": "#animal | TikTok",
+        "scrollRounds": 6,
+        "matchedAfter": 0,
+        "error": null
+      }
+    ],
+    "apiHits": {
+      "/api/recommend/item_list/": {
+        "calls": 1,
+        "items": 1,
+        "source": "feed"
+      },
+      "/api/challenge/item_list/": {
+        "calls": 1,
+        "items": 0,
+        "source": "search"
+      }
+    },
+    "fromSearchEndpoints": 0,
+    "loginWall": true,
+    "captchaWall": false,
+    "bodySnippet": "TikTok Search For You Shop Explore Following Short dramas LIVE Upload Profile More Log in Company Program Terms & Policies © 2026 TikTok #animal Page not available Looking for videos? Try browsing our trending creators, hashtags, and sounds. Log in"
+  }
 }
