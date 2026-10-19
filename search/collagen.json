@@ -5359,5 +5359,57 @@
     "captchaWall": false,
     "bodySnippet": "TikTok Search For You Shop Explore Following Short dramas LIVE Upload Profile More Log in Company Program Terms & Policies © 2026 TikTok #collagen Dr. Faith Coats #collagen #neocell #tiktokshopcreatorpicks Dr. Eric Berg DC Your body is BEGGING for collagen! 💉 Dr Charles MD 💉 ❌don’t trust collagen "
   },
-  "emptyStreak": 0
+  "emptyStreak": 0,
+  "stale": true,
+  "staleSince": "2026-10-19T00:08:54.971Z",
+  "lastAttemptAt": "2026-10-19T00:08:54.971Z",
+  "lastAttemptDebug": {
+    "keyword": "Collagen",
+    "want": 120,
+    "strategies": [
+      {
+        "name": "search",
+        "url": "https://www.tiktok.com/search?q=Collagen",
+        "finalUrl": "https://www.tiktok.com/search?q=Collagen",
+        "title": "TikTok - Make Your Day",
+        "scrollRounds": 6,
+        "matchedAfter": 0,
+        "error": null
+      },
+      {
+        "name": "search-video-tab",
+        "url": "https://www.tiktok.com/search/video?q=Collagen",
+        "finalUrl": "https://www.tiktok.com/search/video?q=Collagen",
+        "title": "TikTok - Make Your Day",
+        "scrollRounds": 6,
+        "matchedAfter": 0,
+        "error": null
+      },
+      {
+        "name": "hashtag",
+        "url": "https://www.tiktok.com/tag/collagen",
+        "finalUrl": "https://www.tiktok.com/tag/collagen",
+        "title": "TikTok - Make Your Day",
+        "scrollRounds": 6,
+        "matchedAfter": 0,
+        "error": null
+      }
+    ],
+    "apiHits": {
+      "/api/explore/item_list/": {
+        "calls": 1,
+        "items": 8,
+        "source": "feed"
+      },
+      "/api/search/general/preview/": {
+        "calls": 2,
+        "items": 0,
+        "source": "search"
+      }
+    },
+    "fromSearchEndpoints": 0,
+    "loginWall": true,
+    "captchaWall": false,
+    "bodySnippet": "TikTok Search For You Explore Following LIVE Upload Profile More Log in Company Program Terms & Policies © 2026 TikTok #collagen Log in Drag the slider to fit the puzzle Audio 20261019080921C13EFCE6EADAAF2BF086"
+  }
 }

@@ -5418,5 +5418,57 @@
     "captchaWall": false,
     "bodySnippet": "TikTok Search For You Shop Explore Following Short dramas LIVE Upload Profile More Log in Company Program Terms & Policies © 2026 TikTok #dropshipping shon.ecom this is the FULL guide you need for AI Drop Shipping, now you have no excuse so TAKE ACTION! #dropshipping #ai #aidropshipping #ecom #cartc"
   },
-  "emptyStreak": 0
+  "emptyStreak": 0,
+  "stale": true,
+  "staleSince": "2026-10-19T00:07:55.495Z",
+  "lastAttemptAt": "2026-10-19T00:07:55.495Z",
+  "lastAttemptDebug": {
+    "keyword": "dropshipping",
+    "want": 120,
+    "strategies": [
+      {
+        "name": "search",
+        "url": "https://www.tiktok.com/search?q=dropshipping",
+        "finalUrl": "https://www.tiktok.com/search?q=dropshipping",
+        "title": "TikTok - Make Your Day",
+        "scrollRounds": 6,
+        "matchedAfter": 0,
+        "error": null
+      },
+      {
+        "name": "search-video-tab",
+        "url": "https://www.tiktok.com/search/video?q=dropshipping",
+        "finalUrl": "https://www.tiktok.com/search/video?q=dropshipping",
+        "title": "TikTok - Make Your Day",
+        "scrollRounds": 6,
+        "matchedAfter": 0,
+        "error": null
+      },
+      {
+        "name": "hashtag",
+        "url": "https://www.tiktok.com/tag/dropshipping",
+        "finalUrl": "https://www.tiktok.com/tag/dropshipping",
+        "title": "#dropshipping | TikTok",
+        "scrollRounds": 6,
+        "matchedAfter": 0,
+        "error": null
+      }
+    ],
+    "apiHits": {
+      "/api/recommend/item_list/": {
+        "calls": 2,
+        "items": 1,
+        "source": "feed"
+      },
+      "/api/challenge/item_list/": {
+        "calls": 1,
+        "items": 0,
+        "source": "search"
+      }
+    },
+    "fromSearchEndpoints": 0,
+    "loginWall": true,
+    "captchaWall": false,
+    "bodySnippet": "TikTok Search For You Shop Explore Following Short dramas LIVE Upload Profile More Log in Company Program Terms & Policies © 2026 TikTok #dropshipping Page not available Looking for videos? Try browsing our trending creators, hashtags, and sounds. Log in"
+  }
 }
