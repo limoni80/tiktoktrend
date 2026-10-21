@@ -5336,5 +5336,57 @@
     "captchaWall": false,
     "bodySnippet": "TikTok Search For You Shop Explore Following Short dramas LIVE Upload Profile More Log in Company Program Terms & Policies © 2026 TikTok #digitalproducts Ali | Artist + Creator Passive income 🤝 ✨ Jackie✨ This is one digital product that gets sold so many times over and over again making me straight"
   },
-  "emptyStreak": 0
+  "emptyStreak": 0,
+  "stale": true,
+  "staleSince": "2026-10-21T01:57:21.489Z",
+  "lastAttemptAt": "2026-10-21T01:57:21.489Z",
+  "lastAttemptDebug": {
+    "keyword": "digital products",
+    "want": 120,
+    "strategies": [
+      {
+        "name": "search",
+        "url": "https://www.tiktok.com/search?q=digital%20products",
+        "finalUrl": "https://www.tiktok.com/search?q=digital%20products",
+        "title": "TikTok - Make Your Day",
+        "scrollRounds": 6,
+        "matchedAfter": 0,
+        "error": null
+      },
+      {
+        "name": "search-video-tab",
+        "url": "https://www.tiktok.com/search/video?q=digital%20products",
+        "finalUrl": "https://www.tiktok.com/search/video?q=digital%20products",
+        "title": "TikTok - Make Your Day",
+        "scrollRounds": 6,
+        "matchedAfter": 0,
+        "error": null
+      },
+      {
+        "name": "hashtag",
+        "url": "https://www.tiktok.com/tag/digitalproducts",
+        "finalUrl": "https://www.tiktok.com/tag/digitalproducts",
+        "title": "#digitalproducts | TikTok",
+        "scrollRounds": 6,
+        "matchedAfter": 0,
+        "error": null
+      }
+    ],
+    "apiHits": {
+      "/api/recommend/item_list/": {
+        "calls": 1,
+        "items": 1,
+        "source": "feed"
+      },
+      "/api/challenge/item_list/": {
+        "calls": 1,
+        "items": 0,
+        "source": "search"
+      }
+    },
+    "fromSearchEndpoints": 0,
+    "loginWall": true,
+    "captchaWall": false,
+    "bodySnippet": "TikTok Search For You Shop Explore Following Short dramas LIVE Upload Profile More Log in Company Program Terms & Policies © 2026 TikTok #digitalproducts Page not available Looking for videos? Try browsing our trending creators, hashtags, and sounds. Log in"
+  }
 }
