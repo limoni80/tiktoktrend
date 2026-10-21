@@ -5323,5 +5323,52 @@
     "captchaWall": false,
     "bodySnippet": "TikTok Search For You Shop Explore Following Short dramas LIVE Upload Profile More Log in Company Program Terms & Policies © 2026 TikTok #skincare From routines to glow ups, discover how the skincare community on TikTok keeps their skin cared for. Laia viñas Rutina de mañana para ir a la uni!!🎀 ig:"
   },
-  "emptyStreak": 0
+  "emptyStreak": 0,
+  "stale": true,
+  "staleSince": "2026-10-21T18:15:59.895Z",
+  "lastAttemptAt": "2026-10-21T18:15:59.895Z",
+  "lastAttemptDebug": {
+    "keyword": "skincare",
+    "want": 120,
+    "strategies": [
+      {
+        "name": "search",
+        "url": "https://www.tiktok.com/search?q=skincare",
+        "finalUrl": "https://www.tiktok.com/search?q=skincare",
+        "title": "TikTok - Make Your Day",
+        "scrollRounds": 6,
+        "matchedAfter": 0,
+        "error": null
+      },
+      {
+        "name": "search-video-tab",
+        "url": "https://www.tiktok.com/search/video?q=skincare",
+        "finalUrl": "https://www.tiktok.com/search/video?q=skincare",
+        "title": "TikTok - Make Your Day",
+        "scrollRounds": 6,
+        "matchedAfter": 0,
+        "error": null
+      },
+      {
+        "name": "hashtag",
+        "url": "https://www.tiktok.com/tag/skincare",
+        "finalUrl": "https://www.tiktok.com/tag/skincare",
+        "title": "TikTok - Make Your Day",
+        "scrollRounds": 6,
+        "matchedAfter": 0,
+        "error": null
+      }
+    ],
+    "apiHits": {
+      "/api/search/general/preview/": {
+        "calls": 2,
+        "items": 0,
+        "source": "search"
+      }
+    },
+    "fromSearchEndpoints": 0,
+    "loginWall": true,
+    "captchaWall": false,
+    "bodySnippet": "TikTok Search For You Explore Following LIVE Upload Profile More Log in Company Program Terms & Policies © 2026 TikTok #skincare From routines to glow ups, discover how the skincare community on TikTok keeps their skin cared for. Log in Drag the slider to fit the puzzle Audio 202610220216275A7255AE7"
+  }
 }
