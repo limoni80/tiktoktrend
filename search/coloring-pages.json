@@ -5546,5 +5546,52 @@
     "captchaWall": false,
     "bodySnippet": "TikTok Search For You Shop Explore Following Short dramas LIVE Upload Profile More Log in Company Program Terms & Policies © 2026 TikTok #coloringpages Clara Rose Colouring ✨ Colour one of my favourite glowy pages I’ve ever done!💚💜 Asmrc.oloring Coloring a spooky little page from my Boo-tiful & Sp"
   },
-  "emptyStreak": 0
+  "emptyStreak": 0,
+  "stale": true,
+  "staleSince": "2026-10-22T00:37:35.080Z",
+  "lastAttemptAt": "2026-10-22T00:37:35.080Z",
+  "lastAttemptDebug": {
+    "keyword": "coloring pages",
+    "want": 120,
+    "strategies": [
+      {
+        "name": "search",
+        "url": "https://www.tiktok.com/search?q=coloring%20pages",
+        "finalUrl": "https://www.tiktok.com/search?q=coloring%20pages",
+        "title": "TikTok - Make Your Day",
+        "scrollRounds": 6,
+        "matchedAfter": 0,
+        "error": null
+      },
+      {
+        "name": "search-video-tab",
+        "url": "https://www.tiktok.com/search/video?q=coloring%20pages",
+        "finalUrl": "https://www.tiktok.com/search/video?q=coloring%20pages",
+        "title": "TikTok - Make Your Day",
+        "scrollRounds": 6,
+        "matchedAfter": 0,
+        "error": null
+      },
+      {
+        "name": "hashtag",
+        "url": "https://www.tiktok.com/tag/coloringpages",
+        "finalUrl": "https://www.tiktok.com/tag/coloringpages",
+        "title": "# | TikTok",
+        "scrollRounds": 6,
+        "matchedAfter": 0,
+        "error": null
+      }
+    ],
+    "apiHits": {
+      "/api/recommend/item_list/": {
+        "calls": 1,
+        "items": 1,
+        "source": "feed"
+      }
+    },
+    "fromSearchEndpoints": 0,
+    "loginWall": true,
+    "captchaWall": false,
+    "bodySnippet": "TikTok Search For You Shop Explore Following Short dramas LIVE Upload Profile More Log in Company Program Terms & Policies © 2026 TikTok Page not available Looking for videos? Try browsing our trending creators, hashtags, and sounds. Log in"
+  }
 }
