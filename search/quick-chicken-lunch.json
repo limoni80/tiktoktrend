@@ -682,8 +682,8 @@
   },
   "emptyStreak": 0,
   "stale": true,
-  "staleSince": "2026-10-22T15:35:19.954Z",
-  "lastAttemptAt": "2026-10-22T15:35:19.954Z",
+  "staleSince": "2026-10-22T19:26:42.444Z",
+  "lastAttemptAt": "2026-10-22T19:26:42.444Z",
   "lastAttemptDebug": {
     "keyword": "quick chicken lunch",
     "want": 120,
@@ -716,10 +716,16 @@
         "error": null
       }
     ],
-    "apiHits": {},
+    "apiHits": {
+      "/api/explore/item_list/": {
+        "calls": 1,
+        "items": 7,
+        "source": "feed"
+      }
+    },
     "fromSearchEndpoints": 0,
     "loginWall": true,
     "captchaWall": false,
-    "bodySnippet": "TikTok Search For You Shop Explore Following Short dramas LIVE Upload Profile More Log in Company Program Terms & Policies © 2026 TikTok Couldn't find this hashtag Looking for videos? Try browsing our trending creators, hashtags, and sounds. Log in"
+    "bodySnippet": "TikTok Search For You Shop Explore Following LIVE Upload Profile More Log in Company Program Terms & Policies © 2026 TikTok Couldn't find this hashtag Looking for videos? Try browsing our trending creators, hashtags, and sounds. Log in"
   }
 }
