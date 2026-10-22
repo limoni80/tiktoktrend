@@ -5337,5 +5337,52 @@
     "captchaWall": false,
     "bodySnippet": "TikTok Search For You Shop Explore Following Short dramas LIVE Upload Profile More Log in Company Program Terms & Policies © 2026 TikTok #macbook Kevin Finds Join my live stream for an incredible deal on a MacBook Pro 16 inch. Just restocked. Kevin Finds Refurbished Apple Macbook Pro 16-Inch Intel i"
   },
-  "emptyStreak": 0
+  "emptyStreak": 0,
+  "stale": true,
+  "staleSince": "2026-10-22T15:35:20.432Z",
+  "lastAttemptAt": "2026-10-22T15:35:20.432Z",
+  "lastAttemptDebug": {
+    "keyword": "MACBOOK",
+    "want": 120,
+    "strategies": [
+      {
+        "name": "search",
+        "url": "https://www.tiktok.com/search?q=MACBOOK",
+        "finalUrl": "https://www.tiktok.com/search?q=MACBOOK",
+        "title": "TikTok - Make Your Day",
+        "scrollRounds": 6,
+        "matchedAfter": 0,
+        "error": null
+      },
+      {
+        "name": "search-video-tab",
+        "url": "https://www.tiktok.com/search/video?q=MACBOOK",
+        "finalUrl": "https://www.tiktok.com/search/video?q=MACBOOK",
+        "title": "TikTok - Make Your Day",
+        "scrollRounds": 6,
+        "matchedAfter": 0,
+        "error": null
+      },
+      {
+        "name": "hashtag",
+        "url": "https://www.tiktok.com/tag/macbook",
+        "finalUrl": "https://www.tiktok.com/tag/macbook",
+        "title": "TikTok - Make Your Day",
+        "scrollRounds": 6,
+        "matchedAfter": 0,
+        "error": null
+      }
+    ],
+    "apiHits": {
+      "/api/search/general/preview/": {
+        "calls": 2,
+        "items": 0,
+        "source": "search"
+      }
+    },
+    "fromSearchEndpoints": 0,
+    "loginWall": true,
+    "captchaWall": false,
+    "bodySnippet": "TikTok Search For You Explore Following Short dramas LIVE Upload Profile More Log in Company Program Terms & Policies © 2026 TikTok #macbook Log in Drag the slider to fit the puzzle Audio 202610222335479663DAFA3C5E2A451B24"
+  }
 }
