@@ -5520,5 +5520,46 @@
     "captchaWall": false,
     "bodySnippet": "TikTok Search For You Shop Explore Following Short dramas LIVE Upload Profile More Log in Company Program Terms & Policies © 2026 TikTok #kineticsandart Heather✨ATL Replying to @Julia I could sit and watch this sand art all day long! Absolutely mesmerizing, it creates the most beautiful, detailed ar"
   },
-  "emptyStreak": 0
+  "emptyStreak": 0,
+  "stale": true,
+  "staleSince": "2026-10-23T06:29:54.424Z",
+  "lastAttemptAt": "2026-10-23T06:29:54.424Z",
+  "lastAttemptDebug": {
+    "keyword": "kinetic sand art",
+    "want": 120,
+    "strategies": [
+      {
+        "name": "search",
+        "url": "https://www.tiktok.com/search?q=kinetic%20sand%20art",
+        "finalUrl": "https://www.tiktok.com/search?q=kinetic%20sand%20art",
+        "title": "TikTok - Make Your Day",
+        "scrollRounds": 6,
+        "matchedAfter": 0,
+        "error": null
+      },
+      {
+        "name": "search-video-tab",
+        "url": "https://www.tiktok.com/search/video?q=kinetic%20sand%20art",
+        "finalUrl": "https://www.tiktok.com/search/video?q=kinetic%20sand%20art",
+        "title": "TikTok - Make Your Day",
+        "scrollRounds": 6,
+        "matchedAfter": 0,
+        "error": null
+      },
+      {
+        "name": "hashtag",
+        "url": "https://www.tiktok.com/tag/kineticsandart",
+        "finalUrl": "https://www.tiktok.com/tag/kineticsandart",
+        "title": "TikTok - Make Your Day",
+        "scrollRounds": 6,
+        "matchedAfter": 0,
+        "error": null
+      }
+    ],
+    "apiHits": {},
+    "fromSearchEndpoints": 0,
+    "loginWall": true,
+    "captchaWall": false,
+    "bodySnippet": "TikTok Search For You Shop Explore Following Short dramas LIVE Upload Profile More Log in Company Program Terms & Policies © 2026 TikTok Something went wrong Sorry about that! Please try again later. Refresh Log in"
+  }
 }
