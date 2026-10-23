@@ -5537,5 +5537,52 @@
     "captchaWall": false,
     "bodySnippet": "TikTok Search For You Shop Explore Following Short dramas LIVE Upload Profile More Log in Company Program Terms & Policies © 2026 TikTok #landscaping Neat Nature Lawn Care Business Landscaper G Only job where your results speak for themselves… #fyp #landscaper #relatable #dayonjobsite #pov DIY Backy"
   },
-  "emptyStreak": 0
+  "emptyStreak": 0,
+  "stale": true,
+  "staleSince": "2026-10-23T01:28:55.201Z",
+  "lastAttemptAt": "2026-10-23T01:28:55.201Z",
+  "lastAttemptDebug": {
+    "keyword": "landscaping",
+    "want": 120,
+    "strategies": [
+      {
+        "name": "search",
+        "url": "https://www.tiktok.com/search?q=landscaping",
+        "finalUrl": "https://www.tiktok.com/search?q=landscaping",
+        "title": "TikTok - Make Your Day",
+        "scrollRounds": 6,
+        "matchedAfter": 0,
+        "error": null
+      },
+      {
+        "name": "search-video-tab",
+        "url": "https://www.tiktok.com/search/video?q=landscaping",
+        "finalUrl": "https://www.tiktok.com/search/video?q=landscaping",
+        "title": "TikTok - Make Your Day",
+        "scrollRounds": 6,
+        "matchedAfter": 0,
+        "error": null
+      },
+      {
+        "name": "hashtag",
+        "url": "https://www.tiktok.com/tag/landscaping",
+        "finalUrl": "https://www.tiktok.com/tag/landscaping",
+        "title": "TikTok - Make Your Day",
+        "scrollRounds": 6,
+        "matchedAfter": 0,
+        "error": null
+      }
+    ],
+    "apiHits": {
+      "/api/challenge/item_list/": {
+        "calls": 1,
+        "items": 0,
+        "source": "search"
+      }
+    },
+    "fromSearchEndpoints": 0,
+    "loginWall": true,
+    "captchaWall": false,
+    "bodySnippet": "TikTok Search For You Shop Explore Following Short dramas LIVE Upload Profile More Log in Company Program Terms & Policies © 2026 TikTok #landscaping Page not available Looking for videos? Try browsing our trending creators, hashtags, and sounds. Log in"
+  }
 }
