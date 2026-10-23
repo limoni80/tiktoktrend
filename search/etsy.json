@@ -5323,5 +5323,52 @@
     "captchaWall": false,
     "bodySnippet": "TikTok Search For You Shop Explore Following Short dramas LIVE Upload Profile More Log in Company Program Terms & Policies © 2026 TikTok #etsy mad_quilts HUGE NEWS FOR ETSY! They’re finally addressing the rampant AI use on Etsy and I’m so curious how it is going to go down 👀👀 as an Etsy seller I’m"
   },
-  "emptyStreak": 0
+  "emptyStreak": 0,
+  "stale": true,
+  "staleSince": "2026-10-23T20:20:34.637Z",
+  "lastAttemptAt": "2026-10-23T20:20:34.637Z",
+  "lastAttemptDebug": {
+    "keyword": "etsy",
+    "want": 120,
+    "strategies": [
+      {
+        "name": "search",
+        "url": "https://www.tiktok.com/search?q=etsy",
+        "finalUrl": "https://www.tiktok.com/search?q=etsy",
+        "title": "TikTok - Make Your Day",
+        "scrollRounds": 6,
+        "matchedAfter": 0,
+        "error": null
+      },
+      {
+        "name": "search-video-tab",
+        "url": "https://www.tiktok.com/search/video?q=etsy",
+        "finalUrl": "https://www.tiktok.com/search/video?q=etsy",
+        "title": "TikTok - Make Your Day",
+        "scrollRounds": 6,
+        "matchedAfter": 0,
+        "error": null
+      },
+      {
+        "name": "hashtag",
+        "url": "https://www.tiktok.com/tag/etsy",
+        "finalUrl": "https://www.tiktok.com/tag/etsy",
+        "title": "TikTok - Make Your Day",
+        "scrollRounds": 6,
+        "matchedAfter": 0,
+        "error": null
+      }
+    ],
+    "apiHits": {
+      "/api/search/general/preview/": {
+        "calls": 2,
+        "items": 0,
+        "source": "search"
+      }
+    },
+    "fromSearchEndpoints": 0,
+    "loginWall": true,
+    "captchaWall": false,
+    "bodySnippet": "TikTok Search For You Explore Following LIVE Upload Profile More Log in Company Program Terms & Policies © 2026 TikTok #etsy Log in Drag the slider to fit the puzzle Audio 202610240421015E371DE4599DC8AD168F"
+  }
 }
