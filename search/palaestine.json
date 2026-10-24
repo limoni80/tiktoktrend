@@ -5302,5 +5302,52 @@
     "captchaWall": false,
     "bodySnippet": "TikTok Search For You Shop Explore Following Short dramas LIVE Upload Profile More Log in Company Program Terms & Policies © 2026 TikTok #palaestine _Palestinian child_ يا الله free palestina🇵🇸🇵🇸 Ashley Boulos 🇵🇸 This is a scary development that has serious implications for the people of the W"
   },
-  "emptyStreak": 0
+  "emptyStreak": 0,
+  "stale": true,
+  "staleSince": "2026-10-24T16:14:08.154Z",
+  "lastAttemptAt": "2026-10-24T16:14:08.154Z",
+  "lastAttemptDebug": {
+    "keyword": "PALAESTINE",
+    "want": 120,
+    "strategies": [
+      {
+        "name": "search",
+        "url": "https://www.tiktok.com/search?q=PALAESTINE",
+        "finalUrl": "https://www.tiktok.com/search?q=PALAESTINE",
+        "title": "TikTok - Make Your Day",
+        "scrollRounds": 6,
+        "matchedAfter": 0,
+        "error": null
+      },
+      {
+        "name": "search-video-tab",
+        "url": "https://www.tiktok.com/search/video?q=PALAESTINE",
+        "finalUrl": "https://www.tiktok.com/search/video?q=PALAESTINE",
+        "title": "TikTok - Make Your Day",
+        "scrollRounds": 6,
+        "matchedAfter": 0,
+        "error": null
+      },
+      {
+        "name": "hashtag",
+        "url": "https://www.tiktok.com/tag/palaestine",
+        "finalUrl": "https://www.tiktok.com/tag/palaestine",
+        "title": "TikTok - Make Your Day",
+        "scrollRounds": 6,
+        "matchedAfter": 0,
+        "error": null
+      }
+    ],
+    "apiHits": {
+      "/api/search/general/preview/": {
+        "calls": 2,
+        "items": 0,
+        "source": "search"
+      }
+    },
+    "fromSearchEndpoints": 0,
+    "loginWall": true,
+    "captchaWall": false,
+    "bodySnippet": "TikTok Search For You Explore Following Short dramas LIVE Upload Profile More Log in Company Program Terms & Policies © 2026 TikTok #palaestine Log in Drag the slider to fit the puzzle Audio 202610250014363DD300AAE1418CE237F4"
+  }
 }

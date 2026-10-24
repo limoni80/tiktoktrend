@@ -3502,5 +3502,52 @@
     "captchaWall": false,
     "bodySnippet": "TikTok Search For You Shop Explore Following Short dramas LIVE Upload Profile More Log in Company Program Terms & Policies © 2026 TikTok #footing DFConstruction How an Isolated Footing Is Built in Just 1 Minute #Foundation #construction #engineering #CivilEngineering 1musd #knowledge #science #engin"
   },
-  "emptyStreak": 0
+  "emptyStreak": 0,
+  "stale": true,
+  "staleSince": "2026-10-24T16:15:02.680Z",
+  "lastAttemptAt": "2026-10-24T16:15:02.680Z",
+  "lastAttemptDebug": {
+    "keyword": "Footing",
+    "want": 120,
+    "strategies": [
+      {
+        "name": "search",
+        "url": "https://www.tiktok.com/search?q=Footing",
+        "finalUrl": "https://www.tiktok.com/search?q=Footing",
+        "title": "TikTok - Make Your Day",
+        "scrollRounds": 6,
+        "matchedAfter": 0,
+        "error": null
+      },
+      {
+        "name": "search-video-tab",
+        "url": "https://www.tiktok.com/search/video?q=Footing",
+        "finalUrl": "https://www.tiktok.com/search/video?q=Footing",
+        "title": "TikTok - Make Your Day",
+        "scrollRounds": 6,
+        "matchedAfter": 0,
+        "error": null
+      },
+      {
+        "name": "hashtag",
+        "url": "https://www.tiktok.com/tag/footing",
+        "finalUrl": "https://www.tiktok.com/tag/footing",
+        "title": "TikTok - Make Your Day",
+        "scrollRounds": 6,
+        "matchedAfter": 0,
+        "error": null
+      }
+    ],
+    "apiHits": {
+      "/api/search/general/preview/": {
+        "calls": 2,
+        "items": 0,
+        "source": "search"
+      }
+    },
+    "fromSearchEndpoints": 0,
+    "loginWall": true,
+    "captchaWall": false,
+    "bodySnippet": "TikTok Search For You Explore Following Short dramas LIVE Upload Profile More Log in Company Program Terms & Policies © 2026 TikTok #footing Log in Drag the slider to fit the puzzle Audio 202610250015303DD300AAE1418CE2456E"
+  }
 }
