@@ -5525,5 +5525,52 @@
     "captchaWall": false,
     "bodySnippet": "TikTok Search For You Shop Explore Following Short dramas LIVE Upload Profile More Log in Company Program Terms & Policies © 2026 TikTok #volcanocake Jessica H 💜 I had absolutely no idea what i was doing!!! but his reaction said we did good 🥰🎉🎊 Faith | Life at Home ♥️ A baking project with a sci"
   },
-  "emptyStreak": 0
+  "emptyStreak": 0,
+  "stale": true,
+  "staleSince": "2026-10-24T18:59:41.519Z",
+  "lastAttemptAt": "2026-10-24T18:59:41.519Z",
+  "lastAttemptDebug": {
+    "keyword": "volcano cake",
+    "want": 120,
+    "strategies": [
+      {
+        "name": "search",
+        "url": "https://www.tiktok.com/search?q=volcano%20cake",
+        "finalUrl": "https://www.tiktok.com/search?q=volcano%20cake",
+        "title": "TikTok - Make Your Day",
+        "scrollRounds": 6,
+        "matchedAfter": 0,
+        "error": null
+      },
+      {
+        "name": "search-video-tab",
+        "url": "https://www.tiktok.com/search/video?q=volcano%20cake",
+        "finalUrl": "https://www.tiktok.com/search/video?q=volcano%20cake",
+        "title": "TikTok - Make Your Day",
+        "scrollRounds": 6,
+        "matchedAfter": 0,
+        "error": null
+      },
+      {
+        "name": "hashtag",
+        "url": "https://www.tiktok.com/tag/volcanocake",
+        "finalUrl": "https://www.tiktok.com/tag/volcanocake",
+        "title": "TikTok - Make Your Day",
+        "scrollRounds": 6,
+        "matchedAfter": 0,
+        "error": null
+      }
+    ],
+    "apiHits": {
+      "/api/search/general/preview/": {
+        "calls": 2,
+        "items": 0,
+        "source": "search"
+      }
+    },
+    "fromSearchEndpoints": 0,
+    "loginWall": true,
+    "captchaWall": false,
+    "bodySnippet": "TikTok Search For You Explore Following LIVE Upload Profile More Log in Company Program Terms & Policies © 2026 TikTok #volcanocake Log in Drag the slider to fit the puzzle Audio 2026102503000822885F75A7DCF2DAC7F2"
+  }
 }
