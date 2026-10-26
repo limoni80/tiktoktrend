@@ -5460,5 +5460,52 @@
     "captchaWall": false,
     "bodySnippet": "TikTok Search For You Shop Explore Following Short dramas LIVE Upload Profile More Log in Company Program Terms & Policies © 2026 TikTok #tigers Texas Wildlife Park So much happened over like 5 minutes 😂 Longleat Look who's out in the Safari Drive-Through! 👀 PawsUnited A tiger mom rejected her cub"
   },
-  "emptyStreak": 0
+  "emptyStreak": 0,
+  "stale": true,
+  "staleSince": "2026-10-26T23:19:50.332Z",
+  "lastAttemptAt": "2026-10-26T23:19:50.332Z",
+  "lastAttemptDebug": {
+    "keyword": "tigers",
+    "want": 120,
+    "strategies": [
+      {
+        "name": "search",
+        "url": "https://www.tiktok.com/search?q=tigers",
+        "finalUrl": "https://www.tiktok.com/search?q=tigers",
+        "title": "TikTok - Make Your Day",
+        "scrollRounds": 6,
+        "matchedAfter": 0,
+        "error": null
+      },
+      {
+        "name": "search-video-tab",
+        "url": "https://www.tiktok.com/search/video?q=tigers",
+        "finalUrl": "https://www.tiktok.com/search/video?q=tigers",
+        "title": "TikTok - Make Your Day",
+        "scrollRounds": 6,
+        "matchedAfter": 0,
+        "error": null
+      },
+      {
+        "name": "hashtag",
+        "url": "https://www.tiktok.com/tag/tigers",
+        "finalUrl": "https://www.tiktok.com/tag/tigers",
+        "title": "TikTok - Make Your Day",
+        "scrollRounds": 6,
+        "matchedAfter": 0,
+        "error": null
+      }
+    ],
+    "apiHits": {
+      "/api/search/general/preview/": {
+        "calls": 2,
+        "items": 0,
+        "source": "search"
+      }
+    },
+    "fromSearchEndpoints": 0,
+    "loginWall": true,
+    "captchaWall": false,
+    "bodySnippet": "TikTok Search For You Explore Following LIVE Upload Profile More Log in Company Program Terms & Policies © 2026 TikTok #tigers Log in Drag the slider to fit the puzzle Audio 202610270720171DCEE65032B974A5EC2E"
+  }
 }
