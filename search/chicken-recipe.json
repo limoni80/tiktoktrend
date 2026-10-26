@@ -5378,5 +5378,46 @@
     "captchaWall": false,
     "bodySnippet": "TikTok Search For You Shop Explore Following Short dramas LIVE Upload Profile More Log in Company Program Terms & Policies © 2026 TikTok #chickenrecipe hazaleajone Fit Honey Lime Chicken Bowls✨🍗 🍋‍🟩#healthyrecipe #easymealprep #easydinner #dinnerideas #highfiber nenacreates 💥bang bang chicken 🍗"
   },
-  "emptyStreak": 0
+  "emptyStreak": 0,
+  "stale": true,
+  "staleSince": "2026-10-26T00:41:34.451Z",
+  "lastAttemptAt": "2026-10-26T00:41:34.451Z",
+  "lastAttemptDebug": {
+    "keyword": "chicken recipe",
+    "want": 120,
+    "strategies": [
+      {
+        "name": "search",
+        "url": "https://www.tiktok.com/search?q=chicken%20recipe",
+        "finalUrl": "https://www.tiktok.com/search?q=chicken%20recipe",
+        "title": "TikTok - Make Your Day",
+        "scrollRounds": 6,
+        "matchedAfter": 0,
+        "error": null
+      },
+      {
+        "name": "search-video-tab",
+        "url": "https://www.tiktok.com/search/video?q=chicken%20recipe",
+        "finalUrl": "https://www.tiktok.com/search/video?q=chicken%20recipe",
+        "title": "TikTok - Make Your Day",
+        "scrollRounds": 6,
+        "matchedAfter": 0,
+        "error": null
+      },
+      {
+        "name": "hashtag",
+        "url": "https://www.tiktok.com/tag/chickenrecipe",
+        "finalUrl": "https://www.tiktok.com/tag/chickenrecipe",
+        "title": "Couldn’t find this hashtag. Visit TikTok to discover more trending creators, hashtags, and sounds.",
+        "scrollRounds": 6,
+        "matchedAfter": 0,
+        "error": null
+      }
+    ],
+    "apiHits": {},
+    "fromSearchEndpoints": 0,
+    "loginWall": true,
+    "captchaWall": false,
+    "bodySnippet": "TikTok Search For You Shop Explore Following Short dramas LIVE Upload Profile More Log in Company Program Terms & Policies © 2026 TikTok Couldn't find this hashtag Looking for videos? Try browsing our trending creators, hashtags, and sounds. Log in"
+  }
 }
