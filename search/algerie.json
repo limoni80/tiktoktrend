@@ -5318,5 +5318,52 @@
     "captchaWall": false,
     "bodySnippet": "TikTok Search For You Shop Explore Following Short dramas LIVE Upload Profile More Log in Company Program Terms & Policies © 2026 TikTok #algerie ALGÉRIE DOCS Une ville algérienne chargée d’histoire, entre vestiges antiques, patrimoine musulman et paysages magnifiques. 🇩🇿 Connaissais-tu déjà Mila "
   },
-  "emptyStreak": 0
+  "emptyStreak": 0,
+  "stale": true,
+  "staleSince": "2026-10-26T06:02:17.857Z",
+  "lastAttemptAt": "2026-10-26T06:02:17.857Z",
+  "lastAttemptDebug": {
+    "keyword": "ALGERIE",
+    "want": 120,
+    "strategies": [
+      {
+        "name": "search",
+        "url": "https://www.tiktok.com/search?q=ALGERIE",
+        "finalUrl": "https://www.tiktok.com/search?q=ALGERIE",
+        "title": "TikTok - Make Your Day",
+        "scrollRounds": 6,
+        "matchedAfter": 0,
+        "error": null
+      },
+      {
+        "name": "search-video-tab",
+        "url": "https://www.tiktok.com/search/video?q=ALGERIE",
+        "finalUrl": "https://www.tiktok.com/search/video?q=ALGERIE",
+        "title": "TikTok - Make Your Day",
+        "scrollRounds": 6,
+        "matchedAfter": 0,
+        "error": null
+      },
+      {
+        "name": "hashtag",
+        "url": "https://www.tiktok.com/tag/algerie",
+        "finalUrl": "https://www.tiktok.com/tag/algerie",
+        "title": "TikTok - Make Your Day",
+        "scrollRounds": 6,
+        "matchedAfter": 0,
+        "error": null
+      }
+    ],
+    "apiHits": {
+      "/api/search/general/preview/": {
+        "calls": 2,
+        "items": 0,
+        "source": "search"
+      }
+    },
+    "fromSearchEndpoints": 0,
+    "loginWall": true,
+    "captchaWall": false,
+    "bodySnippet": "TikTok Search For You Explore Following LIVE Upload Profile More Log in Company Program Terms & Policies © 2026 TikTok #algerie Log in Drag the slider to fit the puzzle Audio 202610261402442CCABFF64A90875D6789"
+  }
 }
