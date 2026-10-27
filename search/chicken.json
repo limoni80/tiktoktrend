@@ -5412,5 +5412,52 @@
     "captchaWall": false,
     "bodySnippet": "TikTok Search For You Shop Explore Following Short dramas LIVE Upload Profile More Log in Company Program Terms & Policies © 2026 TikTok #chicken That Recipe US After this genius idea, everyone is making chicken like this#cooking #recipe #quickrecipes #easyrecipe #cook #eat #eating #food #chicken #d"
   },
-  "emptyStreak": 0
+  "emptyStreak": 0,
+  "stale": true,
+  "staleSince": "2026-10-27T14:53:08.599Z",
+  "lastAttemptAt": "2026-10-27T14:53:08.599Z",
+  "lastAttemptDebug": {
+    "keyword": "CHICKEN",
+    "want": 120,
+    "strategies": [
+      {
+        "name": "search",
+        "url": "https://www.tiktok.com/search?q=CHICKEN",
+        "finalUrl": "https://www.tiktok.com/search?q=CHICKEN",
+        "title": "TikTok - Make Your Day",
+        "scrollRounds": 6,
+        "matchedAfter": 0,
+        "error": null
+      },
+      {
+        "name": "search-video-tab",
+        "url": "https://www.tiktok.com/search/video?q=CHICKEN",
+        "finalUrl": "https://www.tiktok.com/search/video?q=CHICKEN",
+        "title": "TikTok - Make Your Day",
+        "scrollRounds": 6,
+        "matchedAfter": 0,
+        "error": null
+      },
+      {
+        "name": "hashtag",
+        "url": "https://www.tiktok.com/tag/chicken",
+        "finalUrl": "https://www.tiktok.com/tag/chicken",
+        "title": "TikTok - Make Your Day",
+        "scrollRounds": 6,
+        "matchedAfter": 0,
+        "error": null
+      }
+    ],
+    "apiHits": {
+      "/api/search/general/preview/": {
+        "calls": 2,
+        "items": 0,
+        "source": "search"
+      }
+    },
+    "fromSearchEndpoints": 0,
+    "loginWall": true,
+    "captchaWall": false,
+    "bodySnippet": "TikTok Search For You Explore Following LIVE Upload Profile More Log in Company Program Terms & Policies © 2026 TikTok #chicken Log in Drag the slider to fit the puzzle Audio 20261027225335A2872D1C866DFAF2C0F1"
+  }
 }
