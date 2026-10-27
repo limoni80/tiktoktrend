@@ -5375,5 +5375,52 @@
     "captchaWall": false,
     "bodySnippet": "TikTok Search For You Shop Explore Following Short dramas LIVE Upload Profile More Log in Company Program Terms & Policies © 2026 TikTok #flower Randomstuff I love lilies 𝐒𝐮𝐦𝐦𝐞𝐫 #lilies #flowers #beautifull #fyp #goviral Randomstuff Lilies mybouquetsbybri_ flowers 🌸🎀🌱 IG: mybouqetsbybri_ #h"
   },
-  "emptyStreak": 0
+  "emptyStreak": 0,
+  "stale": true,
+  "staleSince": "2026-10-27T02:24:18.109Z",
+  "lastAttemptAt": "2026-10-27T02:24:18.109Z",
+  "lastAttemptDebug": {
+    "keyword": "flower",
+    "want": 120,
+    "strategies": [
+      {
+        "name": "search",
+        "url": "https://www.tiktok.com/search?q=flower",
+        "finalUrl": "https://www.tiktok.com/search?q=flower",
+        "title": "TikTok - Make Your Day",
+        "scrollRounds": 6,
+        "matchedAfter": 0,
+        "error": null
+      },
+      {
+        "name": "search-video-tab",
+        "url": "https://www.tiktok.com/search/video?q=flower",
+        "finalUrl": "https://www.tiktok.com/search/video?q=flower",
+        "title": "TikTok - Make Your Day",
+        "scrollRounds": 6,
+        "matchedAfter": 0,
+        "error": null
+      },
+      {
+        "name": "hashtag",
+        "url": "https://www.tiktok.com/tag/flower",
+        "finalUrl": "https://www.tiktok.com/tag/flower",
+        "title": "TikTok - Make Your Day",
+        "scrollRounds": 6,
+        "matchedAfter": 0,
+        "error": null
+      }
+    ],
+    "apiHits": {
+      "/api/search/general/preview/": {
+        "calls": 2,
+        "items": 0,
+        "source": "search"
+      }
+    },
+    "fromSearchEndpoints": 0,
+    "loginWall": true,
+    "captchaWall": false,
+    "bodySnippet": "TikTok Search For You Explore Following Short dramas LIVE Upload Profile More Log in Company Program Terms & Policies © 2026 TikTok #flower Log in Drag the slider to fit the puzzle Audio 20261027102446F497713753285290BF51"
+  }
 }

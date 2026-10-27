@@ -5355,5 +5355,52 @@
     "captchaWall": false,
     "bodySnippet": "TikTok Search For You Shop Explore Following Short dramas LIVE Upload Profile More Log in Company Program Terms & Policies © 2026 TikTok #nepal world207Videos 😱🌊 Nepal Hit by Devastating Floods Once Again! 🇳🇵💔 Massive Destruction and Terrifying Scenes! 😨🚨 Twista~MBC~ ⚠️ GRAPHIC CONTENT⚠️ Deve"
   },
-  "emptyStreak": 0
+  "emptyStreak": 0,
+  "stale": true,
+  "staleSince": "2026-10-27T02:24:41.668Z",
+  "lastAttemptAt": "2026-10-27T02:24:41.668Z",
+  "lastAttemptDebug": {
+    "keyword": "NEPAL",
+    "want": 120,
+    "strategies": [
+      {
+        "name": "search",
+        "url": "https://www.tiktok.com/search?q=NEPAL",
+        "finalUrl": "https://www.tiktok.com/search?q=NEPAL",
+        "title": "TikTok - Make Your Day",
+        "scrollRounds": 6,
+        "matchedAfter": 0,
+        "error": null
+      },
+      {
+        "name": "search-video-tab",
+        "url": "https://www.tiktok.com/search/video?q=NEPAL",
+        "finalUrl": "https://www.tiktok.com/search/video?q=NEPAL",
+        "title": "TikTok - Make Your Day",
+        "scrollRounds": 6,
+        "matchedAfter": 0,
+        "error": null
+      },
+      {
+        "name": "hashtag",
+        "url": "https://www.tiktok.com/tag/nepal",
+        "finalUrl": "https://www.tiktok.com/tag/nepal",
+        "title": "TikTok - Make Your Day",
+        "scrollRounds": 6,
+        "matchedAfter": 0,
+        "error": null
+      }
+    ],
+    "apiHits": {
+      "/api/search/general/preview/": {
+        "calls": 2,
+        "items": 0,
+        "source": "search"
+      }
+    },
+    "fromSearchEndpoints": 0,
+    "loginWall": true,
+    "captchaWall": false,
+    "bodySnippet": "TikTok Search For You Explore Following Short dramas LIVE Upload Profile More Log in Company Program Terms & Policies © 2026 TikTok #nepal Log in Drag the slider to fit the puzzle Audio 202610271025080ADAD13468F717B1989D"
+  }
 }
