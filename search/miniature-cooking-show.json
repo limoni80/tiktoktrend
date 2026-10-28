@@ -4500,5 +4500,52 @@
     "captchaWall": false,
     "bodySnippet": "TikTok Search For You Shop Explore Following Short dramas LIVE Upload Profile More Log in Company Program Terms & Policies © 2026 TikTok #miniaturecookingshow Sugarpeach Miniature Mini cooking in my mini kitchen👩‍🍳✨ Miniature Cakes #miniature #minicooking #foryou MINIATURE CUSINA Kneading real mic"
   },
-  "emptyStreak": 0
+  "emptyStreak": 0,
+  "stale": true,
+  "staleSince": "2026-10-28T11:34:48.925Z",
+  "lastAttemptAt": "2026-10-28T11:34:48.925Z",
+  "lastAttemptDebug": {
+    "keyword": "miniature cooking show",
+    "want": 120,
+    "strategies": [
+      {
+        "name": "search",
+        "url": "https://www.tiktok.com/search?q=miniature%20cooking%20show",
+        "finalUrl": "https://www.tiktok.com/search?q=miniature%20cooking%20show",
+        "title": "TikTok - Make Your Day",
+        "scrollRounds": 6,
+        "matchedAfter": 0,
+        "error": null
+      },
+      {
+        "name": "search-video-tab",
+        "url": "https://www.tiktok.com/search/video?q=miniature%20cooking%20show",
+        "finalUrl": "https://www.tiktok.com/search/video?q=miniature%20cooking%20show",
+        "title": "TikTok - Make Your Day",
+        "scrollRounds": 6,
+        "matchedAfter": 0,
+        "error": null
+      },
+      {
+        "name": "hashtag",
+        "url": "https://www.tiktok.com/tag/miniaturecookingshow",
+        "finalUrl": "https://www.tiktok.com/tag/miniaturecookingshow",
+        "title": "TikTok - Make Your Day",
+        "scrollRounds": 6,
+        "matchedAfter": 0,
+        "error": null
+      }
+    ],
+    "apiHits": {
+      "/api/search/general/preview/": {
+        "calls": 2,
+        "items": 0,
+        "source": "search"
+      }
+    },
+    "fromSearchEndpoints": 0,
+    "loginWall": true,
+    "captchaWall": false,
+    "bodySnippet": "TikTok Search For You Explore Following LIVE Upload Profile More Log in Company Program Terms & Policies © 2026 TikTok #miniaturecookingshow Log in Drag the slider to fit the puzzle Audio 20261028193516727B60A3166D02B98AF8"
+  }
 }
