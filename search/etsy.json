@@ -5349,5 +5349,52 @@
     "captchaWall": false,
     "bodySnippet": "TikTok Search For You Shop Explore Following Short dramas LIVE Upload Profile More Log in Company Program Terms & Policies © 2026 TikTok #etsy Kate Robb “The riches are in the (SUB)niches!!!” Here are three you can steal from me this week! Cori Byerly -Pink Silo Co. In my Etsy Shop - Pink Silo Co. #"
   },
-  "emptyStreak": 0
+  "emptyStreak": 0,
+  "stale": true,
+  "staleSince": "2026-10-28T21:52:50.563Z",
+  "lastAttemptAt": "2026-10-28T21:52:50.563Z",
+  "lastAttemptDebug": {
+    "keyword": "etsy",
+    "want": 120,
+    "strategies": [
+      {
+        "name": "search",
+        "url": "https://www.tiktok.com/search?q=etsy",
+        "finalUrl": "https://www.tiktok.com/search?q=etsy",
+        "title": "TikTok - Make Your Day",
+        "scrollRounds": 6,
+        "matchedAfter": 0,
+        "error": null
+      },
+      {
+        "name": "search-video-tab",
+        "url": "https://www.tiktok.com/search/video?q=etsy",
+        "finalUrl": "https://www.tiktok.com/search/video?q=etsy",
+        "title": "TikTok - Make Your Day",
+        "scrollRounds": 6,
+        "matchedAfter": 0,
+        "error": null
+      },
+      {
+        "name": "hashtag",
+        "url": "https://www.tiktok.com/tag/etsy",
+        "finalUrl": "https://www.tiktok.com/tag/etsy",
+        "title": "TikTok - Make Your Day",
+        "scrollRounds": 6,
+        "matchedAfter": 0,
+        "error": null
+      }
+    ],
+    "apiHits": {
+      "/api/search/general/preview/": {
+        "calls": 2,
+        "items": 0,
+        "source": "search"
+      }
+    },
+    "fromSearchEndpoints": 0,
+    "loginWall": true,
+    "captchaWall": false,
+    "bodySnippet": "TikTok Search For You Explore Following LIVE Upload Profile More Log in Company Program Terms & Policies © 2026 TikTok #etsy Log in Drag the slider to fit the puzzle Audio 20261029055317AF20A468C259771D53E0"
+  }
 }
