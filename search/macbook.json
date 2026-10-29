@@ -5303,5 +5303,52 @@
     "captchaWall": false,
     "bodySnippet": "TikTok Search For You Shop Explore Following Short dramas LIVE Upload Profile More Log in Company Program Terms & Policies © 2026 TikTok #macbook Milesabovetech Everything new with the MacBook Pro! #macbook #macbookpro #apple #techtok #techgadgets rillo The all new touchscreen OLED MacBook Pro #appl"
   },
-  "emptyStreak": 0
+  "emptyStreak": 0,
+  "stale": true,
+  "staleSince": "2026-10-29T08:23:40.642Z",
+  "lastAttemptAt": "2026-10-29T08:23:40.642Z",
+  "lastAttemptDebug": {
+    "keyword": "MACBOOK",
+    "want": 120,
+    "strategies": [
+      {
+        "name": "search",
+        "url": "https://www.tiktok.com/search?q=MACBOOK",
+        "finalUrl": "https://www.tiktok.com/search?q=MACBOOK",
+        "title": "TikTok - Make Your Day",
+        "scrollRounds": 6,
+        "matchedAfter": 0,
+        "error": null
+      },
+      {
+        "name": "search-video-tab",
+        "url": "https://www.tiktok.com/search/video?q=MACBOOK",
+        "finalUrl": "https://www.tiktok.com/search/video?q=MACBOOK",
+        "title": "TikTok - Make Your Day",
+        "scrollRounds": 6,
+        "matchedAfter": 0,
+        "error": null
+      },
+      {
+        "name": "hashtag",
+        "url": "https://www.tiktok.com/tag/macbook",
+        "finalUrl": "https://www.tiktok.com/tag/macbook",
+        "title": "TikTok - Make Your Day",
+        "scrollRounds": 6,
+        "matchedAfter": 0,
+        "error": null
+      }
+    ],
+    "apiHits": {
+      "/api/search/general/preview/": {
+        "calls": 2,
+        "items": 0,
+        "source": "search"
+      }
+    },
+    "fromSearchEndpoints": 0,
+    "loginWall": true,
+    "captchaWall": false,
+    "bodySnippet": "TikTok Search For You Explore Following LIVE Upload Profile More Log in Company Program Terms & Policies © 2026 TikTok #macbook Log in Drag the slider to fit the puzzle Audio 2026102916240888865CBF05065E4615B4"
+  }
 }
