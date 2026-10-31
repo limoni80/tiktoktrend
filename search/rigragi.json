@@ -5159,5 +5159,52 @@
     "captchaWall": false,
     "bodySnippet": "TikTok Search For You Shop Explore Following Short dramas LIVE Upload Profile More Log in Company Program Terms & Policies © 2026 TikTok #rigragi ɴ ᴀ ᴍ ᴇ ʟ ᴇ ꜱ ꜱ Regigigas cry #pokemon #regigigas #regigigaspokemon #fyp #pokemoncry Elong Regigigas and the other Regis edit Zephyrdelacampagne regigigas"
   },
-  "emptyStreak": 0
+  "emptyStreak": 0,
+  "stale": true,
+  "staleSince": "2026-10-31T08:50:48.019Z",
+  "lastAttemptAt": "2026-10-31T08:50:48.019Z",
+  "lastAttemptDebug": {
+    "keyword": "RIGRAGI",
+    "want": 120,
+    "strategies": [
+      {
+        "name": "search",
+        "url": "https://www.tiktok.com/search?q=RIGRAGI",
+        "finalUrl": "https://www.tiktok.com/search?q=RIGRAGI",
+        "title": "TikTok - Make Your Day",
+        "scrollRounds": 6,
+        "matchedAfter": 0,
+        "error": null
+      },
+      {
+        "name": "search-video-tab",
+        "url": "https://www.tiktok.com/search/video?q=RIGRAGI",
+        "finalUrl": "https://www.tiktok.com/search/video?q=RIGRAGI",
+        "title": "TikTok - Make Your Day",
+        "scrollRounds": 6,
+        "matchedAfter": 0,
+        "error": null
+      },
+      {
+        "name": "hashtag",
+        "url": "https://www.tiktok.com/tag/rigragi",
+        "finalUrl": "https://www.tiktok.com/tag/rigragi",
+        "title": "TikTok - Make Your Day",
+        "scrollRounds": 6,
+        "matchedAfter": 0,
+        "error": null
+      }
+    ],
+    "apiHits": {
+      "/api/search/general/preview/": {
+        "calls": 2,
+        "items": 0,
+        "source": "search"
+      }
+    },
+    "fromSearchEndpoints": 0,
+    "loginWall": true,
+    "captchaWall": false,
+    "bodySnippet": "TikTok Search For You Explore Following LIVE Upload Profile More Log in Company Program Terms & Policies © 2026 TikTok #rigragi Log in Drag the slider to fit the puzzle Audio 2026103116511550FF3C3433F291D231BE"
+  }
 }
