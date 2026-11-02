@@ -5465,5 +5465,52 @@
     "captchaWall": false,
     "bodySnippet": "TikTok Search For You Shop Explore Following Short dramas LIVE Upload Profile More Log in Company Program Terms & Policies © 2026 TikTok #dog Funny Cute Too cute to handle and already causing tiny amounts of chaos 🐶😂 #CutePuppies #FunnyDogs #PuppyLife #DogComedy #TinyTrouble Mia Rue #dog #dachshun"
   },
-  "emptyStreak": 0
+  "emptyStreak": 0,
+  "stale": true,
+  "staleSince": "2026-11-02T06:47:15.446Z",
+  "lastAttemptAt": "2026-11-02T06:47:15.446Z",
+  "lastAttemptDebug": {
+    "keyword": "dog",
+    "want": 120,
+    "strategies": [
+      {
+        "name": "search",
+        "url": "https://www.tiktok.com/search?q=dog",
+        "finalUrl": "https://www.tiktok.com/search?q=dog",
+        "title": "TikTok - Make Your Day",
+        "scrollRounds": 6,
+        "matchedAfter": 0,
+        "error": null
+      },
+      {
+        "name": "search-video-tab",
+        "url": "https://www.tiktok.com/search/video?q=dog",
+        "finalUrl": "https://www.tiktok.com/search/video?q=dog",
+        "title": "TikTok - Make Your Day",
+        "scrollRounds": 6,
+        "matchedAfter": 0,
+        "error": null
+      },
+      {
+        "name": "hashtag",
+        "url": "https://www.tiktok.com/tag/dog",
+        "finalUrl": "https://www.tiktok.com/tag/dog",
+        "title": "TikTok - Make Your Day",
+        "scrollRounds": 6,
+        "matchedAfter": 0,
+        "error": null
+      }
+    ],
+    "apiHits": {
+      "/api/search/general/preview/": {
+        "calls": 2,
+        "items": 0,
+        "source": "search"
+      }
+    },
+    "fromSearchEndpoints": 0,
+    "loginWall": true,
+    "captchaWall": false,
+    "bodySnippet": "TikTok Search For You Explore Following LIVE Upload Profile More Log in Company Program Terms & Policies © 2026 TikTok #dog Log in Drag the slider to fit the puzzle Audio 202611021447456E27798DABF817891029"
+  }
 }

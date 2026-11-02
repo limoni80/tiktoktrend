@@ -5495,5 +5495,52 @@
     "captchaWall": false,
     "bodySnippet": "TikTok Search For You Shop Explore Following Short dramas LIVE Upload Profile More Log in Company Program Terms & Policies © 2026 TikTok #chickenmealprepideas Matt 🍗 Chicken, Broccoli, & Rice Bowls 🥦🍚 Aussie Fitness 🇦🇺💪🏼 High Protein Cheesy & Creamy Garlic Chicken Quesadillas🍗🧀🧄 Johnny Che"
   },
-  "emptyStreak": 0
+  "emptyStreak": 0,
+  "stale": true,
+  "staleSince": "2026-11-02T06:45:05.238Z",
+  "lastAttemptAt": "2026-11-02T06:45:05.238Z",
+  "lastAttemptDebug": {
+    "keyword": "chicken meal prep ideas",
+    "want": 120,
+    "strategies": [
+      {
+        "name": "search",
+        "url": "https://www.tiktok.com/search?q=chicken%20meal%20prep%20ideas",
+        "finalUrl": "https://www.tiktok.com/search?q=chicken%20meal%20prep%20ideas",
+        "title": "TikTok - Make Your Day",
+        "scrollRounds": 6,
+        "matchedAfter": 0,
+        "error": null
+      },
+      {
+        "name": "search-video-tab",
+        "url": "https://www.tiktok.com/search/video?q=chicken%20meal%20prep%20ideas",
+        "finalUrl": "https://www.tiktok.com/search/video?q=chicken%20meal%20prep%20ideas",
+        "title": "TikTok - Make Your Day",
+        "scrollRounds": 6,
+        "matchedAfter": 0,
+        "error": null
+      },
+      {
+        "name": "hashtag",
+        "url": "https://www.tiktok.com/tag/chickenmealprepideas",
+        "finalUrl": "https://www.tiktok.com/tag/chickenmealprepideas",
+        "title": "TikTok - Make Your Day",
+        "scrollRounds": 6,
+        "matchedAfter": 0,
+        "error": null
+      }
+    ],
+    "apiHits": {
+      "/api/search/general/preview/": {
+        "calls": 2,
+        "items": 0,
+        "source": "search"
+      }
+    },
+    "fromSearchEndpoints": 0,
+    "loginWall": true,
+    "captchaWall": false,
+    "bodySnippet": "TikTok Search For You Explore Following Short dramas LIVE Upload Profile More Log in Company Program Terms & Policies © 2026 TikTok #chickenmealprepideas Log in Drag the slider to fit the puzzle Audio 20261102144532D99D46C64341457E90A0"
+  }
 }
