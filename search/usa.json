@@ -181,5 +181,52 @@
     "captchaWall": false,
     "bodySnippet": "TikTok Search For You Shop Explore Following Short dramas LIVE Upload Profile More Log in Company Program Terms & Policies © 2026 TikTok #usa Sammy STORIES #usa #unitedstates Curlara Comment “Hair” if you need one 😍 #busymom #mommylife #momslife #usa kayandtayofficial fan #kayandtayofficial #family"
   },
-  "emptyStreak": 0
+  "emptyStreak": 0,
+  "stale": true,
+  "staleSince": "2026-11-02T00:37:40.822Z",
+  "lastAttemptAt": "2026-11-02T00:37:40.822Z",
+  "lastAttemptDebug": {
+    "keyword": "USA",
+    "want": 120,
+    "strategies": [
+      {
+        "name": "search",
+        "url": "https://www.tiktok.com/search?q=USA",
+        "finalUrl": "https://www.tiktok.com/search?q=USA",
+        "title": "TikTok - Make Your Day",
+        "scrollRounds": 6,
+        "matchedAfter": 0,
+        "error": null
+      },
+      {
+        "name": "search-video-tab",
+        "url": "https://www.tiktok.com/search/video?q=USA",
+        "finalUrl": "https://www.tiktok.com/search/video?q=USA",
+        "title": "TikTok - Make Your Day",
+        "scrollRounds": 6,
+        "matchedAfter": 0,
+        "error": null
+      },
+      {
+        "name": "hashtag",
+        "url": "https://www.tiktok.com/tag/usa",
+        "finalUrl": "https://www.tiktok.com/tag/usa",
+        "title": "TikTok - Make Your Day",
+        "scrollRounds": 6,
+        "matchedAfter": 0,
+        "error": null
+      }
+    ],
+    "apiHits": {
+      "/api/challenge/item_list/": {
+        "calls": 1,
+        "items": 0,
+        "source": "search"
+      }
+    },
+    "fromSearchEndpoints": 0,
+    "loginWall": true,
+    "captchaWall": false,
+    "bodySnippet": "TikTok Search For You Shop Explore Following Short dramas LIVE Upload Profile More Log in Company Program Terms & Policies © 2026 TikTok #usa No videos with this hashtag yet Looking for videos? Try browsing our trending creators, hashtags, and sounds. Log in"
+  }
 }
