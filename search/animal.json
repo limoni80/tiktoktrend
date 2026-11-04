@@ -5620,5 +5620,46 @@
     "captchaWall": false,
     "bodySnippet": "TikTok Search For You Shop Explore Following Short dramas LIVE Upload Profile More Log in Company Program Terms & Policies © 2026 TikTok #animal A flying bug So cute#animal #cute #interesting #tiktok #fyp funnyanimalss41 Parrots so funny🤣#animal #parrot #parrotsoftiktok #funny #funnyanimals MarSun "
   },
-  "emptyStreak": 0
+  "emptyStreak": 0,
+  "stale": true,
+  "staleSince": "2026-11-04T15:45:50.746Z",
+  "lastAttemptAt": "2026-11-04T15:45:50.746Z",
+  "lastAttemptDebug": {
+    "keyword": "Animal",
+    "want": 120,
+    "strategies": [
+      {
+        "name": "search",
+        "url": "https://www.tiktok.com/search?q=Animal",
+        "finalUrl": "https://www.tiktok.com/search?q=Animal",
+        "title": "Access Denied",
+        "scrollRounds": 6,
+        "matchedAfter": 0,
+        "error": null
+      },
+      {
+        "name": "search-video-tab",
+        "url": "https://www.tiktok.com/search/video?q=Animal",
+        "finalUrl": "https://www.tiktok.com/search/video?q=Animal",
+        "title": "Access Denied",
+        "scrollRounds": 6,
+        "matchedAfter": 0,
+        "error": null
+      },
+      {
+        "name": "hashtag",
+        "url": "https://www.tiktok.com/tag/animal",
+        "finalUrl": "https://www.tiktok.com/tag/animal",
+        "title": "Access Denied",
+        "scrollRounds": 6,
+        "matchedAfter": 0,
+        "error": null
+      }
+    ],
+    "apiHits": {},
+    "fromSearchEndpoints": 0,
+    "loginWall": false,
+    "captchaWall": false,
+    "bodySnippet": "Access Denied You don't have permission to access \"http://www.tiktok.com/tag/animal\" on this server. Reference #18.999eca17.1793807175.b5bee3 https://errors.edgesuite.net/18.999eca17.1793807175.b5bee3"
+  }
 }

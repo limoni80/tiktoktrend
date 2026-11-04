@@ -5375,5 +5375,46 @@
     "captchaWall": false,
     "bodySnippet": "TikTok Search For You Shop Explore Following Short dramas LIVE Upload Profile More Log in Company Program Terms & Policies © 2026 TikTok #messi Major League Soccer Pure cinema from Messi to score the game winner for @InterMiamiCF in New England 🤯 #messi #mls #intermiami #soccer kylianftbl Messi goa"
   },
-  "emptyStreak": 0
+  "emptyStreak": 0,
+  "stale": true,
+  "staleSince": "2026-11-04T15:44:20.949Z",
+  "lastAttemptAt": "2026-11-04T15:44:20.949Z",
+  "lastAttemptDebug": {
+    "keyword": "messi",
+    "want": 120,
+    "strategies": [
+      {
+        "name": "search",
+        "url": "https://www.tiktok.com/search?q=messi",
+        "finalUrl": "https://www.tiktok.com/search?q=messi",
+        "title": "TikTok - Make Your Day",
+        "scrollRounds": 6,
+        "matchedAfter": 0,
+        "error": null
+      },
+      {
+        "name": "search-video-tab",
+        "url": "https://www.tiktok.com/search/video?q=messi",
+        "finalUrl": "https://www.tiktok.com/search/video?q=messi",
+        "title": "TikTok - Make Your Day",
+        "scrollRounds": 6,
+        "matchedAfter": 0,
+        "error": null
+      },
+      {
+        "name": "hashtag",
+        "url": "https://www.tiktok.com/tag/messi",
+        "finalUrl": "https://www.tiktok.com/tag/messi",
+        "title": "TikTok - Make Your Day",
+        "scrollRounds": 6,
+        "matchedAfter": 0,
+        "error": null
+      }
+    ],
+    "apiHits": {},
+    "fromSearchEndpoints": 0,
+    "loginWall": true,
+    "captchaWall": false,
+    "bodySnippet": "TikTok Search For You Explore Following LIVE Upload Profile More Log in Company Program Terms & Policies © 2026 TikTok #messi Log in Drag the slider to fit the puzzle Audio 202611042344487FD3E0D25FB6E12762A0"
+  }
 }
