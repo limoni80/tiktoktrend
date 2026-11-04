@@ -5518,5 +5518,52 @@
     "captchaWall": false,
     "bodySnippet": "TikTok Search For You Shop Explore Following Short dramas LIVE Upload Profile More Log in Company Program Terms & Policies © 2026 TikTok #volcanocake Jessica H 💜 I had absolutely no idea what i was doing!!! but his reaction said we did good 🥰🎉🎊 Melissa Newman Epic volcano cake birthday cake! The"
   },
-  "emptyStreak": 0
+  "emptyStreak": 0,
+  "stale": true,
+  "staleSince": "2026-11-04T00:53:26.574Z",
+  "lastAttemptAt": "2026-11-04T00:53:26.574Z",
+  "lastAttemptDebug": {
+    "keyword": "volcano cake",
+    "want": 120,
+    "strategies": [
+      {
+        "name": "search",
+        "url": "https://www.tiktok.com/search?q=volcano%20cake",
+        "finalUrl": "https://www.tiktok.com/search?q=volcano%20cake",
+        "title": "TikTok - Make Your Day",
+        "scrollRounds": 6,
+        "matchedAfter": 0,
+        "error": null
+      },
+      {
+        "name": "search-video-tab",
+        "url": "https://www.tiktok.com/search/video?q=volcano%20cake",
+        "finalUrl": "https://www.tiktok.com/search/video?q=volcano%20cake",
+        "title": "TikTok - Make Your Day",
+        "scrollRounds": 6,
+        "matchedAfter": 0,
+        "error": null
+      },
+      {
+        "name": "hashtag",
+        "url": "https://www.tiktok.com/tag/volcanocake",
+        "finalUrl": "https://www.tiktok.com/tag/volcanocake",
+        "title": "TikTok - Make Your Day",
+        "scrollRounds": 6,
+        "matchedAfter": 0,
+        "error": null
+      }
+    ],
+    "apiHits": {
+      "/api/challenge/item_list/": {
+        "calls": 1,
+        "items": 0,
+        "source": "search"
+      }
+    },
+    "fromSearchEndpoints": 0,
+    "loginWall": true,
+    "captchaWall": false,
+    "bodySnippet": "TikTok Search For You Shop Explore Following Short dramas LIVE Upload Profile More Log in Company Program Terms & Policies © 2026 TikTok #volcanocake Page not available Looking for videos? Try browsing our trending creators, hashtags, and sounds. Log in"
+  }
 }
