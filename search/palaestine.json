@@ -5295,5 +5295,52 @@
     "captchaWall": false,
     "bodySnippet": "TikTok Search For You Shop Explore Following Short dramas LIVE Upload Profile More Log in Company Program Terms & Policies © 2026 TikTok #palaestine AHMED._SA❤️🇵🇸 Follow me 🇵🇸#Gaza #Palestine #ExplorePage #Reels Homeofclips N3on froze up when FOUSEY asked him free Palestine from what ☪️😨#n3on #"
   },
-  "emptyStreak": 0
+  "emptyStreak": 0,
+  "stale": true,
+  "staleSince": "2026-11-04T21:50:09.018Z",
+  "lastAttemptAt": "2026-11-04T21:50:09.018Z",
+  "lastAttemptDebug": {
+    "keyword": "PALAESTINE",
+    "want": 120,
+    "strategies": [
+      {
+        "name": "search",
+        "url": "https://www.tiktok.com/search?q=PALAESTINE",
+        "finalUrl": "https://www.tiktok.com/search?q=PALAESTINE",
+        "title": "TikTok - Make Your Day",
+        "scrollRounds": 6,
+        "matchedAfter": 0,
+        "error": null
+      },
+      {
+        "name": "search-video-tab",
+        "url": "https://www.tiktok.com/search/video?q=PALAESTINE",
+        "finalUrl": "https://www.tiktok.com/search/video?q=PALAESTINE",
+        "title": "TikTok - Make Your Day",
+        "scrollRounds": 6,
+        "matchedAfter": 0,
+        "error": null
+      },
+      {
+        "name": "hashtag",
+        "url": "https://www.tiktok.com/tag/palaestine",
+        "finalUrl": "https://www.tiktok.com/tag/palaestine",
+        "title": "# | TikTok",
+        "scrollRounds": 6,
+        "matchedAfter": 0,
+        "error": null
+      }
+    ],
+    "apiHits": {
+      "/api/recommend/item_list/": {
+        "calls": 1,
+        "items": 2,
+        "source": "feed"
+      }
+    },
+    "fromSearchEndpoints": 0,
+    "loginWall": true,
+    "captchaWall": false,
+    "bodySnippet": "TikTok Search For You Shop Explore Following Short dramas LIVE Upload Profile More Log in Company Program Terms & Policies © 2026 TikTok Page not available Looking for videos? Try browsing our trending creators, hashtags, and sounds. Log in"
+  }
 }

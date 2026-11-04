@@ -5457,5 +5457,52 @@
     "captchaWall": false,
     "bodySnippet": "TikTok Search For You Shop Explore Following Short dramas LIVE Upload Profile More Log in Company Program Terms & Policies © 2026 TikTok #tigers San Diego Zoo Paws-itively striking 🧡🖤 My Best Friend Female Tigers Know How to Act Cute Too #tigers #bigcats #animalfacts #wildlife #animalbehavior #fun"
   },
-  "emptyStreak": 0
+  "emptyStreak": 0,
+  "stale": true,
+  "staleSince": "2026-11-04T21:51:18.301Z",
+  "lastAttemptAt": "2026-11-04T21:51:18.301Z",
+  "lastAttemptDebug": {
+    "keyword": "tigers",
+    "want": 120,
+    "strategies": [
+      {
+        "name": "search",
+        "url": "https://www.tiktok.com/search?q=tigers",
+        "finalUrl": "https://www.tiktok.com/search?q=tigers",
+        "title": "TikTok - Make Your Day",
+        "scrollRounds": 6,
+        "matchedAfter": 0,
+        "error": null
+      },
+      {
+        "name": "search-video-tab",
+        "url": "https://www.tiktok.com/search/video?q=tigers",
+        "finalUrl": "https://www.tiktok.com/search/video?q=tigers",
+        "title": "TikTok - Make Your Day",
+        "scrollRounds": 6,
+        "matchedAfter": 0,
+        "error": null
+      },
+      {
+        "name": "hashtag",
+        "url": "https://www.tiktok.com/tag/tigers",
+        "finalUrl": "https://www.tiktok.com/tag/tigers",
+        "title": "TikTok - Make Your Day",
+        "scrollRounds": 6,
+        "matchedAfter": 0,
+        "error": null
+      }
+    ],
+    "apiHits": {
+      "/api/challenge/item_list/": {
+        "calls": 1,
+        "items": 0,
+        "source": "search"
+      }
+    },
+    "fromSearchEndpoints": 0,
+    "loginWall": true,
+    "captchaWall": false,
+    "bodySnippet": "TikTok Search For You Shop Explore Following Short dramas LIVE Upload Profile More Log in Company Program Terms & Policies © 2026 TikTok #tigers Page not available Looking for videos? Try browsing our trending creators, hashtags, and sounds. Log in"
+  }
 }
