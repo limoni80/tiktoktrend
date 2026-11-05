@@ -4108,5 +4108,52 @@
     "captchaWall": false,
     "bodySnippet": "TikTok Search For You Shop Explore Following Short dramas LIVE Upload Profile More Log in Company Program Terms & Policies © 2026 TikTok #rigragi ke.mana.ya 🥐 : Rigu Ragi saudsaeed000 Rigi rigi song#🤣🤣🤣 #foryoupage #trending #comedyvideo #viral Lapak Rasa Lagi cari jajanan manis yang fresh di Po"
   },
-  "emptyStreak": 0
+  "emptyStreak": 0,
+  "stale": true,
+  "staleSince": "2026-11-05T02:19:08.351Z",
+  "lastAttemptAt": "2026-11-05T02:19:08.351Z",
+  "lastAttemptDebug": {
+    "keyword": "RIGRAGI",
+    "want": 120,
+    "strategies": [
+      {
+        "name": "search",
+        "url": "https://www.tiktok.com/search?q=RIGRAGI",
+        "finalUrl": "https://www.tiktok.com/search?q=RIGRAGI",
+        "title": "TikTok - Make Your Day",
+        "scrollRounds": 6,
+        "matchedAfter": 0,
+        "error": null
+      },
+      {
+        "name": "search-video-tab",
+        "url": "https://www.tiktok.com/search/video?q=RIGRAGI",
+        "finalUrl": "https://www.tiktok.com/search/video?q=RIGRAGI",
+        "title": "TikTok - Make Your Day",
+        "scrollRounds": 6,
+        "matchedAfter": 0,
+        "error": null
+      },
+      {
+        "name": "hashtag",
+        "url": "https://www.tiktok.com/tag/rigragi",
+        "finalUrl": "https://www.tiktok.com/tag/rigragi",
+        "title": "TikTok - Make Your Day",
+        "scrollRounds": 6,
+        "matchedAfter": 0,
+        "error": null
+      }
+    ],
+    "apiHits": {
+      "/api/challenge/item_list/": {
+        "calls": 1,
+        "items": 0,
+        "source": "search"
+      }
+    },
+    "fromSearchEndpoints": 0,
+    "loginWall": true,
+    "captchaWall": false,
+    "bodySnippet": "TikTok Search For You Shop Explore Following Short dramas LIVE Upload Profile More Log in Company Program Terms & Policies © 2026 TikTok #rigragi No videos with this hashtag yet Looking for videos? Try browsing our trending creators, hashtags, and sounds. Log in"
+  }
 }
