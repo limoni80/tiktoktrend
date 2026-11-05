@@ -5312,5 +5312,46 @@
     "captchaWall": false,
     "bodySnippet": "TikTok Search For You Shop Explore Following Short dramas LIVE Upload Profile More Log in Company Program Terms & Policies © 2026 TikTok #chapeau jamesgsarah @CHAPEAU HANDMADE #tiktoklive #livehighlights #CHAPEAU HANDMADEfanclub #CHAPEAU HANDMADE 💄Mani_makeup💄76251758 @Hawa_coulibaly_ya_bani ✨✨ #c"
   },
-  "emptyStreak": 0
+  "emptyStreak": 0,
+  "stale": true,
+  "staleSince": "2026-11-05T17:59:47.877Z",
+  "lastAttemptAt": "2026-11-05T17:59:47.877Z",
+  "lastAttemptDebug": {
+    "keyword": "chapeau",
+    "want": 120,
+    "strategies": [
+      {
+        "name": "search",
+        "url": "https://www.tiktok.com/search?q=chapeau",
+        "finalUrl": "https://www.tiktok.com/search?q=chapeau",
+        "title": "TikTok - Make Your Day",
+        "scrollRounds": 6,
+        "matchedAfter": 0,
+        "error": null
+      },
+      {
+        "name": "search-video-tab",
+        "url": "https://www.tiktok.com/search/video?q=chapeau",
+        "finalUrl": "https://www.tiktok.com/search/video?q=chapeau",
+        "title": "TikTok - Make Your Day",
+        "scrollRounds": 6,
+        "matchedAfter": 0,
+        "error": null
+      },
+      {
+        "name": "hashtag",
+        "url": "https://www.tiktok.com/tag/chapeau",
+        "finalUrl": "https://www.tiktok.com/tag/chapeau",
+        "title": "# | TikTok",
+        "scrollRounds": 6,
+        "matchedAfter": 0,
+        "error": null
+      }
+    ],
+    "apiHits": {},
+    "fromSearchEndpoints": 0,
+    "loginWall": true,
+    "captchaWall": false,
+    "bodySnippet": "TikTok Search For You Shop Explore Following Short dramas LIVE Upload Profile More Log in Company Program Terms & Policies © 2026 TikTok Page not available Looking for videos? Try browsing our trending creators, hashtags, and sounds. Log in"
+  }
 }
