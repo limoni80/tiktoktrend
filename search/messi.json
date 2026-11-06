@@ -5378,5 +5378,52 @@
     "captchaWall": false,
     "bodySnippet": "TikTok Search For You Shop Explore Following Short dramas LIVE Upload Profile More Log in Company Program Terms & Policies © 2026 TikTok #messi Mssive Messi in this trend is goated (1/1) || cr: @1omarfx || #messi #barcelona #football #viral #edit #trend #mssive mtsouzx GOAT Cold Moments 🥶 🧊 ⚽ || #"
   },
-  "emptyStreak": 0
+  "emptyStreak": 0,
+  "stale": true,
+  "staleSince": "2026-11-06T18:22:30.325Z",
+  "lastAttemptAt": "2026-11-06T18:22:30.325Z",
+  "lastAttemptDebug": {
+    "keyword": "messi",
+    "want": 120,
+    "strategies": [
+      {
+        "name": "search",
+        "url": "https://www.tiktok.com/search?q=messi",
+        "finalUrl": "https://www.tiktok.com/search?q=messi",
+        "title": "TikTok - Make Your Day",
+        "scrollRounds": 6,
+        "matchedAfter": 0,
+        "error": null
+      },
+      {
+        "name": "search-video-tab",
+        "url": "https://www.tiktok.com/search/video?q=messi",
+        "finalUrl": "https://www.tiktok.com/search/video?q=messi",
+        "title": "TikTok - Make Your Day",
+        "scrollRounds": 6,
+        "matchedAfter": 0,
+        "error": null
+      },
+      {
+        "name": "hashtag",
+        "url": "https://www.tiktok.com/tag/messi",
+        "finalUrl": "https://www.tiktok.com/tag/messi",
+        "title": "TikTok - Make Your Day",
+        "scrollRounds": 6,
+        "matchedAfter": 0,
+        "error": null
+      }
+    ],
+    "apiHits": {
+      "/api/search/general/preview/": {
+        "calls": 2,
+        "items": 0,
+        "source": "search"
+      }
+    },
+    "fromSearchEndpoints": 0,
+    "loginWall": true,
+    "captchaWall": false,
+    "bodySnippet": "TikTok Search For You Explore Following Short dramas LIVE Upload Profile More Log in Company Program Terms & Policies © 2026 TikTok #messi Log in Drag the slider to fit the puzzle Audio 202611070222588FED182D03B61DC754B7"
+  }
 }
