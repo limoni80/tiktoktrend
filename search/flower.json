@@ -5395,8 +5395,8 @@
   },
   "emptyStreak": 0,
   "stale": true,
-  "staleSince": "2026-11-06T23:27:53.618Z",
-  "lastAttemptAt": "2026-11-06T23:27:53.618Z",
+  "staleSince": "2026-11-07T03:08:27.118Z",
+  "lastAttemptAt": "2026-11-07T03:08:27.118Z",
   "lastAttemptDebug": {
     "keyword": "flower",
     "want": 120,
@@ -5423,16 +5423,22 @@
         "name": "hashtag",
         "url": "https://www.tiktok.com/tag/flower",
         "finalUrl": "https://www.tiktok.com/tag/flower",
-        "title": "# | TikTok",
+        "title": "TikTok - Make Your Day",
         "scrollRounds": 6,
         "matchedAfter": 0,
         "error": null
       }
     ],
-    "apiHits": {},
+    "apiHits": {
+      "/api/challenge/item_list/": {
+        "calls": 1,
+        "items": 0,
+        "source": "search"
+      }
+    },
     "fromSearchEndpoints": 0,
     "loginWall": true,
     "captchaWall": false,
-    "bodySnippet": "TikTok Search For You Shop Explore Following Short dramas LIVE Upload Profile More Log in Company Program Terms & Policies © 2026 TikTok Page not available Looking for videos? Try browsing our trending creators, hashtags, and sounds. Log in"
+    "bodySnippet": "TikTok Search For You Shop Explore Following Short dramas LIVE Upload Profile More Log in Company Program Terms & Policies © 2026 TikTok #flower Page not available Looking for videos? Try browsing our trending creators, hashtags, and sounds. Log in"
   }
 }
