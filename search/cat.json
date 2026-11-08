@@ -1,56 +1,54 @@
 {
   "videos": [
     {
-      "id": "7705369874645765390",
+      "id": "7705542634915237151",
       "kind": "organic",
-      "url": "https://www.tiktok.com/@fun.animals26/video/7705369874645765390",
-      "caption": "Sand cats #sandcat #cats #cat #animals #funny ",
-      "thumbnailUrl": "https://p16-common-sign.tiktokcdn-us.com/tos-useast5-p-0068-tx/oYfysPSPvqxlQgEteFKFjELDBo8E7QRdh7SAHD~tplv-tiktokx-origin.image?dr=9636&x-expires=1794290400&x-signature=n34n%2FA19Kn3Ysv0f%2FzgcRblAs%2FI%3D&t=4d5b0474&ps=13740610&shp=81f88b70&shcp=43f4a2f9&idc=useast8",
-      "publishedAt": "2026-11-07T10:10:48.000Z",
-      "durationSeconds": 60,
-      "views": 1200000,
+      "url": "https://www.tiktok.com/@coughingonangeldust/video/7705542634915237151",
+      "caption": "#cat #blowthisup #funny ",
+      "thumbnailUrl": "https://p16-common-sign.tiktokcdn-us.com/tos-useast8-p-0068-tx2/oIiIQqIv2DQnAgBgAAfqicAqCrI9kIV1i8d1lC~tplv-tiktokx-origin.image?dr=9636&x-expires=1794315600&x-signature=EtgDlNqEdU4%2BiEQLZonPqtcce4k%3D&t=4d5b0474&ps=13740610&shp=81f88b70&shcp=43f4a2f9&idc=useast8",
+      "publishedAt": "2026-11-07T21:21:05.000Z",
+      "durationSeconds": 9,
+      "views": 281700,
       "periodViews": null,
-      "likes": 170200,
-      "comments": 683,
-      "shares": 19700,
-      "saves": 12697,
+      "likes": 56400,
+      "comments": 209,
+      "shares": 1801,
+      "saves": 2851,
       "sourceEngagementRate": null,
       "vtr": null,
       "creator": {
-        "username": "fun.animals26",
-        "displayName": "Fun animals",
-        "profileUrl": "https://www.tiktok.com/@fun.animals26",
-        "avatarUrl": "https://p16-common-sign.tiktokcdn-us.com/tos-useast5-avt-0068-tx/aa53023712f32ef396418386576432bb~tplv-tiktokx-cropcenter:100:100.jpeg?dr=9640&refresh_token=d65a8650&x-expires=1794290400&x-signature=5PXNupj8hkURr528BlUtjQq5mzs%3D&t=4d5b0474&ps=13740610&shp=a5d48078&shcp=81f88b70&idc=useast8",
-        "followers": 96800,
-        "following": 16,
-        "totalLikes": 6400000,
+        "username": "coughingonangeldust",
+        "displayName": "Gia",
+        "profileUrl": "https://www.tiktok.com/@coughingonangeldust",
+        "avatarUrl": "https://p16-common-sign.tiktokcdn-us.com/tos-useast8-avt-0068-tx2/f8915c493320e3578053c1878f4ae14e~tplv-tiktokx-cropcenter:100:100.jpeg?dr=9640&refresh_token=b26af6da&x-expires=1794315600&x-signature=bqNpb%2FzFTLuO1VMGwwA80mXLlAc%3D&t=4d5b0474&ps=13740610&shp=a5d48078&shcp=81f88b70&idc=useast8",
+        "followers": 651,
+        "following": 653,
+        "totalLikes": 121500,
         "country": null,
         "verified": false
       },
       "hashtags": [
-        "sandcat",
-        "cats",
         "cat",
-        "animals",
+        "blowthisup",
         "funny"
       ],
       "topic": null,
       "soundName": "original sound",
-      "soundAuthor": "Fun animals",
-      "soundId": "7705369936331410190",
-      "collectedAt": "2026-11-08T06:37:45.612Z",
+      "soundAuthor": "Gia",
+      "soundId": "7705542676745128734",
+      "collectedAt": "2026-11-08T13:50:46.114Z",
       "viewsPerHour": null,
       "likesPerHour": null,
-      "videoFileUrl": "https://tiktoktrend.limoniastrum.workers.dev/api/media/7705369874645765390",
-      "downloadFileUrl": "https://tiktoktrend.limoniastrum.workers.dev/api/media/7705369874645765390",
+      "videoFileUrl": "https://tiktoktrend.limoniastrum.workers.dev/api/media/7705542634915237151",
+      "downloadFileUrl": "https://tiktoktrend.limoniastrum.workers.dev/api/media/7705542634915237151",
       "source": "TikTok.com · search · “cat”"
     }
   ],
-  "scanned": 1,
+  "scanned": 3,
   "hasMore": false,
   "source": "TikTok.com search · “cat” · collected by GitHub Actions",
   "keyword": "cat",
-  "fetchedAt": "2026-11-08T06:37:58.910Z",
+  "fetchedAt": "2026-11-08T13:50:56.528Z",
   "debug": {
     "keyword": "cat",
     "want": 120,
@@ -84,6 +82,11 @@
       }
     ],
     "apiHits": {
+      "/api/recommend/item_list/": {
+        "calls": 1,
+        "items": 2,
+        "source": "feed"
+      },
       "/api/challenge/item_list/": {
         "calls": 1,
         "items": 1,
@@ -93,7 +96,7 @@
     "fromSearchEndpoints": 1,
     "loginWall": true,
     "captchaWall": false,
-    "bodySnippet": "TikTok Search For You Shop Explore Following Short dramas LIVE Upload Profile More Log in Company Program Terms & Policies © 2026 TikTok #cat Fun animals Sand cats #sandcat #cats #cat #animals #funny Log in"
+    "bodySnippet": "TikTok Search For You Shop Explore Following Short dramas LIVE Upload Profile More Log in Company Program Terms & Policies © 2026 TikTok #cat Gia #cat #blowthisup #funny Log in"
   },
   "emptyStreak": 0
 }
