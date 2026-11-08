@@ -1140,8 +1140,8 @@
   },
   "emptyStreak": 0,
   "stale": true,
-  "staleSince": "2026-11-07T20:48:37.685Z",
-  "lastAttemptAt": "2026-11-07T20:48:37.685Z",
+  "staleSince": "2026-11-08T00:25:04.081Z",
+  "lastAttemptAt": "2026-11-08T00:25:04.081Z",
   "lastAttemptDebug": {
     "keyword": "mango spacecraft",
     "want": 120,
@@ -1168,19 +1168,13 @@
         "name": "hashtag",
         "url": "https://www.tiktok.com/tag/mangospacecraft",
         "finalUrl": "https://www.tiktok.com/tag/mangospacecraft",
-        "title": "TikTok - Make Your Day",
+        "title": "Couldn’t find this hashtag. Visit TikTok to discover more trending creators, hashtags, and sounds.",
         "scrollRounds": 6,
         "matchedAfter": 0,
         "error": null
       }
     ],
-    "apiHits": {
-      "/api/recommend/item_list/": {
-        "calls": 1,
-        "items": 2,
-        "source": "feed"
-      }
-    },
+    "apiHits": {},
     "fromSearchEndpoints": 0,
     "loginWall": true,
     "captchaWall": false,
