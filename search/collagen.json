@@ -5331,5 +5331,52 @@
     "captchaWall": false,
     "bodySnippet": "TikTok Search For You Shop Explore Following Short dramas LIVE Upload Profile More Log in Company Program Terms & Policies © 2026 TikTok #collagen Ariana Medizade How to legit boost your collagen. Your skin will see a huge difference in the plumpness and elasticity because you are feeding it precurs"
   },
-  "emptyStreak": 0
+  "emptyStreak": 0,
+  "stale": true,
+  "staleSince": "2026-11-10T03:25:56.189Z",
+  "lastAttemptAt": "2026-11-10T03:25:56.189Z",
+  "lastAttemptDebug": {
+    "keyword": "Collagen",
+    "want": 120,
+    "strategies": [
+      {
+        "name": "search",
+        "url": "https://www.tiktok.com/search?q=Collagen",
+        "finalUrl": "https://www.tiktok.com/search?q=Collagen",
+        "title": "TikTok - Make Your Day",
+        "scrollRounds": 6,
+        "matchedAfter": 0,
+        "error": null
+      },
+      {
+        "name": "search-video-tab",
+        "url": "https://www.tiktok.com/search/video?q=Collagen",
+        "finalUrl": "https://www.tiktok.com/search/video?q=Collagen",
+        "title": "TikTok - Make Your Day",
+        "scrollRounds": 6,
+        "matchedAfter": 0,
+        "error": null
+      },
+      {
+        "name": "hashtag",
+        "url": "https://www.tiktok.com/tag/collagen",
+        "finalUrl": "https://www.tiktok.com/tag/collagen",
+        "title": "TikTok - Make Your Day",
+        "scrollRounds": 6,
+        "matchedAfter": 0,
+        "error": null
+      }
+    ],
+    "apiHits": {
+      "/api/challenge/item_list/": {
+        "calls": 1,
+        "items": 0,
+        "source": "search"
+      }
+    },
+    "fromSearchEndpoints": 0,
+    "loginWall": true,
+    "captchaWall": false,
+    "bodySnippet": "TikTok Search For You Shop Explore Following Short dramas LIVE Upload Profile More Log in Company Program Terms & Policies © 2026 TikTok #collagen Page not available Looking for videos? Try browsing our trending creators, hashtags, and sounds. Log in"
+  }
 }
