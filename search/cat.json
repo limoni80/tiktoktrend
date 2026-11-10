@@ -5,25 +5,25 @@
       "kind": "organic",
       "url": "https://www.tiktok.com/@sabreena850/video/7706151838390832414",
       "caption": "My cat dreads the weekends when my brothers is over 😂 #cat #cats #fyp #4u #petsoftiktok #petlover #orangecat #hiss #funny #catsoftiktok #catgrowl ",
-      "thumbnailUrl": "https://p16-common-sign.tiktokcdn-us.com/tos-useast8-p-0068-tx2/osf2wqADfACzAgDjEGLxBSIAxFRMc82AQVEEEa~tplv-tiktokx-origin.image?dr=9636&x-expires=1794452400&x-signature=Id%2Bzfd%2FykjQ9bvNA99nVZ%2BA3pzk%3D&t=4d5b0474&ps=13740610&shp=81f88b70&shcp=43f4a2f9&idc=useast5",
+      "thumbnailUrl": "https://p19-common-sign.tiktokcdn-us.com/tos-useast8-p-0068-tx2/osf2wqADfACzAgDjEGLxBSIAxFRMc82AQVEEEa~tplv-tiktokx-origin.image?dr=9636&x-expires=1794481200&x-signature=bjLxw5OqSaaXEl8q3KqX8ZEdtmQ%3D&t=4d5b0474&ps=13740610&shp=81f88b70&shcp=43f4a2f9&idc=useast8",
       "publishedAt": "2026-11-09T12:45:25.000Z",
       "durationSeconds": 46,
-      "views": 3400000,
+      "views": 4600000,
       "periodViews": null,
-      "likes": 676100,
-      "comments": 3935,
-      "shares": 61400,
-      "saves": 24375,
+      "likes": 896900,
+      "comments": 5009,
+      "shares": 79400,
+      "saves": 32502,
       "sourceEngagementRate": null,
       "vtr": null,
       "creator": {
         "username": "sabreena850",
         "displayName": "Sabreena",
         "profileUrl": "https://www.tiktok.com/@sabreena850",
-        "avatarUrl": "https://p19-common-sign.tiktokcdn-us.com/tos-useast8-avt-0068-tx2/d0d3f1f16cc6b92854528994856392ac~tplv-tiktokx-cropcenter:100:100.jpeg?dr=9640&refresh_token=f6b0a04e&x-expires=1794452400&x-signature=Wc3cXOi5aku5X9MPJJhh5IsqdAA%3D&t=4d5b0474&ps=13740610&shp=a5d48078&shcp=81f88b70&idc=useast5",
-        "followers": 8788,
+        "avatarUrl": "https://p19-common-sign.tiktokcdn-us.com/tos-useast8-avt-0068-tx2/a911874856ab21567662a637855126e0~tplv-tiktokx-cropcenter:100:100.jpeg?dr=9640&refresh_token=def4b6c8&x-expires=1794481200&x-signature=fCSgeDAw4udZt91GEhAwQVMJCDY%3D&t=4d5b0474&ps=13740610&shp=a5d48078&shcp=81f88b70&idc=useast8",
+        "followers": 9816,
         "following": 20,
-        "totalLikes": 1600000,
+        "totalLikes": 1800000,
         "country": null,
         "verified": false
       },
@@ -44,7 +44,7 @@
       "soundName": "original sound",
       "soundAuthor": "Sabreena",
       "soundId": "7706151969399769887",
-      "collectedAt": "2026-11-10T03:26:18.619Z",
+      "collectedAt": "2026-11-10T11:41:02.198Z",
       "viewsPerHour": null,
       "likesPerHour": null,
       "videoFileUrl": "https://tiktoktrend.limoniastrum.workers.dev/api/media/7706151838390832414",
@@ -52,11 +52,11 @@
       "source": "TikTok.com · search · “cat”"
     }
   ],
-  "scanned": 14,
+  "scanned": 2,
   "hasMore": false,
   "source": "TikTok.com search · “cat” · collected by GitHub Actions",
   "keyword": "cat",
-  "fetchedAt": "2026-11-10T03:26:28.089Z",
+  "fetchedAt": "2026-11-10T11:41:11.917Z",
   "debug": {
     "keyword": "cat",
     "want": 120,
@@ -90,9 +90,9 @@
       }
     ],
     "apiHits": {
-      "/api/explore/item_list/": {
-        "calls": 2,
-        "items": 13,
+      "/api/recommend/item_list/": {
+        "calls": 1,
+        "items": 1,
         "source": "feed"
       },
       "/api/challenge/item_list/": {
