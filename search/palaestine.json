@@ -5307,5 +5307,57 @@
     "captchaWall": false,
     "bodySnippet": "TikTok Search For You Shop Explore Following Short dramas LIVE Upload Profile More Log in Company Program Terms & Policies © 2026 TikTok #palaestine The Sameer Project Listen to the pain in his voice. The endless suffering of Palestinians in Gaza. ENOUGH IS ENOUGH! WakeUpWorld After everything they'"
   },
-  "emptyStreak": 0
+  "emptyStreak": 0,
+  "stale": true,
+  "staleSince": "2026-11-10T19:39:10.820Z",
+  "lastAttemptAt": "2026-11-10T19:39:10.820Z",
+  "lastAttemptDebug": {
+    "keyword": "PALAESTINE",
+    "want": 120,
+    "strategies": [
+      {
+        "name": "search",
+        "url": "https://www.tiktok.com/search?q=PALAESTINE",
+        "finalUrl": "https://www.tiktok.com/search?q=PALAESTINE",
+        "title": "TikTok - Make Your Day",
+        "scrollRounds": 6,
+        "matchedAfter": 0,
+        "error": null
+      },
+      {
+        "name": "search-video-tab",
+        "url": "https://www.tiktok.com/search/video?q=PALAESTINE",
+        "finalUrl": "https://www.tiktok.com/search/video?q=PALAESTINE",
+        "title": "TikTok - Make Your Day",
+        "scrollRounds": 6,
+        "matchedAfter": 0,
+        "error": null
+      },
+      {
+        "name": "hashtag",
+        "url": "https://www.tiktok.com/tag/palaestine",
+        "finalUrl": "https://www.tiktok.com/tag/palaestine",
+        "title": "TikTok - Make Your Day",
+        "scrollRounds": 6,
+        "matchedAfter": 0,
+        "error": null
+      }
+    ],
+    "apiHits": {
+      "/api/recommend/item_list/": {
+        "calls": 1,
+        "items": 1,
+        "source": "feed"
+      },
+      "/api/challenge/item_list/": {
+        "calls": 1,
+        "items": 0,
+        "source": "search"
+      }
+    },
+    "fromSearchEndpoints": 0,
+    "loginWall": true,
+    "captchaWall": false,
+    "bodySnippet": "TikTok Search For You Shop Explore Following Short dramas LIVE Upload Profile More Log in Company Program Terms & Policies © 2026 TikTok #palaestine Page not available Looking for videos? Try browsing our trending creators, hashtags, and sounds. Log in"
+  }
 }
