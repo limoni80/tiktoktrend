@@ -5403,5 +5403,43 @@
     "captchaWall": false,
     "bodySnippet": "TikTok Search For You Shop Explore Following Short dramas LIVE Upload Profile More Log in Company Program Terms & Policies © 2026 TikTok #NBA The 2026-27 NBA season is officially here, so practice your form, pull on a jersey, and get ready to celebrate the best in the #NBA. Atlanta Hawks First ever "
   },
-  "emptyStreak": 0
+  "emptyStreak": 0,
+  "stale": true,
+  "staleSince": "2026-11-11T18:33:05.348Z",
+  "lastAttemptAt": "2026-11-11T18:33:05.348Z",
+  "lastAttemptDebug": {
+    "keyword": "nba",
+    "want": 60,
+    "strategies": [
+      {
+        "name": "search",
+        "url": "https://www.tiktok.com/search?q=nba",
+        "finalUrl": "https://www.tiktok.com/search?q=nba",
+        "title": "TikTok - Make Your Day",
+        "scrollRounds": 6,
+        "matchedAfter": 0,
+        "error": null
+      },
+      {
+        "name": "search-video-tab",
+        "url": "https://www.tiktok.com/search/video?q=nba",
+        "finalUrl": "https://www.tiktok.com/search/video?q=nba",
+        "title": "TikTok - Make Your Day",
+        "scrollRounds": 6,
+        "matchedAfter": 0,
+        "error": null
+      }
+    ],
+    "apiHits": {
+      "/api/recommend/item_list/": {
+        "calls": 1,
+        "items": 1,
+        "source": "feed"
+      }
+    },
+    "fromSearchEndpoints": 0,
+    "loginWall": true,
+    "captchaWall": false,
+    "bodySnippet": "TikTok nba For You Shop Explore Following Short dramas LIVE Upload Profile More Log in Company Program Terms & Policies © 2026 TikTok Get Coins Get App Top Users Videos LIVE Photo"
+  }
 }

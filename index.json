@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-11T18:33:55.194Z",
+  "generatedAt": "2026-11-11T18:34:33.943Z",
   "startedAt": "2026-11-11T18:32:56.259Z",
   "repo": "limoni80/tiktoktrend",
   "runUrl": "https://github.com/limoni80/tiktoktrend/actions/runs/43078753211",
@@ -108,9 +108,8 @@
       "file": "search/nba.json",
       "keyword": "nba",
       "slug": "nba",
-      "status": "ok",
+      "status": "stale",
       "count": 120,
-      "emptyStreak": 0,
       "updatedAt": "2026-11-11T15:07:45.651Z",
       "lastSuccessAt": "2026-11-11T15:07:45.651Z"
     },
@@ -705,7 +704,7 @@
     {
       "keyword": "nba",
       "slug": "nba",
-      "status": "ok",
+      "status": "stale",
       "count": 120,
       "updatedAt": "2026-11-11T15:07:45.651Z"
     },
