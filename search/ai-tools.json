@@ -5390,5 +5390,37 @@
     "captchaWall": false,
     "bodySnippet": "TikTok Search For You Shop Explore Following Short dramas LIVE Upload Profile More Log in Company Program Terms & Policies © 2026 TikTok #aitools Richard Eve Everybody's telling you to install Claude skills. These are the 5 I'd start with, and all of them are free. Taki Wong | AI For Business Click "
   },
-  "emptyStreak": 0
+  "emptyStreak": 0,
+  "stale": true,
+  "staleSince": "2026-11-11T18:41:06.821Z",
+  "lastAttemptAt": "2026-11-11T18:41:06.821Z",
+  "lastAttemptDebug": {
+    "keyword": "ai tools",
+    "want": 60,
+    "strategies": [
+      {
+        "name": "search",
+        "url": "https://www.tiktok.com/search?q=ai%20tools",
+        "finalUrl": "https://www.tiktok.com/search?q=ai%20tools",
+        "title": "TikTok - Make Your Day",
+        "scrollRounds": 6,
+        "matchedAfter": 0,
+        "error": null
+      },
+      {
+        "name": "search-video-tab",
+        "url": "https://www.tiktok.com/search/video?q=ai%20tools",
+        "finalUrl": "https://www.tiktok.com/search/video?q=ai%20tools",
+        "title": "TikTok - Make Your Day",
+        "scrollRounds": 6,
+        "matchedAfter": 0,
+        "error": null
+      }
+    ],
+    "apiHits": {},
+    "fromSearchEndpoints": 0,
+    "loginWall": true,
+    "captchaWall": false,
+    "bodySnippet": "TikTok ai tools For You Shop Explore Following Short dramas LIVE Upload Profile More Log in Company Program Terms & Policies © 2026 TikTok Get Coins Get App Top Users Videos LIVE Photo"
+  }
 }
