@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-11T18:42:55.208Z",
+  "generatedAt": "2026-11-11T18:43:38.219Z",
   "startedAt": "2026-11-11T18:41:06.821Z",
   "repo": "limoni80/tiktoktrend",
   "runUrl": "https://github.com/limoni80/tiktoktrend/actions/runs/43080044368",
@@ -53,9 +53,8 @@
       "file": "search/footing.json",
       "keyword": "Footing",
       "slug": "footing",
-      "status": "ok",
+      "status": "stale",
       "count": 100,
-      "emptyStreak": 0,
       "updatedAt": "2026-11-11T15:09:10.690Z",
       "lastSuccessAt": "2026-11-11T15:09:10.690Z"
     },
@@ -690,7 +689,7 @@
     {
       "keyword": "Footing",
       "slug": "footing",
-      "status": "ok",
+      "status": "stale",
       "count": 100,
       "updatedAt": "2026-11-11T15:09:10.690Z"
     },
