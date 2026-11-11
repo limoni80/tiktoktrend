@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-11-11T18:35:08.055Z",
-  "startedAt": "2026-11-11T18:32:56.259Z",
+  "generatedAt": "2026-11-11T18:35:57.493Z",
+  "startedAt": "2026-11-11T18:34:48.291Z",
   "repo": "limoni80/tiktoktrend",
-  "runUrl": "https://github.com/limoni80/tiktoktrend/actions/runs/43078753211",
+  "runUrl": "https://github.com/limoni80/tiktoktrend/actions/runs/43079056659",
   "entries": [
     {
       "kind": "search",
@@ -294,9 +294,8 @@
       "file": "search/recipes.json",
       "keyword": "recipes",
       "slug": "recipes",
-      "status": "ok",
+      "status": "stale",
       "count": 120,
-      "emptyStreak": 0,
       "updatedAt": "2026-11-11T15:06:30.528Z",
       "lastSuccessAt": "2026-11-11T15:06:30.528Z"
     },
@@ -835,7 +834,7 @@
     {
       "keyword": "recipes",
       "slug": "recipes",
-      "status": "ok",
+      "status": "stale",
       "count": 120,
       "updatedAt": "2026-11-11T15:06:30.528Z"
     },

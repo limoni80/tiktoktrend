@@ -5384,5 +5384,37 @@
     "captchaWall": false,
     "bodySnippet": "TikTok Search For You Shop Explore Following Short dramas LIVE Upload Profile More Log in Company Program Terms & Policies © 2026 TikTok #recipes Share your favorite #Recipes. alexa_de My favorite way to make birria! #birria #quesabirria #tacosdebirria #cooktok #foodtok #foodtiktok #recipes SaucedUp"
   },
-  "emptyStreak": 0
+  "emptyStreak": 0,
+  "stale": true,
+  "staleSince": "2026-11-11T18:34:48.291Z",
+  "lastAttemptAt": "2026-11-11T18:34:48.291Z",
+  "lastAttemptDebug": {
+    "keyword": "recipes",
+    "want": 60,
+    "strategies": [
+      {
+        "name": "search",
+        "url": "https://www.tiktok.com/search?q=recipes",
+        "finalUrl": "https://www.tiktok.com/search?q=recipes",
+        "title": "TikTok - Make Your Day",
+        "scrollRounds": 6,
+        "matchedAfter": 0,
+        "error": null
+      },
+      {
+        "name": "search-video-tab",
+        "url": "https://www.tiktok.com/search/video?q=recipes",
+        "finalUrl": "https://www.tiktok.com/search/video?q=recipes",
+        "title": "TikTok - Make Your Day",
+        "scrollRounds": 6,
+        "matchedAfter": 0,
+        "error": null
+      }
+    ],
+    "apiHits": {},
+    "fromSearchEndpoints": 0,
+    "loginWall": true,
+    "captchaWall": false,
+    "bodySnippet": "TikTok recipes For You Shop Explore Following Short dramas LIVE Upload Profile More Log in Company Program Terms & Policies © 2026 TikTok Get Coins Get App Top Users Videos LIVE Photo"
+  }
 }
