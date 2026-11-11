@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-11T18:42:09.083Z",
+  "generatedAt": "2026-11-11T18:42:55.208Z",
   "startedAt": "2026-11-11T18:41:06.821Z",
   "repo": "limoni80/tiktoktrend",
   "runUrl": "https://github.com/limoni80/tiktoktrend/actions/runs/43080044368",
@@ -380,9 +380,8 @@
       "file": "search/nepal.json",
       "keyword": "NEPAL",
       "slug": "nepal",
-      "status": "ok",
+      "status": "stale",
       "count": 120,
-      "emptyStreak": 0,
       "updatedAt": "2026-11-11T15:05:53.814Z",
       "lastSuccessAt": "2026-11-11T15:05:53.814Z"
     },
@@ -901,7 +900,7 @@
     {
       "keyword": "NEPAL",
       "slug": "nepal",
-      "status": "ok",
+      "status": "stale",
       "count": 120,
       "updatedAt": "2026-11-11T15:05:53.814Z"
     },

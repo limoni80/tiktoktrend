@@ -5295,5 +5295,37 @@
     "captchaWall": false,
     "bodySnippet": "TikTok Search For You Shop Explore Following Short dramas LIVE Upload Profile More Log in Company Program Terms & Policies © 2026 TikTok #nepal The New York Times Flash floods hit northern Nepal on Sunday, sweeping away buildings and at least one bridge along the Budhi Gandaki River. The torrent com"
   },
-  "emptyStreak": 0
+  "emptyStreak": 0,
+  "stale": true,
+  "staleSince": "2026-11-11T18:41:18.243Z",
+  "lastAttemptAt": "2026-11-11T18:41:18.243Z",
+  "lastAttemptDebug": {
+    "keyword": "NEPAL",
+    "want": 60,
+    "strategies": [
+      {
+        "name": "search",
+        "url": "https://www.tiktok.com/search?q=NEPAL",
+        "finalUrl": "https://www.tiktok.com/search?q=NEPAL",
+        "title": "TikTok - Make Your Day",
+        "scrollRounds": 6,
+        "matchedAfter": 0,
+        "error": null
+      },
+      {
+        "name": "search-video-tab",
+        "url": "https://www.tiktok.com/search/video?q=NEPAL",
+        "finalUrl": "https://www.tiktok.com/search/video?q=NEPAL",
+        "title": "TikTok - Make Your Day",
+        "scrollRounds": 6,
+        "matchedAfter": 0,
+        "error": null
+      }
+    ],
+    "apiHits": {},
+    "fromSearchEndpoints": 0,
+    "loginWall": true,
+    "captchaWall": false,
+    "bodySnippet": "TikTok NEPAL For You Shop Explore Following Short dramas LIVE Upload Profile More Log in Company Program Terms & Policies © 2026 TikTok Get Coins Get App Top Users Videos LIVE Photo"
+  }
 }
