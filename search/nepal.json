@@ -5297,11 +5297,11 @@
   },
   "emptyStreak": 0,
   "stale": true,
-  "staleSince": "2026-11-11T18:41:18.243Z",
-  "lastAttemptAt": "2026-11-11T18:41:18.243Z",
+  "staleSince": "2026-11-11T21:52:49.317Z",
+  "lastAttemptAt": "2026-11-11T21:52:49.317Z",
   "lastAttemptDebug": {
     "keyword": "NEPAL",
-    "want": 60,
+    "want": 120,
     "strategies": [
       {
         "name": "search",
@@ -5320,12 +5320,27 @@
         "scrollRounds": 6,
         "matchedAfter": 0,
         "error": null
+      },
+      {
+        "name": "hashtag",
+        "url": "https://www.tiktok.com/tag/nepal",
+        "finalUrl": "https://www.tiktok.com/tag/nepal",
+        "title": "TikTok - Make Your Day",
+        "scrollRounds": 6,
+        "matchedAfter": 0,
+        "error": null
       }
     ],
-    "apiHits": {},
+    "apiHits": {
+      "/api/challenge/item_list/": {
+        "calls": 1,
+        "items": 0,
+        "source": "search"
+      }
+    },
     "fromSearchEndpoints": 0,
     "loginWall": true,
     "captchaWall": false,
-    "bodySnippet": "TikTok NEPAL For You Shop Explore Following Short dramas LIVE Upload Profile More Log in Company Program Terms & Policies © 2026 TikTok Get Coins Get App Top Users Videos LIVE Photo"
+    "bodySnippet": "TikTok Search For You Shop Explore Following Short dramas LIVE Upload Profile More Log in Company Program Terms & Policies © 2026 TikTok #nepal Page not available Looking for videos? Try browsing our trending creators, hashtags, and sounds. Log in"
   }
 }
