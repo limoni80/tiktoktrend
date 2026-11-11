@@ -1,9 +1,20 @@
 {
-  "generatedAt": "2026-11-11T18:35:57.493Z",
+  "generatedAt": "2026-11-11T18:36:33.098Z",
   "startedAt": "2026-11-11T18:34:48.291Z",
   "repo": "limoni80/tiktoktrend",
   "runUrl": "https://github.com/limoni80/tiktoktrend/actions/runs/43079056659",
   "entries": [
+    {
+      "kind": "search",
+      "file": "search/planner.json",
+      "keyword": "planner",
+      "slug": "planner",
+      "status": "empty",
+      "count": 0,
+      "emptyStreak": 1,
+      "updatedAt": "2026-11-11T18:35:25.424Z",
+      "lastSuccessAt": null
+    },
     {
       "kind": "search",
       "file": "search/weight-loss.json",
@@ -646,6 +657,14 @@
     }
   ],
   "keywords": [
+    {
+      "keyword": "planner",
+      "slug": "planner",
+      "status": "empty",
+      "count": 0,
+      "updatedAt": "2026-11-11T18:35:25.424Z",
+      "emptyStreak": 1
+    },
     {
       "keyword": "weight loss",
       "slug": "weight-loss",
