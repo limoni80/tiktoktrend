@@ -1,9 +1,20 @@
 {
-  "generatedAt": "2026-11-11T18:34:33.943Z",
+  "generatedAt": "2026-11-11T18:35:08.055Z",
   "startedAt": "2026-11-11T18:32:56.259Z",
   "repo": "limoni80/tiktoktrend",
   "runUrl": "https://github.com/limoni80/tiktoktrend/actions/runs/43078753211",
   "entries": [
+    {
+      "kind": "search",
+      "file": "search/weight-loss.json",
+      "keyword": "weight loss",
+      "slug": "weight-loss",
+      "status": "empty",
+      "count": 0,
+      "emptyStreak": 1,
+      "updatedAt": "2026-11-11T18:33:52.782Z",
+      "lastSuccessAt": null
+    },
     {
       "kind": "search",
       "file": "search/weight.json",
@@ -636,6 +647,14 @@
     }
   ],
   "keywords": [
+    {
+      "keyword": "weight loss",
+      "slug": "weight-loss",
+      "status": "empty",
+      "count": 0,
+      "updatedAt": "2026-11-11T18:33:52.782Z",
+      "emptyStreak": 1
+    },
     {
       "keyword": "weight",
       "slug": "weight",

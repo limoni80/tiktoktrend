@@ -1,0 +1,44 @@
+{
+  "videos": [],
+  "scanned": 10,
+  "hasMore": false,
+  "source": "TikTok.com search · “weight loss” · collected by GitHub Actions",
+  "keyword": "weight loss",
+  "fetchedAt": "2026-11-11T18:33:52.782Z",
+  "debug": {
+    "keyword": "weight loss",
+    "want": 60,
+    "strategies": [
+      {
+        "name": "search",
+        "url": "https://www.tiktok.com/search?q=weight%20loss",
+        "finalUrl": "https://www.tiktok.com/search?q=weight%20loss",
+        "title": "TikTok - Make Your Day",
+        "scrollRounds": 6,
+        "matchedAfter": 0,
+        "error": null
+      },
+      {
+        "name": "search-video-tab",
+        "url": "https://www.tiktok.com/search/video?q=weight%20loss",
+        "finalUrl": "https://www.tiktok.com/search/video?q=weight%20loss",
+        "title": "TikTok - Make Your Day",
+        "scrollRounds": 6,
+        "matchedAfter": 0,
+        "error": null
+      }
+    ],
+    "apiHits": {
+      "/api/explore/item_list/": {
+        "calls": 2,
+        "items": 10,
+        "source": "feed"
+      }
+    },
+    "fromSearchEndpoints": 0,
+    "loginWall": true,
+    "captchaWall": false,
+    "bodySnippet": "TikTok weight loss For You Shop Explore Following Short dramas LIVE Upload Profile More Log in Company Program Terms & Policies © 2026 TikTok Top Users Videos LIVE Photo Log in"
+  },
+  "emptyStreak": 1
+}
