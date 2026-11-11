@@ -4536,8 +4536,8 @@
   },
   "emptyStreak": 0,
   "stale": true,
-  "staleSince": "2026-11-11T18:41:24.395Z",
-  "lastAttemptAt": "2026-11-11T18:41:24.395Z",
+  "staleSince": "2026-11-11T18:44:07.748Z",
+  "lastAttemptAt": "2026-11-11T18:44:07.748Z",
   "lastAttemptDebug": {
     "keyword": "Footing",
     "want": 60,
@@ -4561,13 +4561,7 @@
         "error": null
       }
     ],
-    "apiHits": {
-      "/api/explore/item_list/": {
-        "calls": 2,
-        "items": 10,
-        "source": "feed"
-      }
-    },
+    "apiHits": {},
     "fromSearchEndpoints": 0,
     "loginWall": true,
     "captchaWall": false,
