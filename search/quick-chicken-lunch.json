@@ -682,8 +682,8 @@
   },
   "emptyStreak": 0,
   "stale": true,
-  "staleSince": "2026-11-12T18:49:25.699Z",
-  "lastAttemptAt": "2026-11-12T18:49:25.699Z",
+  "staleSince": "2026-11-13T00:08:46.132Z",
+  "lastAttemptAt": "2026-11-13T00:08:46.132Z",
   "lastAttemptDebug": {
     "keyword": "quick chicken lunch",
     "want": 120,
@@ -701,7 +701,7 @@
         "name": "search-video-tab",
         "url": "https://www.tiktok.com/search/video?q=quick%20chicken%20lunch",
         "finalUrl": "https://www.tiktok.com/search/video?q=quick%20chicken%20lunch",
-        "title": "",
+        "title": "TikTok - Make Your Day",
         "scrollRounds": 6,
         "matchedAfter": 0,
         "error": null
@@ -716,7 +716,13 @@
         "error": null
       }
     ],
-    "apiHits": {},
+    "apiHits": {
+      "/api/recommend/item_list/": {
+        "calls": 1,
+        "items": 1,
+        "source": "feed"
+      }
+    },
     "fromSearchEndpoints": 0,
     "loginWall": true,
     "captchaWall": false,
