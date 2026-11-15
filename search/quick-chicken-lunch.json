@@ -682,8 +682,8 @@
   },
   "emptyStreak": 0,
   "stale": true,
-  "staleSince": "2026-11-15T07:46:16.850Z",
-  "lastAttemptAt": "2026-11-15T07:46:16.850Z",
+  "staleSince": "2026-11-15T15:35:25.885Z",
+  "lastAttemptAt": "2026-11-15T15:35:25.885Z",
   "lastAttemptDebug": {
     "keyword": "quick chicken lunch",
     "want": 120,
@@ -710,19 +710,13 @@
         "name": "hashtag",
         "url": "https://www.tiktok.com/tag/quickchickenlunch",
         "finalUrl": "https://www.tiktok.com/tag/quickchickenlunch",
-        "title": "TikTok - Make Your Day",
+        "title": "Couldn’t find this hashtag. Visit TikTok to discover more trending creators, hashtags, and sounds.",
         "scrollRounds": 6,
         "matchedAfter": 0,
         "error": null
       }
     ],
-    "apiHits": {
-      "/api/recommend/item_list/": {
-        "calls": 1,
-        "items": 2,
-        "source": "feed"
-      }
-    },
+    "apiHits": {},
     "fromSearchEndpoints": 0,
     "loginWall": true,
     "captchaWall": false,
