@@ -682,8 +682,8 @@
   },
   "emptyStreak": 0,
   "stale": true,
-  "staleSince": "2026-11-17T01:01:20.769Z",
-  "lastAttemptAt": "2026-11-17T01:01:20.769Z",
+  "staleSince": "2026-11-17T09:03:46.675Z",
+  "lastAttemptAt": "2026-11-17T09:03:46.675Z",
   "lastAttemptDebug": {
     "keyword": "quick chicken lunch",
     "want": 120,
@@ -716,13 +716,7 @@
         "error": null
       }
     ],
-    "apiHits": {
-      "/api/recommend/item_list/": {
-        "calls": 1,
-        "items": 1,
-        "source": "feed"
-      }
-    },
+    "apiHits": {},
     "fromSearchEndpoints": 0,
     "loginWall": true,
     "captchaWall": false,
