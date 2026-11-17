@@ -1,10 +1,10 @@
 {
   "videos": [],
-  "scanned": 1,
+  "scanned": 13,
   "hasMore": false,
   "source": "TikTok.com search · “limoniastrum” · collected by GitHub Actions",
   "keyword": "limoniastrum",
-  "fetchedAt": "2026-11-16T17:22:59.569Z",
+  "fetchedAt": "2026-11-17T01:01:52.158Z",
   "debug": {
     "keyword": "limoniastrum",
     "want": 120,
@@ -31,16 +31,16 @@
         "name": "hashtag",
         "url": "https://www.tiktok.com/tag/limoniastrum",
         "finalUrl": "https://www.tiktok.com/tag/limoniastrum",
-        "title": "TikTok - Make Your Day",
+        "title": "Couldn’t find this hashtag. Visit TikTok to discover more trending creators, hashtags, and sounds.",
         "scrollRounds": 6,
         "matchedAfter": 0,
         "error": null
       }
     ],
     "apiHits": {
-      "/api/recommend/item_list/": {
-        "calls": 1,
-        "items": 1,
+      "/api/explore/item_list/": {
+        "calls": 2,
+        "items": 13,
         "source": "feed"
       }
     },
@@ -49,5 +49,5 @@
     "captchaWall": false,
     "bodySnippet": "TikTok Search For You Shop Explore Following Short dramas LIVE Upload Profile More Log in Company Program Terms & Policies © 2026 TikTok Couldn't find this hashtag Looking for videos? Try browsing our trending creators, hashtags, and sounds. Log in"
   },
-  "emptyStreak": 219
+  "emptyStreak": 220
 }
