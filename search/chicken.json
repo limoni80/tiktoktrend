@@ -5,25 +5,25 @@
       "kind": "organic",
       "url": "https://www.tiktok.com/@fanpagecooking.usa/video/7709268643950955789",
       "caption": "#something #Good #cooking #chicken",
-      "thumbnailUrl": "https://p19-common-sign.tiktokcdn-us.com/tos-useast5-p-0068-tx/oU5R5ifRGQPAiILeFvIBJlGr7LeLIOLaFAqTpe~tplv-tiktokx-origin.image?dr=9636&x-expires=1795165200&x-signature=wFzZuZxKcg5%2B1SyUsaDuOmSLpkw%3D&t=4d5b0474&ps=13740610&shp=81f88b70&shcp=43f4a2f9&idc=useast8",
+      "thumbnailUrl": "https://p16-common-sign.tiktokcdn-us.com/tos-useast5-p-0068-tx/oU5R5ifRGQPAiILeFvIBJlGr7LeLIOLaFAqTpe~tplv-tiktokx-origin.image?dr=9636&x-expires=1795194000&x-signature=79qF3qh2SJpta1yrx0lAwhDLAsU%3D&t=4d5b0474&ps=13740610&shp=81f88b70&shcp=43f4a2f9&idc=useast8",
       "publishedAt": "2026-11-17T22:20:02.000Z",
       "durationSeconds": 256,
-      "views": 318200,
+      "views": 504400,
       "periodViews": null,
-      "likes": 4782,
-      "comments": 101,
-      "shares": 456,
-      "saves": 1003,
+      "likes": 8799,
+      "comments": 175,
+      "shares": 838,
+      "saves": 1827,
       "sourceEngagementRate": null,
       "vtr": null,
       "creator": {
         "username": "fanpagecooking.usa",
         "displayName": "Fanpage cooking",
         "profileUrl": "https://www.tiktok.com/@fanpagecooking.usa",
-        "avatarUrl": "https://p19-common-sign.tiktokcdn-us.com/tos-useast5-avt-0068-tx/077d3abffffd35369cac818ca1c48d58~tplv-tiktokx-cropcenter:100:100.jpeg?dr=9640&refresh_token=98637cd2&x-expires=1795165200&x-signature=RBA632gH0oz7xcWB6o5MB%2F%2BH9kA%3D&t=4d5b0474&ps=13740610&shp=a5d48078&shcp=81f88b70&idc=useast8",
-        "followers": 61100,
+        "avatarUrl": "https://p19-common-sign.tiktokcdn-us.com/tos-useast5-avt-0068-tx/077d3abffffd35369cac818ca1c48d58~tplv-tiktokx-cropcenter:100:100.jpeg?dr=9640&refresh_token=fd2cb3d8&x-expires=1795194000&x-signature=CiznpHP2ukX5y9LFVutMTpQHeYU%3D&t=4d5b0474&ps=13740610&shp=a5d48078&shcp=81f88b70&idc=useast8",
+        "followers": 61400,
         "following": 2,
-        "totalLikes": 584900,
+        "totalLikes": 589300,
         "country": null,
         "verified": false
       },
@@ -37,7 +37,7 @@
       "soundName": "Food",
       "soundAuthor": "FASSounds",
       "soundId": "7313620406597011457",
-      "collectedAt": "2026-11-18T09:02:10.867Z",
+      "collectedAt": "2026-11-18T17:57:44.082Z",
       "viewsPerHour": null,
       "likesPerHour": null,
       "videoFileUrl": "https://tiktoktrend.limoniastrum.workers.dev/api/media/7709268643950955789",
@@ -45,11 +45,11 @@
       "source": "TikTok.com · search · “CHICKEN”"
     }
   ],
-  "scanned": 14,
+  "scanned": 1,
   "hasMore": false,
   "source": "TikTok.com search · “CHICKEN” · collected by GitHub Actions",
   "keyword": "CHICKEN",
-  "fetchedAt": "2026-11-18T09:02:20.377Z",
+  "fetchedAt": "2026-11-18T17:57:53.743Z",
   "debug": {
     "keyword": "CHICKEN",
     "want": 120,
@@ -83,11 +83,6 @@
       }
     ],
     "apiHits": {
-      "/api/explore/item_list/": {
-        "calls": 2,
-        "items": 13,
-        "source": "feed"
-      },
       "/api/challenge/item_list/": {
         "calls": 1,
         "items": 1,
