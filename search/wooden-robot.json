@@ -5499,5 +5499,52 @@
     "captchaWall": false,
     "bodySnippet": "TikTok Search For You Shop Explore Following Short dramas LIVE Upload Profile More Log in Company Program Terms & Policies © 2026 TikTok #woodenrobot sawdustimagery On to the laborious task of numbering, signing and repairing blemishes. I’m very excited to show the work❤️#creativewoodworking #storyt"
   },
-  "emptyStreak": 0
+  "emptyStreak": 0,
+  "stale": true,
+  "staleSince": "2026-11-20T16:04:31.464Z",
+  "lastAttemptAt": "2026-11-20T16:04:31.464Z",
+  "lastAttemptDebug": {
+    "keyword": "wooden robot",
+    "want": 120,
+    "strategies": [
+      {
+        "name": "search",
+        "url": "https://www.tiktok.com/search?q=wooden%20robot",
+        "finalUrl": "https://www.tiktok.com/search?q=wooden%20robot",
+        "title": "TikTok - Make Your Day",
+        "scrollRounds": 6,
+        "matchedAfter": 0,
+        "error": null
+      },
+      {
+        "name": "search-video-tab",
+        "url": "https://www.tiktok.com/search/video?q=wooden%20robot",
+        "finalUrl": "https://www.tiktok.com/search/video?q=wooden%20robot",
+        "title": "TikTok - Make Your Day",
+        "scrollRounds": 6,
+        "matchedAfter": 0,
+        "error": null
+      },
+      {
+        "name": "hashtag",
+        "url": "https://www.tiktok.com/tag/woodenrobot",
+        "finalUrl": "https://www.tiktok.com/tag/woodenrobot",
+        "title": "TikTok - Make Your Day",
+        "scrollRounds": 6,
+        "matchedAfter": 0,
+        "error": null
+      }
+    ],
+    "apiHits": {
+      "/api/search/general/preview/": {
+        "calls": 2,
+        "items": 0,
+        "source": "search"
+      }
+    },
+    "fromSearchEndpoints": 0,
+    "loginWall": true,
+    "captchaWall": false,
+    "bodySnippet": "TikTok Search For You Explore Following Short dramas LIVE Upload Profile More Log in Company Program Terms & Policies © 2026 TikTok #woodenrobot Log in Drag the slider to fit the puzzle Audio 202611210004596B72EB804AC1A71D99D0"
+  }
 }
